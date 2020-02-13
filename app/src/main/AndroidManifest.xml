@@ -49,11 +49,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".VideoActivity"
-            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen">
 
-        </activity>
         <activity android:name="imui.jiguang.cn.imuisample.messages.BrowserImageActivity" />
 
     <!-- <activity android:name="com.zfkj.baiduwechatlocationdemo.MainActivity">

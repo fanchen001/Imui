@@ -47,4 +47,5 @@
     <color name="google_yellow">#FFF7D23E</color>
     <color name="google_green">#FF34A350</color>
     <color name="transparent">transparent</color>
+    <color name="black_transp">#99000000</color>
 </resources>
