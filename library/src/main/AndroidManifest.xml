@@ -63,5 +63,7 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
+
+        <service android:name=".location.service.TrackerService" />
     </application>
 </manifest>
