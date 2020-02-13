@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="jz_start_button_w_h_normal">45dp</dimen>
+    <dimen name="jz_start_button_w_h_fullscreen">62dp</dimen>
+    <!-->conversation<-->
+    <dimen name="aurora_width_conv_avatar">50dp</dimen>
+    <dimen name="aurora_height_conv_avatar">50dp</dimen>
+    <!-->Message List<-->
+    <dimen name="aurora_size_date_bg_radius">5dp</dimen>
+    <dimen name="aurora_size_date_text">11sp</dimen>
+    <dimen name="aurora_size_event_text">11sp</dimen>
+    <dimen name="aurora_padding_left_date_text">8dp</dimen>
+    <dimen name="aurora_padding_top_date_text">3dp</dimen>
+    <dimen name="aurora_padding_right_date_text">8dp</dimen>
+    <dimen name="aurora_padding_bottom_date_text">3dp</dimen>
+    <dimen name="aurora_padding_event_text">5dp</dimen>
+    <dimen name="aurora_width_msg_avatar">50dp</dimen>
+    <dimen name="aurora_height_msg_avatar">50dp</dimen>
+    <dimen name="aurora_size_display_name_text">12sp</dimen>
+    <dimen name="aurora_radius_avatar_default">5dp</dimen>
+    <dimen name="aurora_size_receive_text">15sp</dimen>
+    <dimen name="aurora_padding_receive_text_left">22dp</dimen>
+    <dimen name="aurora_padding_receive_text_top">7dp</dimen>
+    <dimen name="aurora_padding_receive_text_right">12dp</dimen>
+    <dimen name="aurora_padding_receive_text_bottom">7dp</dimen>
+    <dimen name="aurora_size_send_text">15sp</dimen>
+    <dimen name="aurora_padding_send_text_left">12dp</dimen>
+    <dimen name="aurora_padding_send_text_top">7dp</dimen>
+    <dimen name="aurora_padding_send_text_right">22dp</dimen>
+    <dimen name="aurora_padding_send_text_bottom">7dp</dimen>
+    <dimen name="aurora_line_spacing_extra_default">5dp</dimen>
+    <dimen name="aurora_event_bg_corner_radius">5dp</dimen>
+    <dimen name="aurora_radius_photo_message">5dp</dimen>
+    <dimen name="aurora_radius_video_message">5dp</dimen>
+    <dimen name="aurora_size_video_message_duration_text">12sp</dimen>
+    <dimen name="aurora_width_bubble_vertex">8dp</dimen>
+    <dimen name="aurora_height_bubble_hemline">5dp</dimen>
+    <dimen name="aurora_Y_bubble_vertex">20dp</dimen>
+    <!-- chat input start -->
+    <dimen name="aurora_elevation_send_btn">8dp</dimen>
+    <dimen name="aurora_size_send_btn_default">24dp</dimen>
+    <dimen name="aurora_radius_btn_default">8dp</dimen>
+
+    <dimen name="aurora_margin_input_left">20dp</dimen>
+    <dimen name="aurora_margin_input_right">20dp</dimen>
+    <dimen name="aurora_margin_input_top">8dp</dimen>
+    <dimen name="aurora_margin_input_bottom">0dp</dimen>
+
+    <dimen name="aurora_textsize_input">17sp</dimen>
+
+    <dimen name="aurora_padding_input_left">5dp</dimen>
+    <dimen name="aurora_padding_input_right">5dp</dimen>
+    <dimen name="aurora_padding_input_top">0dp</dimen>
+    <dimen name="aurora_padding_input_bottom">0dp</dimen>
+
+    <dimen name="aurora_textsize_chronometer">20sp</dimen>
+    <dimen name="aurora_size_record_button">70dp</dimen>
+    <dimen name="aurora_size_album_button">60dp</dimen>
+
+    <dimen name="aurora_horizontalspit_view_height">0.6dp</dimen>
+    <dimen name="item_emoticon_size_default">32dp</dimen>
+    <dimen name="bar_tool_btn_width">56dp</dimen>
+    <dimen name="bar_height">32dp</dimen>
+    <dimen name="indicator_margin">10dp</dimen>
+    <dimen name="verticalspit_view_width">0.6dp</dimen>
+    <dimen name="title_container_size">50dp</dimen>
+    <!-- chat input end -->
+    <dimen name="base_padding_chat">10dp</dimen>
+
+    <dimen name="map_nav_base_size">36.0dip</dimen>
+ <dimen name="media_grid_size">48dp</dimen>
+    <dimen name="media_grid_spacing">4dp</dimen>
+    <dimen name="album_item_height">72dp</dimen>
+    <dimen name="map_back_icon">30dp</dimen>
+    <dimen name="map_base_margin">10dp</dimen>
+</resources>

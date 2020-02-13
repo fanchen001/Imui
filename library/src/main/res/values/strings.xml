@@ -1,0 +1,81 @@
+<resources>
+    <string name="font_fontFamily_medium">sans-serif</string>
+    <string name="aurora_font_fontFamily_medium">sans-serif</string>
+    <string name="aurora_file_not_found_toast">File not found</string>
+    <string name="aurora_symbol_second">\"</string>
+    <string name="aurora_avatar_desc">user avatar</string>
+    <!-- chat input start -->
+    <string name="send">Send</string>
+    <string name="record_voice_hint">Hold to Talk</string>
+    <string name="release_send_voice_hint">Release to Send</string>
+    <string name="cancel_record_voice_hint">To cancel recording</string>
+    <string name="preview_play_audio_hint">Preview</string>
+    <string name="cancel">Cancel</string>
+    <string name="rest_record_time_hint">You can also say %s seconds</string>
+    <string name="time_too_short_toast">Time is too short</string>
+    <string name="record_voice_permission_request">If you want to record, please grant the permission</string>
+    <string name="sdcard_not_exist_toast">Sdcard not exist.</string>
+    <string name="illegal_state_toast">Illegal state, please try again later</string>
+    <string name="record_voice_permission_denied">
+        Please grant the voice permission, otherwise the recording function can not be enabled
+    </string>
+    <string name="aurora_record_voice_file_not_exist">File not exist, please set record path first</string>
+    <string name="file_not_found_toast">File not found</string>
+    <string name="sdcard_not_prepare_toast">Sdcard not prepared</string>
+    <string name="record_video_failed">Record video</string>
+    <string name="description">description</string>
+    <!-- chat input end -->
+
+    <string name="folder_desc">file:%1$s&#160;&#160;|&#160;&#160;folder:%2$s</string>
+    <string name="file_desc">%1$s&#160;&#160;|&#160;&#160;%2$s</string>
+    <string name="selected_file_count">selection(%1$s/%2$s)</string>
+    <string-array name="sort_list">
+        <item>name</item>
+        <item>time</item>
+        <item>size</item>
+        <item>type</item>
+    </string-array>
+    <string-array name="sort_list_scan">
+        <item>name</item>
+        <item>time</item>
+        <item>size</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search">search location</string>
+    <string name="cancle">cancle</string>
+    <string name="bt_back">back</string>
+    <string name="has_no_map">no map</string>
+    <string name="nothing_to_search">nothing to search</string>
+    <string name="locationing">search loaction ing..</string>
+    <string name="are_doing">are doing</string>
+    <string name="location_message">location message</string>
+    <string name="button_send">send</string>
+    <string name="now_address">[now location]</string>
+    <string name="location_is_empty">location is empty</string>
+
+    <string name="tips_not_wifi">You are currently using the mobile network, the player will continue to consume traffic</string>
+    <string name="tips_not_wifi_confirm">Resume</string>
+    <string name="tips_not_wifi_cancel">Stop play</string>
+    <string name="no_url">No url</string>
+    <string name="replay">Replay</string>
+    <string name="click_to_restart">Click to try again</string>
+    <string name="video_loading_failed">Video loading failed</string>
+    <string name="map_address_ambiguity">address ambiguity</string>
+    <string name="map_address_not_find">address not find</string>
+    <string name="map_search_ing">Search ing..</string>
+    <string name="map_local">map locaton</string>
+    <string name="map_seekbar_add">+</string>
+    <string name="map_seekbar_minus">-</string>
+    <string name="base_walk_map">walk</string>
+    <string name="base_drive_map">drive</string>
+    <string name="base_public_map">public</string>
+    <string name="selected_map">select maps</string>
+
+    <string-array name="map_list_scan">
+        <item>Baidu Maps</item>
+        <item>Amap Maps</item>
+        <item>Tencten Maps</item>
+        <item>Google Maps</item>
+    </string-array>
+</resources>

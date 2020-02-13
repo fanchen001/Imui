@@ -1,0 +1,67 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.fanchen">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <!--//允许sd卡写权限，需写入地图数据，禁用后无法显示地图-->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <!--//获取统计数据-->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!--//鉴权所需该权限获取进程列表-->
+    <!--关于定位的权限-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true">
+
+        <activity android:name=".filepicker.activity.SelectFileByBrowserActivity" />
+
+        <activity android:name=".filepicker.activity.SelectPictureActivity" />
+
+        <activity android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" android:name=".video.SimpleVideoActivity" />
+
+        <activity android:name=".filepicker.activity.SelectFileByScanActivity" />
+
+        <activity
+            android:name=".location.MapSendActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseMapStyle" />
+
+        <activity
+            android:name=".location.MapNavigationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseMapStyle" />
+
+        <provider
+            android:name=".filepicker.model.EssFileProvider"
+            android:authorities="${applicationId}.fanchen.file.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+        <!--百度地位服务-->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+    </application>
+</manifest>
