@@ -156,7 +156,9 @@ public class SensorMapView extends FrameLayout implements BaiduMap.OnMapClickLis
      * @param line
      */
     private void addToMap(RouteLineWrap.Type type, RouteLine<?> line) {
-        mRouteOverlay .removeFromMap();
+        if(mRouteOverlay != null){
+            mRouteOverlay .removeFromMap();
+        }
         this.mMode = type;
         if(type == RouteLineWrap.Type.WALKING_ROUTE){
             WalkingRouteOverlay overlay = new WalkingRouteOverlay(mBaiduMap);
@@ -174,8 +176,10 @@ public class SensorMapView extends FrameLayout implements BaiduMap.OnMapClickLis
             mBaiduMap .setOnMarkerClickListener(overlay);
             overlay.setData((DrivingRouteLine)line);
         }
-        mRouteOverlay .addToMap();
-        mRouteOverlay .zoomToSpan();
+        if(mRouteOverlay != null){
+            mRouteOverlay .addToMap();
+            mRouteOverlay .zoomToSpan();
+        }
         CommonUtils.cencelDialog();
     }
 
