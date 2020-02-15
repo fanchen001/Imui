@@ -127,19 +127,20 @@ public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderR
     }
 
     private void initView() {
-        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar_map);
         mToolbar.setTitle(R.string.location_message);
-        View viewById = findViewById(R.id.title);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            ViewGroup.LayoutParams layoutParams = viewById.getLayoutParams();
-            if (layoutParams != null) {
-                layoutParams.height = layoutParams.height + UiUtils.dpToPx(this, 25);
-                viewById.setLayoutParams(layoutParams);
+        View viewById = findViewById(R.id.rl_map_title);
+        if(viewById != null){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                ViewGroup.LayoutParams layoutParams = viewById.getLayoutParams();
+                if (layoutParams != null) {
+                    layoutParams.height = layoutParams.height + UiUtils.dpToPx(this, 25);
+                    viewById.setLayoutParams(layoutParams);
+                }
+                viewById.setPadding(viewById.getPaddingLeft(), viewById.getPaddingTop() + UiUtils.dpToPx(this, 25),
+                        viewById.getPaddingRight(), viewById.getPaddingBottom());
             }
-            viewById.setPadding(viewById.getPaddingLeft(), viewById.getPaddingTop() + UiUtils.dpToPx(this, 25),
-                    viewById.getPaddingRight(), viewById.getPaddingBottom());
         }
-
         setSupportActionBar(mToolbar);
 
         mMapView = ((FuckBaiduView) findViewById(R.id.bmapView)).getMapView();

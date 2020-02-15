@@ -4,7 +4,7 @@
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:fitsSystemWindows="true"
-    android:background="?attr/colorPrimary"
+    android:background="#f1f1f1"
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout

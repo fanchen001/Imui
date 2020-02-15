@@ -14,7 +14,7 @@
     <style name="BaseBoxingAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/elec_primary</item>
         <item name="colorPrimaryDark">@color/elec_primary_dark</item>
-        <item name="colorAccent">@color/ucrop_base_color_widget_active</item>
+        <item name="colorAccent">@color/elec_primary_dark</item>
     </style>
 
     <style name="BaseBoxingAppThemeNoActionBar" parent="BaseBoxingAppTheme">
