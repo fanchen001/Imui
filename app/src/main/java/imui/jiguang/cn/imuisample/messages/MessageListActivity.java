@@ -21,6 +21,7 @@ import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,6 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import com.fanchen.R;
 import com.fanchen.chat.ChatInputView;
@@ -55,25 +58,23 @@ import com.fanchen.chat.model.FileItem;
 import com.fanchen.chat.model.VideoItem;
 import com.fanchen.filepicker.FilePicker;
 import com.fanchen.filepicker.model.EssFile;
+import com.fanchen.filepicker.model.UCropConfig;
 import com.fanchen.filepicker.util.Const;
 import com.fanchen.filepicker.util.FileSizeUtil;
-import com.fanchen.location.MapNavigationActivity;
-import com.fanchen.location.MapSendActivity;
+import com.fanchen.location.LocationPicker;
 import com.fanchen.location.bean.LocationBean;
-import com.fanchen.location.utils.CommonUtils;
 import com.fanchen.message.commons.ImageLoader;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.messages.MsgListAdapter;
 import com.fanchen.message.messages.ptr.PtrHandler;
 import com.fanchen.message.messages.ptr.PullToRefreshLayout;
 import com.fanchen.message.messages.ViewHolderController;
+import com.fanchen.picture.ImagePreview;
 import com.fanchen.video.Jzvd;
-import com.fanchen.video.JzvdStd;
 import com.fanchen.video.SimpleVideoActivity;
 import com.fanchen.view.ChatView;
 import com.fanchen.view.DefaultFeatureAdapter;
 
-import cc.shinichi.library.ImagePreview;
 import imui.jiguang.cn.imuisample.models.DefaultUser;
 import imui.jiguang.cn.imuisample.models.MyMessage;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -108,33 +109,60 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 500 && data != null) {
-            ArrayList<EssFile> essFileList = data.getParcelableArrayListExtra(Const.EXTRA_RESULT_SELECTION);
-            for (EssFile file : essFileList) {
-
+        if (requestCode == 201 && data != null && resultCode == RESULT_OK ){
+            File uCropFile = FilePicker.getUCropFile(data);
+            if(uCropFile != null){
                 MyMessage message = new MyMessage("", IMessage.MessageType.SEND_FILE.ordinal());
                 message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
                 message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                 message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
                 HashMap<String, String> extras = message.getExtras();
-
+                extras.put("fileTitle", uCropFile.getName());
+                extras.put("fileSize", FileSizeUtil.getAutoFileOrFilesSize(uCropFile));
+                mAdapter.addToStart(message, true);
+            }
+        }else   if (requestCode == 202 && data != null && resultCode == RESULT_OK ){
+            ArrayList<EssFile> essFileList = data.getParcelableArrayListExtra(Const.EXTRA_RESULT_SELECTION);
+            for (EssFile file : essFileList) {
+                MyMessage message = new MyMessage("", IMessage.MessageType.SEND_VIDEO.ordinal());
+                message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+                message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+                message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
+                message.setDuration(file.getDuration());
+                message.setMediaFilePath(file.getAbsolutePath());
+//                message.setDuration(((VideoItem) file).getDuration());
+//                message.putExtra("path", message.getMediaFilePath());
+//                message.putExtra("name", new File(message.getMediaFilePath()).getName());
+//                HashMap<String, String> extras = message.getExtras();
+//                extras.put("fileTitle", file.getName());
+//                extras.put("fileSize", FileSizeUtil.getAutoFileOrFilesSize(file.getFile()));
+                mAdapter.addToStart(message, true);
+            }
+        }
+        if ((requestCode == 500 || requestCode == 200) && data != null) {
+            ArrayList<EssFile> essFileList = data.getParcelableArrayListExtra(Const.EXTRA_RESULT_SELECTION);
+            for (EssFile file : essFileList) {
+                MyMessage message = new MyMessage("", IMessage.MessageType.SEND_FILE.ordinal());
+                message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+                message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+                message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
+                HashMap<String, String> extras = message.getExtras();
                 extras.put("fileTitle", file.getName());
                 extras.put("fileSize", FileSizeUtil.getAutoFileOrFilesSize(file.getFile()));
-
                 mAdapter.addToStart(message, true);
             }
         } else if (requestCode == 600 && data != null) {
-            LocationBean bean = data.getParcelableExtra("Location");
-            String thumbnailPath = data.getStringExtra("thumbnailPath");
+            Map.Entry<String, LocationBean> location = LocationPicker.getLocation(data);
+
             MyMessage message = new MyMessage("", IMessage.MessageType.SEND_LOCATION.ordinal());
             message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
             message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
             message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
             HashMap<String, String> extras = message.getExtras();
 
-            extras.put("locationTitle", bean.getName());
-            extras.put("locationDetails", bean.getAddress());
-            extras.put("path", thumbnailPath);
+            extras.put("locationTitle", location.getValue().getName());
+            extras.put("locationDetails", location.getValue().getAddress());
+            extras.put("path", location.getKey());
 
 
             mAdapter.addToStart(message, true);
@@ -144,7 +172,11 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_chat);
+
+
         this.mImm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mWindow = getWindow();
         registerProximitySensorListener();
@@ -160,7 +192,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                             .requestCode(500)
                             .start();
                 } else if (position == 4) {
-                    startActivityForResult(new Intent(MessageListActivity.this, MapSendActivity.class), 600);
+                    LocationPicker.startSendActivity(MessageListActivity.this,600);
                 } else if (position == 5) {
                     MyMessage message2 = new MyMessage("", IMessage.MessageType.SEND_ID_CARD.ordinal());
                     message2.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
@@ -428,12 +460,19 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                             .chooseMedia().requestCode(200)
                             .start();
                 } else if (mode == OnMenuClickListener.SEPARATE_PHOTO) {
+                    UCropConfig uCropConfig = new UCropConfig();
+                    uCropConfig.cropMaxWidth = 400;
+                    uCropConfig.cropMaxHeight = 800;
+                    uCropConfig.cropAspectRatioX = 2;
+                    uCropConfig.cropAspectRatioY = 2;
                     FilePicker.from(MessageListActivity.this).chooseMedia()
-                            .enabledCapture(true).onlyShowImages().requestCode(200)
+                            .uCropConfig(uCropConfig)
+//                            .isSingle()
+                            .enabledCapture(true).onlyShowImages().requestCode(201)
                             .start();
                 } else {
                     FilePicker.from(MessageListActivity.this)
-                            .chooseMedia().onlyShowVideos().requestCode(200)
+                            .chooseMedia().onlyShowVideos().requestCode(202)
                             .start();
                 }
             }
@@ -692,8 +731,9 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                         || message.getType() == IMessage.MessageType.SEND_IMAGE.ordinal()) {
                     ImagePreview instance = ImagePreview.getInstance();
                     instance.setContext(MessageListActivity.this);
-                    instance.setEnableClickClose(true);
+                    instance.setShowCloseButton(true);
                     instance.setEnableDragClose(true);
+                    instance.setShowDownButton(true);
                     instance.setIndex(mMsgIdList.indexOf(message.getMsgId())).setImageList(mPathList).start();
                 } else {
                     Toast.makeText(getApplicationContext(),
@@ -705,9 +745,9 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
             @Override
             public void onMessageChildClick(View v, MyMessage message) {
                 if (v.getId() == R.id.aurora_tv_msgitem_see) {
-                    startActivity(new Intent(MessageListActivity.this, MapNavigationActivity.class));
+                    LocationPicker.startNavigayionActivity(MessageListActivity.this);
                 } else if (v.getId() == R.id.aurora_tv_msgitem_to) {
-                    CommonUtils.showMapChoiceDialog(MessageListActivity.this, 0, 0, "");
+                    LocationPicker.showMapChoiceDialog(MessageListActivity.this, 0, 0, "");
                 }
             }
         });

@@ -73,4 +73,9 @@
     <dimen name="album_item_height">72dp</dimen>
     <dimen name="map_back_icon">30dp</dimen>
     <dimen name="map_base_margin">10dp</dimen>
+    <dimen name="pic_item_half_spacing">5dp</dimen>
+
+    <dimen name="pic_item_spacing">8dp</dimen>
+    <dimen name="pic_media_margin">2dp</dimen>
+    <dimen name="pic_corner_radius">2dp</dimen>
 </resources>

@@ -77,17 +77,17 @@ public class SensorMapView extends FrameLayout implements BaiduMap.OnMapClickLis
 
     OnRouteResultListener mRouteResultListener = null;
 
-    SensorMapView(Context context) {
+    public SensorMapView(Context context) {
         super(context);
         initView(context);
     }
 
-    SensorMapView(Context context, AttributeSet attrs) {
+    public SensorMapView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context);
     }
 
-    SensorMapView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SensorMapView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context);
     }

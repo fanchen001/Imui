@@ -31,23 +31,37 @@
         android:allowBackup="true"
         android:supportsRtl="true">
 
-        <activity android:name=".filepicker.activity.SelectFileByBrowserActivity" />
+        <activity
+            android:name=".filepicker.activity.SelectFileByBrowserActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".filepicker.activity.SelectPictureActivity" />
+        <activity
+            android:name=".filepicker.activity.SelectPictureActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" android:name=".video.SimpleVideoActivity" />
+        <activity
+            android:name=".filepicker.activity.PictureViewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".video.SimpleVideoActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
 
         <activity android:name=".filepicker.activity.SelectFileByScanActivity" />
 
         <activity
             android:name=".location.MapSendActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/BaseMapStyle" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".location.MapNavigationActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/BaseMapStyle" />
+            android:theme="@style/BaseBoxingAppThemeNoActionBar" />
 
         <provider
             android:name=".filepicker.model.EssFileProvider"
@@ -65,5 +79,14 @@
             android:process=":remote" />
 
         <service android:name=".location.service.TrackerService" />
+
+        <activity
+            android:name=".picture.view.ImagePreviewActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- glide 声明自定义的module -->
+       <!-- <meta-data
+            android:name="com.fanchen.picture.glide.engine.OkHttpProgressGlideModule"
+            android:value="GlideModule" />-->
     </application>
 </manifest>

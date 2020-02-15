@@ -13,11 +13,12 @@ public class OverrideTarget extends ImageViewTarget<Bitmap> {
 
     private ImageView target;
     private boolean parentOverride;
-
-    public OverrideTarget(ImageView target, boolean parentOverride) {
+    private int a;
+    public OverrideTarget(ImageView target, boolean parentOverride, int a) {
         super(target);
         this.target = target;
         this.parentOverride = parentOverride;
+        this.a = a;
     }
 
     @Override
@@ -29,15 +30,8 @@ public class OverrideTarget extends ImageViewTarget<Bitmap> {
         int containerWidth = (int) (width / zoom);
         if (parentOverride) {
             ViewParent viewParent = target.getParent();
-            ViewParent parent = viewParent;
-            while (viewParent != null) {
-                viewParent = viewParent.getParent();
-                if (viewParent != null) {
-                    parent = viewParent;
-                }
-            }
-            if (parent instanceof View) {
-                View v = (View) parent;
+            if (viewParent instanceof View) {
+                View v = (View) viewParent;
                 ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
                 if (layoutParams != null) {
                     layoutParams.width = containerWidth;

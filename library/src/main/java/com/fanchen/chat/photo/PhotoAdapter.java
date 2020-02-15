@@ -79,7 +79,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         Glide.with(mView.getContext())
                 .load(Uri.fromFile(new File(item.getFilePath()))).asBitmap()
                 .override(ChatInputView.sMenuHeight / 2, ChatInputView.sMenuHeight)
-               .into(new OverrideTarget(holder.ivPhoto,true));
+               .into(new OverrideTarget(holder.ivPhoto,true,position));
 
         if (mSelectedItems.contains(position)) {    // Current photo is selected
             holder.ivTick.setVisibility(VISIBLE);
@@ -98,11 +98,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
             holder.tvDuration.setVisibility(View.VISIBLE);
 
             long duration = ((VideoItem) item).getDuration();
-            String durationStr = String.format(Locale.CHINA, "%02d:%02d",
-                    TimeUnit.SECONDS.toMinutes(duration),
-                    TimeUnit.SECONDS.toSeconds(duration));
+//            String durationStr = String.format(Locale.CHINA, "%02d:%02d",
+//                    TimeUnit.SECONDS.toMinutes(duration),
+//                    TimeUnit.SECONDS.toSeconds(duration));
 
-            holder.tvDuration.setText(durationStr);
+            holder.tvDuration.setText(formatSeconds(duration));
         }
 
         holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +141,20 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                 }
             }
         });
+    }
+
+    public String formatSeconds(long seconds){
+        String standardTime;
+        if (seconds <= 0){
+            standardTime = "00:00";
+        } else if (seconds < 60) {
+            standardTime = String.format(Locale.getDefault(), "00:%02d", seconds % 60);
+        } else if (seconds < 3600) {
+            standardTime = String.format(Locale.getDefault(), "%02d:%02d", seconds / 60, seconds % 60);
+        } else {
+            standardTime = String.format(Locale.getDefault(), "%02d:%02d:%02d", seconds / 3600, seconds % 3600 / 60, seconds % 60);
+        }
+        return standardTime;
     }
 
     @Override

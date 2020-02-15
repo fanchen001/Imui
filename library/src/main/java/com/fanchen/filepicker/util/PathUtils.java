@@ -101,11 +101,13 @@ public class PathUtils {
                 final int columnIndex = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(columnIndex);
             }
-        } finally {
+        }catch (Throwable e){
+
+        }finally {
             if (cursor != null)
                 cursor.close();
         }
-        return null;
+        return "";
     }
 
 

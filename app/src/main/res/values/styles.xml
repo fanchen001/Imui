@@ -5,9 +5,9 @@
     </style>
 
     <style name="AnimFade" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenEnterAnimation">@anim/pic_fade_in</item>
         <item name="android:activityOpenExitAnimation">@anim/hold</item>
-        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseExitAnimation">@anim/pic_fade_out</item>
     </style>
 
 

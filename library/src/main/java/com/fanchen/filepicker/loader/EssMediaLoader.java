@@ -23,7 +23,7 @@ public class EssMediaLoader extends CursorLoader {
             MediaStore.MediaColumns.DISPLAY_NAME,
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.SIZE,
-            "duration"};
+            MediaStore.Video.Media.DURATION};
 
     // === params for album ALL && showSingleMediaType: false ===
     private static final String SELECTION_ALL =

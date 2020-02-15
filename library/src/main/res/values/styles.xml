@@ -1,4 +1,35 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- TextAppearance -->
+    <style name="BaseBoxingTextAppearanceAppMedium" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="BaseBoxingToolbarTheme" parent="BaseBoxingAppThemeNoActionBar">
+        <item name="titleTextColor">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/elec_primary_dark</item>
+    </style>
+
+    <style name="BaseBoxingAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/elec_primary</item>
+        <item name="colorPrimaryDark">@color/elec_primary_dark</item>
+        <item name="colorAccent">@color/ucrop_base_color_widget_active</item>
+    </style>
+
+    <style name="BaseBoxingAppThemeNoActionBar" parent="BaseBoxingAppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+
+    <style name="Theme.ImagePreview.Pic" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:background">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 
     <style name="BaseMapBackImageView">
         <item name="android:layout_centerVertical">true</item>
@@ -80,12 +111,15 @@
     <style name="BaseMapStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/BaseAnimStyle</item>
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+        <item name="colorAccent">@color/ucrop_base_color_widget_active</item>
+        <item name="colorPrimary">@color/elec_primary</item>
+        <item name="colorPrimaryDark">@color/elec_primary_dark</item>
     </style>
 
     <style name="BaseAnimFade" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenEnterAnimation">@anim/pic_fade_in</item>
         <item name="android:activityOpenExitAnimation">@anim/base_hold</item>
-        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseExitAnimation">@anim/pic_fade_out</item>
     </style>
 
     <style name="BaseProgressDialog" parent="@android:style/Theme.Dialog">
@@ -113,6 +147,7 @@
 
     <style name="FilePicker.Elec" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
+        <item name="colorAccent">@color/ucrop_base_color_widget_active</item>
         <item name="android:windowAnimationStyle">@style/SlideRightAnimation</item>
         <item name="colorPrimary">@color/elec_primary</item>
         <item name="colorPrimaryDark">@color/elec_primary_dark</item>

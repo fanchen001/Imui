@@ -110,6 +110,7 @@ public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderR
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setTheme(LocationPicker.themeId);
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_map_send);

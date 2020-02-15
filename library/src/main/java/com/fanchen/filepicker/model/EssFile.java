@@ -33,6 +33,8 @@ public class EssFile implements Parcelable {
     private boolean isDirectory = false;
     private boolean isFile = false;
     private String mFileName;
+    private int _id;
+    private long mDuration;
     private Uri uri;
 
     private int itemType = MEDIA;
@@ -49,6 +51,8 @@ public class EssFile implements Parcelable {
         mFileName = in.readString();
         uri = in.readParcelable(Uri.class.getClassLoader());
         itemType = in.readInt();
+        _id = in.readInt();
+        mDuration = in.readLong();
     }
 
     public static final Creator<EssFile> CREATOR = new Creator<EssFile>() {
@@ -69,6 +73,14 @@ public class EssFile implements Parcelable {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public EssFile(String path) {
@@ -176,8 +188,7 @@ public class EssFile implements Parcelable {
 
     public static ArrayList<EssFile> getEssFileList(Context context, Set<EssFile> essFileSet) {
         ArrayList<EssFile> essFileArrayList = new ArrayList<>();
-        for (EssFile ess_file :
-                essFileSet) {
+        for (EssFile ess_file : essFileSet) {
             ess_file.mFilePath = PathUtils.getPath(context, ess_file.uri);
             essFileArrayList.add(ess_file);
         }
@@ -192,14 +203,13 @@ public class EssFile implements Parcelable {
         return resultList;
     }
 
-
     @Override
     public String toString() {
-        return "EssFile{" +
-                "mFilePath='" + mFilePath + '\'' +
-                ", mimeType='" + mimeType + '\'' +
-                ", mFileName='" + mFileName + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("EssFile{");
+        sb.append("_id=").append(_id);
+        sb.append(", uri=").append(uri);
+        sb.append('}');
+        return sb.toString();
     }
 
     public boolean isImage() {
@@ -255,6 +265,16 @@ public class EssFile implements Parcelable {
         dest.writeString(mFileName);
         dest.writeParcelable(uri, flags);
         dest.writeInt(itemType);
+        dest.writeInt(_id);
+        dest.writeLong(mDuration);
+    }
+
+    public long getDuration() {
+        return mDuration;
+    }
+
+    public void setDuration(long mDuration) {
+        this.mDuration = mDuration;
     }
 
     @Override

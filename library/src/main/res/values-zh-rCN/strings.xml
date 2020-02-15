@@ -80,4 +80,20 @@
         <item>腾讯地图</item>
         <item>谷歌地图</item>
     </string-array>
+
+    <string name="pic_ok">确定</string>
+    <string name="pic_yl">预览</string>
+    <string name="pic_fab_label_camera">拍照</string>
+
+    <string name="pic_image_preview_title_fmt">%1$s/%2$s</string>
+    <string name="pic_image_preview_ok_fmt">%1$s/%2$s 确定</string>
+    <string name="pic_image_select_ok_fmt">(%1$s/%2$s) 确定</string>
+    <string name="pic_album_images_fmt">(%d)</string>
+
+    <string name="pic_max_image_over_fmt">你最多只能选择%d张图片</string>
+    <string name="pic_gif_too_big">您选择的gif图片过大，请压缩后再上传</string>
+    <string name="pic_pick_single_video">视频单选</string>
+    <string name="pic_pick_multi_image">图片多选</string>
+
+    <string name="pic_indicator">%1$s/%2$s</string>
 </resources>

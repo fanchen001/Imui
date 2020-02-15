@@ -1,10 +1,12 @@
 package com.fanchen.filepicker;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 
 import com.fanchen.R;
+import com.fanchen.filepicker.model.UCropConfig;
 import com.fanchen.filepicker.util.FileUtils;
 
 import java.io.File;
@@ -29,6 +31,8 @@ public class SelectOptions {
     public boolean onlyShowVideos = false;
     public boolean enabledCapture = false;
     public Drawable placeHolder;
+
+    public UCropConfig cropConfig;
     public boolean compressImage = true;
     public String targetPath = defaultTargetPath;
     public int themeId = R.style.FilePicker_Elec;
@@ -81,6 +85,7 @@ public class SelectOptions {
         onlyShowVideos = false;
         enabledCapture = false;
         compressImage = true;
+        cropConfig = null;
         themeId = R.style.FilePicker_Elec;
     }
 

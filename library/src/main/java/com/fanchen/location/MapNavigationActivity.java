@@ -43,6 +43,7 @@ public class MapNavigationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(LocationPicker.themeId);
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(this.getApplication());
         setContentView(R.layout.activity_map_navigation);

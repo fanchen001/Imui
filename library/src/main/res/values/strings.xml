@@ -78,4 +78,21 @@
         <item>Tencten Maps</item>
         <item>Google Maps</item>
     </string-array>
+
+
+    <string name="pic_ok">submit</string>
+    <string name="pic_yl">view</string>
+    <string name="pic_fab_label_camera">camera</string>
+
+    <string name="pic_image_preview_title_fmt">%1$s/%2$s</string>
+    <string name="pic_image_preview_ok_fmt">%1$s/%2$s submit</string>
+    <string name="pic_image_select_ok_fmt">(%1$s/%2$s) submit</string>
+    <string name="pic_album_images_fmt">(%d)</string>
+
+    <string name="pic_max_image_over_fmt">You can only select% d pictures at most</string>
+    <string name="pic_gif_too_big">The GIF image you selected is too large, please compress it and upload it again</string>
+    <string name="pic_pick_single_video">Video single selection</string>
+    <string name="pic_pick_multi_image">Picture selection</string>
+
+    <string name="pic_indicator">%1$s/%2$s</string>
 </resources>

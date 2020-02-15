@@ -31,7 +31,7 @@ public class MapUtils {
         Intent intent;
         if (isAvilible(context, "com.autonavi.minimap")) {
             try {
-                String appName = context.getString(R.string.app_name);
+                String appName =  context.getPackageName();
                 intent = Intent.getIntent("androidamap://route?sourceApplication=" + appName + "&sname=我的位置&dlat=" + lat + "&dlon=" + lng + "&dname=" + toAddress + "&dev=0&m=0&t=0");
                 context.startActivity(intent);
             } catch (URISyntaxException e) {
@@ -94,7 +94,7 @@ public class MapUtils {
         if (isAvilible(context, "com.baidu.BaiduMap")) {//传入指定应用包名
             try {
                 double[] doubles = map_hx2bd(Double.valueOf(lat), Double.valueOf(lng));
-                String appName = context.getString(R.string.app_name);
+                String appName =  context.getPackageName();
                 intent = Intent.getIntent("intent://map/direction?origin=我的位置&destination=latlng:" + doubles[0] + "," + doubles[1] + "|name:" + toAddress + "&mode=driving&src=" + appName + "#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
                 context.startActivity(intent); //启动调用
             } catch (URISyntaxException e) {
@@ -118,7 +118,7 @@ public class MapUtils {
         if (isAvilible(context, "com.tencent.map")) {//传入指定应用包名
             try {
                 intent = new Intent();
-                String appName = context.getString(R.string.app_name);
+                String appName =  context.getPackageName();
                 String url = "http://apis.map.qq.com/uri/v1/routeplan?type=drive&from=&fromcoord="
                         + fromlat + "," + fromlng
                         + "&to=" + toAddress + "&tocoord=&policy=0&referer=" + appName;
@@ -151,7 +151,7 @@ public class MapUtils {
         if (isAvilible(context, "com.tencent.map")) {//传入指定应用包名
             try {
                 intent = new Intent();
-                String appName = context.getString(R.string.app_name);
+                String appName =  context.getPackageName();
                 String url = "qqmap://map/routeplan?type=drive&from=" + fromAddress + "&fromcoord="
                         + Double.valueOf(fromlat) + "," + Double.valueOf(fromlng) + "&to=" + toAddress + "&tocoord=" + Double.valueOf(tolat) + "," + Double.valueOf(tolng) + "&policy=0&referer=" + appName;
                 Uri uri = Uri.parse(url);

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import com.fanchen.filepicker.activity.SelectFileByBrowserActivity;
 import com.fanchen.filepicker.activity.SelectFileByScanActivity;
 import com.fanchen.filepicker.activity.SelectPictureActivity;
+import com.fanchen.filepicker.model.UCropConfig;
 
 /**
  * SelectCreator
@@ -89,6 +90,12 @@ public final class SelectCreator {
 
     public SelectCreator requestCode(int requestCode) {
         selectOptions.request_code = requestCode;
+        return this;
+    }
+
+    public SelectCreator uCropConfig(UCropConfig cropConfig){
+        selectOptions.cropConfig = cropConfig;
+        isSingle();
         return this;
     }
 

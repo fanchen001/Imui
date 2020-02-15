@@ -11,11 +11,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.fanchen.R;
+import com.fanchen.filepicker.util.DateUtils;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.utils.BitmapCache;
 import com.fanchen.message.view.RoundImageView;
@@ -86,11 +88,24 @@ public class VideoViewHolder<Message extends IMessage> extends BaseMessageViewHo
                 return false;
             }
         });
-
-        String durationStr = String.format(Locale.CHINA, "%02d:%02d", TimeUnit.SECONDS.toMinutes(message.getDuration()),
-                TimeUnit.SECONDS.toSeconds(message.getDuration()));
-        Log.d("VideoViewHolder", "duration: " + message.getDuration() + " durationStr " + durationStr);
-        mTvDuration.setText(durationStr);
+//        StringBuilder sb = new StringBuilder();
+//        long duration = message.getDuration();
+//        if(duration > 60 * 60 * 1000){ //大于一小时
+//            long l = duration / 60 * 60;
+//            sb.append( l);
+//            sb.append(":");
+//            duration = duration - l * 60 * 60* 1000;
+//        }
+//        long l = duration / 60 * 1000;
+//        sb.append(l);
+//        sb.append(":");
+//        duration = duration - l * 60 * 1000;
+//        sb.append(duration / 1000);
+//        String s = DateUtils.formatDate(new Date(message.getDuration()), "HH:mm:ss");
+//        String durationStr = String.format(Locale.CHINA, "%02d:%02d:%02d", TimeUnit.SECONDS.toHours(message.getDuration()),TimeUnit.SECONDS.toMinutes(message.getDuration()),
+//                TimeUnit.SECONDS.toSeconds(message.getDuration()));
+//        Log.d("VideoViewHolder", "duration: " + message.getDuration() + " durationStr " + durationStr);
+        mTvDuration.setText(formatSeconds(message.getDuration()));
         if (mDisplayNameTv.getVisibility() == View.VISIBLE) {
             mDisplayNameTv.setText(message.getFromUser().getDisplayName());
         }
@@ -174,5 +189,19 @@ public class VideoViewHolder<Message extends IMessage> extends BaseMessageViewHo
         layoutParams.height = style.getAvatarHeight();
         mImageAvatar.setLayoutParams(layoutParams);
         mImageAvatar.setBorderRadius(style.getAvatarRadius());
+    }
+
+    public String formatSeconds(long seconds){
+        String standardTime;
+        if (seconds <= 0){
+            standardTime = "00:00";
+        } else if (seconds < 60) {
+            standardTime = String.format(Locale.getDefault(), "00:%02d", seconds % 60);
+        } else if (seconds < 3600) {
+            standardTime = String.format(Locale.getDefault(), "%02d:%02d", seconds / 60, seconds % 60);
+        } else {
+            standardTime = String.format(Locale.getDefault(), "%02d:%02d:%02d", seconds / 3600, seconds % 3600 / 60, seconds % 60);
+        }
+        return standardTime;
     }
 }

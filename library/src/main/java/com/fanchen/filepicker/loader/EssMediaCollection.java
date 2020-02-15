@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 
 import com.fanchen.filepicker.model.Album;
 import com.fanchen.filepicker.model.EssFile;
@@ -21,7 +22,6 @@ import java.util.Set;
 
 /**
  * EssMediaCollection
- * Created by 李波 on 2018/3/2.
  */
 
 public class EssMediaCollection implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -67,6 +67,11 @@ public class EssMediaCollection implements LoaderManager.LoaderCallbacks<Cursor>
             }
             if(essFileSet.contains(essFile)){
                 essFile.setChecked(true);
+            }
+            int columnIndexOrThrow = data.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION);
+            String string = data.getString(columnIndexOrThrow);
+            if(!TextUtils.isEmpty(string)){
+                essFile.setDuration(Long.parseLong(string)/ 1000);
             }
             essFileList.add(essFile);
         }

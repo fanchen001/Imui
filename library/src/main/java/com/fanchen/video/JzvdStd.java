@@ -1,5 +1,6 @@
 package com.fanchen.video;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -272,7 +273,12 @@ public class JzvdStd extends Jzvd {
         } else if (i == R.id.surface_container) {
             startDismissControlViewTimer();
         } else if (i == R.id.back) {
-            backPress();
+//            if(!backPress()){
+                Activity activity = JZUtils.scanForActivity(getContext());
+                if(activity != null){
+                    activity.onBackPressed();
+                }
+//            }
         } else if (i == R.id.back_tiny) {
             clearFloatScreen();
         } else if (i == R.id.clarity) {
