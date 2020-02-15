@@ -3,7 +3,6 @@ package com.fanchen.filepicker.adapter;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -30,7 +29,7 @@ public class EssMediaAdapter extends BaseQuickAdapter<EssFile, BaseViewHolder> {
     private int mImageResize;
 
     public EssMediaAdapter(@Nullable List<EssFile> data) {
-        super(R.layout.ess_media_item,data);
+        super(R.layout.item_picker_ess_media,data);
     }
 
     public void setImageResize(int imageSize) {

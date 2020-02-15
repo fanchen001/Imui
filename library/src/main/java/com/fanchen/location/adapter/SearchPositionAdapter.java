@@ -14,7 +14,7 @@ public class SearchPositionAdapter extends BaseQuickAdapter<LocationBean, BaseVi
     private int selectItemIndex;
 
     public SearchPositionAdapter(@Nullable List<LocationBean> data) {
-        super(R.layout.location_item_poi, data);
+        super(R.layout.item_map_location_poi, data);
         selectItemIndex = 0;
     }
 

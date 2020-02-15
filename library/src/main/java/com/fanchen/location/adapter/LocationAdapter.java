@@ -15,7 +15,7 @@ public class LocationAdapter extends BaseQuickAdapter<LocationBean, BaseViewHold
     private int selectItemIndex;
 
     public LocationAdapter(@Nullable List<LocationBean> data) {
-        super(R.layout.location_item_poi, data);
+        super(R.layout.item_map_location_poi, data);
     }
 
     @Override

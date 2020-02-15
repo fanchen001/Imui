@@ -50,7 +50,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
 
     public ChatView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        View.inflate(context, R.layout.view_chat, this);
+        View.inflate(context, R.layout.view_chat_wrap, this);
         initModule();
     }
 

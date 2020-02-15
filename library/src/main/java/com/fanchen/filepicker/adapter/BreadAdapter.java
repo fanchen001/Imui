@@ -17,7 +17,7 @@ import java.util.List;
 public class BreadAdapter extends BaseQuickAdapter<BreadModel, BaseViewHolder> {
 
     public BreadAdapter(@Nullable List<BreadModel> data) {
-        super(R.layout.bread_item,data);
+        super(R.layout.item_picker_bread,data);
     }
 
     @Override

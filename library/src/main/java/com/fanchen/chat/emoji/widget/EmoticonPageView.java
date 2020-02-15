@@ -28,7 +28,7 @@ public class EmoticonPageView extends RelativeLayout {
     public EmoticonPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_emoticonpage, this);
+        View view = inflater.inflate(R.layout.item_msg_emoticonpage, this);
         mGvEmotion = (GridView) view.findViewById(R.id.gv_emotion);
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {

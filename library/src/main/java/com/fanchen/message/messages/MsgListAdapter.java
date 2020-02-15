@@ -828,32 +828,32 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
             mSendGoodsHolder = DefaultGoodsViewHolder.class;
 
 
-            mSendGoodsLayout = R.layout.item_send_goods;
-            mReceiveGoodsLayout = R.layout.item_send_goods;
+            mSendGoodsLayout = R.layout.item_msg_send_goods;
+            mReceiveGoodsLayout = R.layout.item_msg_send_goods;
 
-            mSendOrderLayout = R.layout.item_send_order;
-            mReceiveOrderLayout = R.layout.item_send_order;
+            mSendOrderLayout = R.layout.item_msg_send_order;
+            mReceiveOrderLayout = R.layout.item_msg_send_order;
 
-            mSendIdcardLayout = R.layout.item_send_idcard;
-            mReceiveIdcardLayout = R.layout.item_receive_idcard;
+            mSendIdcardLayout = R.layout.item_msg_send_idcard;
+            mReceiveIdcardLayout = R.layout.item_msg_receive_idcard;
 
-            mSendFileLayout = R.layout.item_send_file;
-            mReceiveFileLayout = R.layout.item_receive_file;
+            mSendFileLayout = R.layout.item_msg_send_file;
+            mReceiveFileLayout = R.layout.item_msg_receive_file;
 
-            mSendLocationLayout = R.layout.item_send_location;
-            mReceiveLocationLayout = R.layout.item_receive_location;
+            mSendLocationLayout = R.layout.item_msg_send_location;
+            mReceiveLocationLayout = R.layout.item_msg_receive_location;
 
-            mSendTxtLayout = R.layout.item_send_text;
-            mReceiveTxtLayout = R.layout.item_receive_txt;
+            mSendTxtLayout = R.layout.item_msg_send_text;
+            mReceiveTxtLayout = R.layout.item_msg_receive_txt;
 
-            mSendVoiceLayout = R.layout.item_send_voice;
-            mReceiveVoiceLayout = R.layout.item_receive_voice;
+            mSendVoiceLayout = R.layout.item_msg_send_voice;
+            mReceiveVoiceLayout = R.layout.item_msg_receive_voice;
 
-            mSendPhotoLayout = R.layout.item_send_photo;
-            mReceivePhotoLayout = R.layout.item_receive_photo;
+            mSendPhotoLayout = R.layout.item_msg_send_photo;
+            mReceivePhotoLayout = R.layout.item_msg_receive_photo;
 
-            mSendVideoLayout = R.layout.item_send_video;
-            mReceiveVideoLayout = R.layout.item_receive_video;
+            mSendVideoLayout = R.layout.item_msg_send_video;
+            mReceiveVideoLayout = R.layout.item_msg_receive_video;
 
             mEventMsgHolder = DefaultEventMsgViewHolder.class;
             mEventLayout = R.layout.item_event_message;

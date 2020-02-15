@@ -3,7 +3,6 @@ package com.fanchen.chat.photo;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import com.bumptech.glide.Glide;
 import com.fanchen.chat.ChatInputView;
@@ -63,7 +61,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_photo_select, parent, false);
+        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_msg_photo_select, parent, false);
         return new PhotoViewHolder(layout);
     }
 

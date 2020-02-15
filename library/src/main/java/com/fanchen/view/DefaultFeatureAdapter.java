@@ -35,7 +35,7 @@ public class DefaultFeatureAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
-            convertView = View.inflate(parent.getContext(),R.layout.item_base_feature,null);
+            convertView = View.inflate(parent.getContext(),R.layout.item_chat_base_feature,null);
         }
         TextView textView = convertView.findViewById(R.id.tv_feature);
         ImageView viewById = convertView.findViewById(R.id.iv_feature);

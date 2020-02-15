@@ -34,7 +34,7 @@ public class FileListAdapter extends BaseQuickAdapter<EssFile, BaseViewHolder> {
     }
 
     public FileListAdapter(@Nullable List<EssFile> data) {
-        super(R.layout.item_file_list, data);
+        super(R.layout.item_picker_file_list, data);
     }
 
     @Override

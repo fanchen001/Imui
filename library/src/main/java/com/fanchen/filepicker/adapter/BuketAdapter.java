@@ -35,7 +35,7 @@ public class BuketAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.buket_list_item, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_picker_buket_list, parent, false);
     }
 
     @Override

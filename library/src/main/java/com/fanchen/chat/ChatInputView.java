@@ -227,7 +227,7 @@ public class ChatInputView extends LinearLayout
 
     private void init(Context context) {
         mContext = context;
-        inflate(context, R.layout.view_chatinput, this);
+        inflate(context, R.layout.view_chat_input, this);
         mChatInputContainer = (LinearLayout) findViewById(R.id.aurora_ll_input_container);
         mMenuItemContainer = (LinearLayout) findViewById(R.id.aurora_ll_menuitem_container);
         mMenuContainer = (FrameLayout) findViewById(R.id.aurora_fl_menu_container);

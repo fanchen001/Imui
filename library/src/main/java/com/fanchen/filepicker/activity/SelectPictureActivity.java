@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.StrictMode;
@@ -25,11 +24,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.fanchen.R;
-import com.fanchen.filepicker.FilePicker;
 import com.fanchen.filepicker.SelectOptions;
 import com.fanchen.filepicker.adapter.BuketAdapter;
 import com.fanchen.filepicker.adapter.EssMediaAdapter;
@@ -201,7 +198,7 @@ public class SelectPictureActivity extends AppCompatActivity implements
         }
         mMediaAdapter.setNewData(essFileList);
         if (essFileList.isEmpty()) {
-            mMediaAdapter.setEmptyView(R.layout.empty_file_list);
+            mMediaAdapter.setEmptyView(R.layout.empty_picker_file_list);
         }
     }
 

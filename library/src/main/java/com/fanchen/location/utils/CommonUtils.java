@@ -33,7 +33,6 @@ import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.fanchen.R;
-import com.fanchen.location.MapNavigationActivity;
 import com.fanchen.location.adapter.SearchPositionAdapter;
 import com.fanchen.location.adapter.ItemDecorntion;
 import com.fanchen.location.bean.LocationBean;
@@ -94,7 +93,7 @@ public class CommonUtils {
             return;
         }
         progressDialog = new Dialog(context, R.style.BaseProgressDialog);
-        progressDialog.setContentView(R.layout.dialog_loading_layout);
+        progressDialog.setContentView(R.layout.dialog_map_loading_layout);
         progressDialog.setCancelable(true);
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -147,7 +146,7 @@ public class CommonUtils {
         final List<LocationBean> datas = new ArrayList<>();
         final PoiSearch mPoiSearch = PoiSearch.newInstance();
         //获得pup的view
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_map_search, null, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_send_map_search, null, false);
         final EditText edt_search = (EditText) view.findViewById(R.id.edt_search);
         final TextView tv_cancle = (TextView) view.findViewById(R.id.tv_cancle);
         final TextView tv_close = (TextView) view.findViewById(R.id.tv_close);

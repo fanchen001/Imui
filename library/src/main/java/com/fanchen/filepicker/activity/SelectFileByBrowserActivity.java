@@ -33,8 +33,6 @@ import com.fanchen.filepicker.task.EssFileCountTask;
 import com.fanchen.filepicker.task.EssFileListTask;
 import com.fanchen.filepicker.util.Const;
 import com.fanchen.filepicker.util.FileUtils;
-import com.fanchen.filepicker.util.UiUtils;
-import com.jude.swipbackhelper.SwipeBackHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -157,7 +155,7 @@ public class SelectFileByBrowserActivity extends AppCompatActivity
     @Override
     public void onFindFileList(String queryPath, List<EssFile> fileList) {
         if (fileList.isEmpty()) {
-            mAdapter.setEmptyView(R.layout.empty_file_list);
+            mAdapter.setEmptyView(R.layout.empty_picker_file_list);
         }
         mCurFolder = queryPath;
         mAdapter.setNewData(fileList);

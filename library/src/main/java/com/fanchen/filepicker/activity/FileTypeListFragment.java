@@ -96,7 +96,7 @@ public class FileTypeListFragment extends BaseFileFragment implements BaseQuickA
         mAdapter = new FileListAdapter(new ArrayList<EssFile>());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.bindToRecyclerView(mRecyclerView);
-        mAdapter.setEmptyView(R.layout.loading_layout);
+        mAdapter.setEmptyView(R.layout.layout_picker_search_loading);
         mAdapter.setOnItemClickListener(this);
         super.initUI(view);
     }
@@ -131,7 +131,7 @@ public class FileTypeListFragment extends BaseFileFragment implements BaseQuickA
             if (!isFirstLoad && mSortTypeHasChanged) {
                 mSortTypeHasChanged = false;
                 mAdapter.setNewData(new ArrayList<EssFile>());
-                mAdapter.setEmptyView(R.layout.loading_layout);
+                mAdapter.setEmptyView(R.layout.layout_picker_search_loading);
                 mMimeTypeCollection.load(mFileType, mSortType, mLoaderId);
             }
         }
@@ -192,7 +192,7 @@ public class FileTypeListFragment extends BaseFileFragment implements BaseQuickA
         mAdapter.setNewData(essFileList);
         mRecyclerView.scrollToPosition(0);
         if (essFileList.isEmpty()) {
-            mAdapter.setEmptyView(R.layout.empty_file_list);
+            mAdapter.setEmptyView(R.layout.empty_picker_file_list);
         }
     }
 

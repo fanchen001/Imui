@@ -52,11 +52,107 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-                <include layout="@layout/layout_title_bar" />
+                <RelativeLayout
+                    android:id="@+id/rl_map_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/iv_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:drawableLeft="@mipmap/bt_icon_back"
+                        android:drawablePadding="5dp"
+                        android:gravity="center_vertical"
+                        android:onClick="back"
+                        android:paddingLeft="10dp"
+                        android:scaleType="centerInside"
+                        android:text="@string/bt_back"
+                        android:textColor="#ffffff"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:ellipsize="end"
+                        android:maxLength="20"
+                        android:maxLines="1"
+                        android:text="@string/location_message"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/btn_rtc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="3dp"
+                        android:background="@android:color/transparent"
+                        android:ellipsize="end"
+                        android:maxLength="20"
+                        android:maxLines="1"
+                        android:padding="13dp"
+                        android:text="@string/search"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/iv_camera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:padding="13dp" />
+                </RelativeLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
 
-        <include layout="@layout/layout_search_map" />
+        <RelativeLayout
+            android:id="@+id/rl_search"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/wight_grey">
+
+            <TextView
+                android:id="@+id/tv_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="13dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/conversation_search_bg" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/icon_search_con" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/search"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </RelativeLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView

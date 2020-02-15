@@ -73,7 +73,7 @@ public class EmoticonsToolBarView extends RelativeLayout {
     }
 
     protected View getCommonItemToolBtn() {
-        return mInflater == null ? null : mInflater.inflate(R.layout.item_toolbtn, null);
+        return mInflater == null ? null : mInflater.inflate(R.layout.item_emoticons_toolbtn, null);
     }
 
     protected void initItemToolBtn(View toolBtnView, int rec, final PageSetEntity pageSetEntity, OnClickListener onClickListener){
