@@ -108,12 +108,21 @@
         <item name="android:windowAnimationStyle">@style/BaseAnimFade</item>
     </style>
 
-    <style name="BaseMapStyle" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowAnimationStyle">@style/BaseAnimStyle</item>
+    <style name="BaseMapNavStyle" parent="BaseMapStyle">
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
-        <item name="colorAccent">@color/ucrop_base_color_widget_active</item>
-        <item name="colorPrimary">@color/elec_primary</item>
+    </style>
+
+
+    <style name="BaseMapStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/BaseAnimStyle</item>
+        <item name="colorAccent">@color/elec_primary_dark</item>
+        <item name="colorPrimary">@color/elec_primary_dark</item>
         <item name="colorPrimaryDark">@color/elec_primary_dark</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:colorForeground">#55000000</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="BaseAnimFade" parent="@android:style/Animation.Activity">
@@ -147,8 +156,12 @@
 
     <style name="FilePicker.Elec" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
-        <item name="colorAccent">@color/ucrop_base_color_widget_active</item>
+        <!--Android 5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色-->
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/elec_primary
+        </item>
+        <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowAnimationStyle">@style/SlideRightAnimation</item>
+        <item name="colorAccent">@color/ucrop_base_color_widget_active</item>
         <item name="colorPrimary">@color/elec_primary</item>
         <item name="colorPrimaryDark">@color/elec_primary_dark</item>
         <item name="toolbar">@style/Toolbar.elec</item>

@@ -1,9 +1,7 @@
 package com.fanchen.location;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -24,7 +22,6 @@ import com.baidu.mapapi.search.route.TransitRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.fanchen.R;
 import com.fanchen.location.utils.CommonUtils;
-import com.fanchen.location.utils.MapUtils;
 import com.fanchen.location.view.SensorMapView;
 
 public class MapNavigationActivity extends AppCompatActivity {
@@ -44,6 +41,8 @@ public class MapNavigationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(LocationPicker.themeId);
+        //windowTranslucentStatus
+        //BaseMapNavStyle
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(this.getApplication());
         setContentView(R.layout.activity_map_navigation);

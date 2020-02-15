@@ -74,6 +74,7 @@ import com.fanchen.video.Jzvd;
 import com.fanchen.video.SimpleVideoActivity;
 import com.fanchen.view.ChatView;
 import com.fanchen.view.DefaultFeatureAdapter;
+import com.jude.swipbackhelper.SwipeBackHelper;
 
 import imui.jiguang.cn.imuisample.models.DefaultUser;
 import imui.jiguang.cn.imuisample.models.MyMessage;
@@ -170,9 +171,16 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     }
 
     @Override
+    protected void onPostCreate( Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        SwipeBackHelper.onPostCreate(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SwipeBackHelper.onCreate(this);
 
         setContentView(R.layout.activity_chat);
 
@@ -905,6 +913,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SwipeBackHelper.onDestroy(this);
         unregisterReceiver(mReceiver);
         mSensorManager.unregisterListener(this);
     }

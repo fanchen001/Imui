@@ -95,4 +95,5 @@
     <string name="pic_pick_multi_image">Picture selection</string>
 
     <string name="pic_indicator">%1$s/%2$s</string>
+    <string name="chat_simple">chat simple</string>
 </resources>

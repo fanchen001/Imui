@@ -25,6 +25,7 @@ import com.fanchen.filepicker.model.FileScanFragEvent;
 import com.fanchen.filepicker.model.FileScanSortChangedEvent;
 import com.fanchen.filepicker.util.Const;
 import com.fanchen.filepicker.util.FileUtils;
+import com.fanchen.filepicker.util.UiUtils;
 import com.jude.swipbackhelper.SwipeBackHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -61,6 +62,8 @@ public class SelectFileByScanActivity extends AppCompatActivity implements ViewP
         initUi();
         initData();
         SwipeBackHelper.onCreate(this);
+
+//
     }
 
     @Override

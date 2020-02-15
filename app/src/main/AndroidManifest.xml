@@ -41,6 +41,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
      <activity
+         android:theme="@style/AppTheme1"
             android:name="imui.jiguang.cn.imuisample.messages.MessageListActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -50,23 +51,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="imui.jiguang.cn.imuisample.messages.BrowserImageActivity" />
-
-    <!-- <activity android:name="com.zfkj.baiduwechatlocationdemo.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>-->
-        <!--百度地图页面-->
-        <!--导航页面-->
-
-        <!--百度地图-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="c31eucvLutGc3c4pihAKNFRHIwGzHsLd" />
-
 
     </application>
 </manifest>

@@ -96,4 +96,6 @@
     <string name="pic_pick_multi_image">图片多选</string>
 
     <string name="pic_indicator">%1$s/%2$s</string>
+
+    <string name="chat_simple">聊天页面</string>
 </resources>

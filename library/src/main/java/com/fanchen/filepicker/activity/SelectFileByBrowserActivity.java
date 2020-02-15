@@ -33,6 +33,7 @@ import com.fanchen.filepicker.task.EssFileCountTask;
 import com.fanchen.filepicker.task.EssFileListTask;
 import com.fanchen.filepicker.util.Const;
 import com.fanchen.filepicker.util.FileUtils;
+import com.fanchen.filepicker.util.UiUtils;
 import com.jude.swipbackhelper.SwipeBackHelper;
 
 import java.io.File;
@@ -76,7 +77,7 @@ public class SelectFileByBrowserActivity extends AppCompatActivity
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        SwipeBackHelper.onPostCreate(this);
+       // SwipeBackHelper.onPostCreate(this);
     }
 
     @Override
@@ -90,8 +91,10 @@ public class SelectFileByBrowserActivity extends AppCompatActivity
         }
         initUi();
         initData();
-        SwipeBackHelper.onCreate(this);
-    }
+
+
+        //SwipeBackHelper.onCreate(this);
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -312,7 +315,7 @@ public class SelectFileByBrowserActivity extends AppCompatActivity
         if(essFileCountTask!=null){
             essFileCountTask.cancel(true);
         }
-        SwipeBackHelper.onDestroy(this);
+       // SwipeBackHelper.onDestroy(this);
     }
 
     @Override

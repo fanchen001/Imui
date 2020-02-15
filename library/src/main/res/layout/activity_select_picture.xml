@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="?attr/colorPrimary"
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
@@ -28,7 +30,6 @@
                 android:textColor="?attr/album.element.color"
                 android:textSize="16sp" />
         </android.support.v7.widget.Toolbar>
-
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView

@@ -129,15 +129,15 @@ public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderR
     private void initView() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(R.string.location_message);
+        View viewById = findViewById(R.id.title);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            ViewGroup.LayoutParams layoutParams = mToolbar.getLayoutParams();
+            ViewGroup.LayoutParams layoutParams = viewById.getLayoutParams();
             if (layoutParams != null) {
                 layoutParams.height = layoutParams.height + UiUtils.dpToPx(this, 25);
-                mToolbar.setLayoutParams(layoutParams);
+                viewById.setLayoutParams(layoutParams);
             }
-
-            mToolbar.setPadding(mToolbar.getPaddingLeft(), mToolbar.getPaddingTop() + UiUtils.dpToPx(this, 25),
-                    mToolbar.getPaddingRight(), mToolbar.getPaddingBottom());
+            viewById.setPadding(viewById.getPaddingLeft(), viewById.getPaddingTop() + UiUtils.dpToPx(this, 25),
+                    viewById.getPaddingRight(), viewById.getPaddingBottom());
         }
 
         setSupportActionBar(mToolbar);

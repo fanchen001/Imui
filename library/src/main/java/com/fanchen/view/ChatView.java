@@ -1,5 +1,6 @@
 package com.fanchen.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +10,8 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.fanchen.R;
 import com.fanchen.chat.ChatInputView;
@@ -30,10 +30,11 @@ import com.fanchen.message.messages.MsgListAdapter;
 import com.fanchen.message.messages.ptr.PtrDefaultHeader;
 import com.fanchen.message.messages.ptr.PullToRefreshLayout;
 import com.fanchen.message.utils.DisplayUtil;
+import com.fanchen.video.JZUtils;
 
-public class ChatView extends RelativeLayout implements CustomMenuEventListener{
+public class ChatView extends RelativeLayout implements CustomMenuEventListener {
 
-    private LinearLayout mTitleContainer;
+    private RelativeLayout mTitleContainer;
     private MessageListView mMsgList;
     private ChatInputView mChatInput;
     private RecordVoiceButton mRecordVoiceBtn;
@@ -53,8 +54,28 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener{
         initModule();
     }
 
+    public RelativeLayout getTitleContainer() {
+        return mTitleContainer;
+    }
+
+    public TextView getTitleTextView() {
+        return mTitleContainer.findViewById(R.id.tv_chat_title);
+    }
+
     private void initModule() {
         mTitleContainer = findViewById(R.id.title_container);
+        View viewById = findViewById(R.id.iv_chat_back);
+        if (viewById != null) {
+            viewById.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Activity activity = JZUtils.scanForActivity(getContext());
+                    if (activity != null) {
+                        activity.finish();
+                    }
+                }
+            });
+        }
         mMsgList = findViewById(R.id.msg_list);
         mChatInput = findViewById(R.id.chat_input);
         mPtrLayout = findViewById(R.id.pull_to_refresh_layout);
@@ -118,7 +139,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener{
         MenuManager menuManager = mChatInput.getMenuManager();
         menuManager.addCustomMenu(tag, (MenuItem) View.inflate(getContext(), R.layout.menu_item_more, null), inflate);
         menuManager.setMenu(Menu.newBuilder().customize(true).setRight(Menu.TAG_SEND).
-                setBottom(Menu.TAG_VOICE, Menu.TAG_EMOJI,Menu.TAG_VIDEO, Menu.TAG_GALLERY, Menu.TAG_CAMERA, tag).build());
+                setBottom(Menu.TAG_VOICE, Menu.TAG_EMOJI, Menu.TAG_VIDEO, Menu.TAG_GALLERY, Menu.TAG_CAMERA, tag).build());
         menuManager.setCustomMenuClickListener(this);
     }
 
