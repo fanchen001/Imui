@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/et_inputUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="userName"
+        />
+    <EditText
+        android:id="@+id/et_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="user所在appkey,空为本应用"
+        />
+
+    <Button
+        android:id="@+id/bt_getUserInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取指定用户信息"
+        />
+    <EditText
+        android:inputType="number"
+        android:id="@+id/et_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="1为免打扰，其他取消"
+        />
+
+    <Button
+        android:id="@+id/bt_set_no_disturb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="免打扰设置/取消"
+        />
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_getUserInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</ScrollView>
+
+</LinearLayout>

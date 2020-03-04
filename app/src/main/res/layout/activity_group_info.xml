@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bt_create_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 创建群组" />
+
+            <Button
+                android:id="@+id/bt_dissolve_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 解散群组"/>
+
+            <Button
+                android:id="@+id/bt_get_public_group_infos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="分页获取应用下所有公开群组信息"/>
+
+            <Button
+                android:id="@+id/bt_apply_join_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="申请加入群组"/>
+
+            <Button
+                android:id="@+id/bt_add_group_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 向群组中添加或删除成员" />
+
+            <Button
+                android:id="@+id/bt_change_group_admin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="移交群主"/>
+
+            <Button
+                android:id="@+id/bt_group_mem_silence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="群成员禁言状态设置(仅群主或群管理员有效)" />
+
+            <Button
+                android:id="@+id/bt_group_keeper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 群组管理员" />
+
+            <Button
+                android:id="@+id/bt_update_group_name_and_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 更新群组相关信息" />
+
+            <Button
+                android:id="@+id/bt_group_member_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 群成员昵称" />
+
+            <Button
+                android:id="@+id/bt_exit_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 退出群" />
+
+            <Button
+                android:id="@+id/bt_get_group_id_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 当前用户所在群的群组ID－List" />
+
+            <Button
+                android:id="@+id/bt_get_group_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取指定群的信息" />
+
+            <Button
+                android:id="@+id/bt_get_group_members"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 本地获取群成员usernameList" />
+
+            <Button
+                android:id="@+id/bt_blockedGroupMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="屏蔽群组信息" />
+
+            <Button
+                android:id="@+id/bt_group_approval_batch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="批量同意入群审批事件" />
+
+            <Button
+                android:id="@+id/bt_group_announcement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="群公告"/>
+
+            <Button
+                android:id="@+id/bt_group_black_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="群黑名单"/>
+
+
+            <TextView
+                android:id="@+id/tv_get_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/content_layout"
+        layout="@layout/jmrtc_content_main" />
+
+    <TableLayout
+        android:id="@+id/btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <TableRow
+            android:id="@+id/tr_first_row">
+
+            <Button
+                android:id="@+id/btn_audio_call"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="发起音频" />
+
+            <Button
+                android:id="@+id/btn_video_call"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="发起视频" />
+
+            <Button
+                android:id="@+id/btn_resolution"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="分辨率设置" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/btn_invite"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="邀请" />
+
+            <Button
+                android:id="@+id/btn_accept"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="接听" />
+
+            <Button
+                android:id="@+id/btn_refuse"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="拒听" />
+
+            <Button
+                android:id="@+id/btn_hangup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="挂断" />
+        </TableRow>
+
+
+    </TableLayout>
+
+</FrameLayout>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:inputType="number"
+        android:id="@+id/et_group_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="会话群组id"
+        />
+
+    <TableRow>
+
+        <EditText
+            android:id="@+id/et_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="会话对象userName"
+            />
+
+        <EditText
+            android:id="@+id/et_user_appkey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="会话对象所在appkey"
+            />
+
+    </TableRow>
+
+    <EditText
+        android:id="@+id/et_assign_message_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:digits="0123456789"
+        android:hint="指定messageId"
+        />
+
+    <Button
+        android:id="@+id/bt_getConvProperty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取会话的属性"
+        />
+
+    <TableRow>
+
+        <EditText
+            android:id="@+id/et_conversation_extra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="会话对象extra"
+            />
+
+        <Button
+            android:id="@+id/bt_set_conversation_extra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="设置会话扩展字段"
+            />
+
+    </TableRow>
+
+    <Button
+        android:id="@+id/bt_get_unread_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取未读消息数"
+        />
+    <Button
+        android:id="@+id/bt_reset_unread_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="重置未读消息数"
+        />
+    <Button
+        android:id="@+id/bt_get_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取指定id的message不指定即获取所有"
+        />
+    <Button
+        android:id="@+id/bt_delete_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="删除指定id的message不指定即删除所有"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_show_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </ScrollView>
+
+</TableLayout>

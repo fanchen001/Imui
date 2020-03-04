@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_public_group_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="appkey" />
+
+    <EditText
+        android:id="@+id/et_public_group_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="start" />
+
+    <EditText
+        android:id="@+id/et_public_group_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="count" />
+
+    <Button
+        android:id="@+id/bt_get_public_group_by_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="分页获取应用下所有公开群组信息"/>
+
+    <ScrollView
+        android:id="@+id/sv_public_group_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_public_group_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+</LinearLayout>

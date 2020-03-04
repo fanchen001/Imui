@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <EditText
+        android:digits="1234567890."
+        android:id="@+id/et_latitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="纬度"/>
+    <EditText
+        android:digits="1234567890."
+        android:id="@+id/et_longtitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="经度"/>
+    <EditText
+        android:inputType="number"
+        android:id="@+id/et_scale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="缩放比例"/>
+    <EditText
+        android:id="@+id/et_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="详细地址信息"/>
+    <EditText
+        android:id="@+id/et_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="对方userName"/>
+    <EditText
+        android:id="@+id/et_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="对方所在appkey"/>
+    <Button
+        android:id="@+id/bt_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送"/>
+
+</LinearLayout>

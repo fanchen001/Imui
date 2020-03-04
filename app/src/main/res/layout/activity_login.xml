@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/ed_login_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入登录账号" />
+
+
+    <EditText
+        android:id="@+id/ed_login_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入登录密码" />
+
+    <Button
+        android:id="@+id/bt_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="登录" />
+
+    <Button
+        android:id="@+id/bt_login_with_infos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="登陆并获取用户设备登陆记录" />
+
+    <Button
+        android:id="@+id/bt_goto_regester"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="注册" />
+
+    <RadioGroup
+        android:id="@+id/rg_environment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_public"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="生产环境" />
+
+        <RadioButton
+            android:id="@+id/rb_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="测试环境" />
+
+        <RadioButton
+            android:id="@+id/rb_qa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="QA环境" />
+    </RadioGroup>
+</LinearLayout>

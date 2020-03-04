@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <EditText
+        android:id="@+id/et_group_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="群组ID"/>
+
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="新群主用户名"/>
+
+    <EditText
+        android:id="@+id/et_appKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="新群主appKey(不填默认使用本应用appKey）"/>
+
+    <Button
+        android:id="@+id/bt_change_group_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="移交群主"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
+</LinearLayout>

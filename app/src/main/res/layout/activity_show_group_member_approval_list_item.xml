@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/accept_invite_to_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:text="接受邀请入群"/>
+    <Button
+        android:id="@+id/refuse_invite_to_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:text="拒绝邀请入群"/>
+
+    <EditText
+        android:id="@+id/et_refuse_invite_to_group_reason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="拒绝邀请入群理由"/>
+    <TextView
+        android:id="@+id/tv_show_invited_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

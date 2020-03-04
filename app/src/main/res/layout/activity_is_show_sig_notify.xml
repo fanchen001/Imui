@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="聊天对象username" />
+
+    <EditText
+        android:id="@+id/et_user_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="对象用户appkey,不填或为空则默认为本应用appkey" />
+
+    <Button
+        android:id="@+id/bt_enter_conversation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="enterSingleConversation" />
+
+
+    <EditText
+        android:inputType="number"
+        android:id="@+id/et_group_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="对象群groupid" />
+
+    <Button
+        android:id="@+id/bt_enter_group_conversation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="enterGroupConversation" />
+
+    <Button
+        android:id="@+id/bt_exit_conv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="exitConversation" />
+
+    <ListView
+        android:id="@+id/lv_show_message"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
+</LinearLayout>

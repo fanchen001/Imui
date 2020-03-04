@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <EditText
+        android:inputType="number"
+        android:id="@+id/et_exit_group_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入准备退出的群id"
+        />
+
+    <Button
+        android:id="@+id/bt_exit_group_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="退出"
+        />
+
+    <Button
+        android:id="@+id/bt_exit_group_and_del_conv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="退出并删除会话"
+        />
+
+</LinearLayout>

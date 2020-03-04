@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/bt_add_friend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加好友"/>
+
+    <Button
+        android:id="@+id/bu_show_friend_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取好友列表"
+        />
+    <Button
+        android:id="@+id/bt_del_friend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="删除好友(示例删除列表中第一个)"/>
+    <EditText
+        android:id="@+id/et_note_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入待更新note name"/>
+    <EditText
+        android:id="@+id/et_note_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入待更新note text"/>
+    <Button
+        android:id="@+id/bt_update_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="更新(示例更新的是列表中第一个)"/>
+
+    <TextView
+        android:id="@+id/tv_show_friend_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+</LinearLayout>

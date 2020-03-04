@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+
+    <EditText
+        android:id="@+id/et_set_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="设置key"
+        />
+    <EditText
+        android:id="@+id/et_set_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="设置value(只能是数字)"
+        />
+    <EditText
+        android:id="@+id/et_update_value"
+        android:digits="0123456789"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="修改附加字段value(只能是数字)"
+        />
+    <EditText
+        android:id="@+id/et_set_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="发送对象的userName"
+        />
+    <Button
+        android:id="@+id/bt_set_get_number_extra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="set get number extra"
+        />
+</LinearLayout>

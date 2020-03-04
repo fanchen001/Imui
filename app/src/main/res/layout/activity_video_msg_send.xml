@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_video_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="接收对象的username(和群组id二选一)" />
+
+    <EditText
+        android:id="@+id/et_video_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="对象所在appkey" />
+
+    <EditText
+        android:id="@+id/et_video_gid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="接收的群组id（和username二选一）"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/et_video_filename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="自定义视频文件名" />
+
+    <EditText
+        android:id="@+id/et_video_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="视频文件展示时长" />
+
+    <CheckBox
+        android:id="@+id/cb_send_video_thumb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="是否需要视频缩略图"
+        android:checked="false"/>
+
+    <Button
+        android:id="@+id/bt_video_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送内置视频" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_video_info_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+
+</LinearLayout>

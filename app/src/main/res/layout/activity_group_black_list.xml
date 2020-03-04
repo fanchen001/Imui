@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_group_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="群组ID"/>
+
+            <EditText
+                android:id="@+id/et_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="username"/>
+
+            <EditText
+                android:id="@+id/et_user_appkey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="appkey(不填则默认使用本应用appkey)"/>
+
+            <Button
+                android:id="@+id/bt_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="添加用户到群组黑名单(这里以单个为例)"/>
+
+            <Button
+                android:id="@+id/bt_del"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="将用户从群租黑名单中移除(这里以单个为例)"/>
+
+            <Button
+                android:id="@+id/bt_get"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取群组黑名单"/>
+
+            <TextView
+                android:id="@+id/tv__show_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

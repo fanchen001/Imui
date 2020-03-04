@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/bt_about_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="设置相关" />
+
+    <Button
+        android:id="@+id/bt_create_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="创建消息" />
+
+    <Button
+        android:id="@+id/bt_conversation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="会话" />
+
+    <Button
+        android:id="@+id/bt_group_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="群组" />
+
+    <Button
+        android:id="@+id/bt_friend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="好友相关" />
+
+    <Button
+        android:id="@+id/bt_chatroom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="聊天室相关" />
+    <Button
+        android:id="@+id/bt_jmrtc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="实时音视频" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_showOfflineMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#000" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_refreshEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#000" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_deviceInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+
+</LinearLayout>

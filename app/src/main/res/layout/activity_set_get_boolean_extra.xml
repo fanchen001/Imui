@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/et_set_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="设置key"
+        />
+    <EditText
+        android:id="@+id/et_set_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="设置value"
+        />
+    <EditText
+        android:id="@+id/et_update_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="修改附加字段value(boolean)"
+        />
+    <EditText
+        android:id="@+id/et_set_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="发送对象的userName"
+        />
+    <Button
+        android:id="@+id/bt_set_get_boolean_extra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="set get boolean extra"
+        />
+</LinearLayout>

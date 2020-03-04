@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+            <Button
+                android:id="@+id/bt_set_get_string_extra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置并获取附加字段string"
+                />
+            <Button
+                android:id="@+id/bt_set_get_number_extra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置并获取附加字段number"
+                />
+
+            <Button
+                android:id="@+id/bt_set_get_boolean_extra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 设置并获取附加字段boolean"
+                />
+
+            <Button
+                android:id="@+id/bt_set_get_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 设置获取消息体中附加字段map"
+                />
+</LinearLayout>

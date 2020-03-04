@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/sv_chatroom_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_roomID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="指定聊天室的roomID"
+                android:inputType="number"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_chatroom_get_start"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="start"
+                    android:inputType="number"/>
+
+                <EditText
+                    android:id="@+id/et_chatroom_get_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="count"
+                    android:inputType="number"/>
+
+                <Button
+                    android:id="@+id/bt_get_room_by_appkey"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="分页获取应用下所有聊天室信息"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_get_room_by_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取当前用户所在聊天室信息"/>
+
+            <Button
+                android:id="@+id/bt_get_room_by_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取指定roomID聊天室信息"/>
+
+            <Button
+                android:id="@+id/bt_enter_chatroom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="进入聊天室"/>
+
+            <Button
+                android:id="@+id/bt_leave_chatroom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="退出聊天室"/>
+
+            <EditText
+                android:id="@+id/et_chatroom_inputtext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="待发送文字（这里以发送文字消息为例）"/>
+
+            <Button
+                android:id="@+id/bt_chatroom_sendtext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="发送聊天室消息"/>
+
+            <EditText
+                android:id="@+id/et_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="用户username"/>
+
+            <Button
+                android:id="@+id/bt_add_admin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置为房管"/>
+
+            <Button
+                android:id="@+id/bt_del_admin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="取消房管"/>
+
+            <Button
+                android:id="@+id/bt_add_blacklist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="加入聊天室黑名单"/>
+
+            <Button
+                android:id="@+id/bt_del_blacklist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="从聊天室黑名单中移除"/>
+
+            <Button
+                android:id="@+id/bt_get_admin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取聊天室的房管列表"/>
+
+            <Button
+                android:id="@+id/bt_get_blacklist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取聊天室的黑名单列表"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/et_chatroom_silence_times"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:hint="禁言时间，分钟(5min-1年)"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/bt_add_silence"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="禁言"/>
+
+        </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_del_silence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="取消禁言"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_chatroom_silence_get_start"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="start"
+                    android:inputType="number"/>
+
+                <EditText
+                    android:id="@+id/et_chatroom_silence_get_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="count"
+                    android:inputType="number"/>
+
+                <Button
+                    android:id="@+id/bt_get_room_silence"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:text="分页获取聊天室禁言信息"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_get_room_member_silence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取指定用户禁言状态"/>
+
+            <TextView
+                android:id="@+id/tv_chatroom_display"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

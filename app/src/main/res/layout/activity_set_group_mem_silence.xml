@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_group_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="群组的id"
+        />
+    <EditText
+        android:id="@+id/et_member_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="成员所属appKey,不输入则默认为本appKey"
+        />
+
+    <EditText
+        android:id="@+id/et_member_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="禁言或取消禁言的群成员username"
+        />
+
+    <EditText
+        android:id="@+id/et_silence_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="禁言时间，单位分钟（范围:5min - 1年）"/>
+
+    <Button
+        android:id="@+id/bt_keep_silence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="禁言"
+        />
+
+    <Button
+        android:id="@+id/bt_keep_silence_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取消禁言"
+        />
+
+    <Button
+        android:id="@+id/bt_get_group_member_silence"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" 获取单个群成员禁言状态" />
+
+    <Button
+        android:id="@+id/bt_get_group_silence_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" 获取群成员禁言列表" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_show_silence_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </ScrollView>
+
+</LinearLayout>

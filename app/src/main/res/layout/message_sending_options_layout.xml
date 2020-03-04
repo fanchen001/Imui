@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\n可选配置" />
+
+    <EditText
+        android:id="@+id/et_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="对方用户所属应用的appkey,不填则默认本应用" />
+
+    <EditText
+        android:id="@+id/et_custom_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="自定义对方通知栏所展示发送者的名字" />
+
+    <EditText
+        android:id="@+id/et_extra_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="设置ExtraKey" />
+
+    <EditText
+        android:id="@+id/et_extra_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="设置ExtraValue" />
+
+    <CheckBox
+        android:id="@+id/cb_needReadReceipt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:hint="是否需要对方发送已读回执"
+        android:maxLength="1" />
+
+    <CheckBox
+        android:id="@+id/cb_retainOffline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:hint="是否保存离线"
+        android:maxLength="1" />
+
+    <CheckBox
+        android:id="@+id/cb_showNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/et_noSaveOffline"
+        android:checked="true"
+        android:hint="是否显示通知"
+        android:maxLength="1" />
+
+    <CheckBox
+        android:id="@+id/cb_enableCustomNotify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:hint="是否开启自定义接收方通知栏" />
+
+    <EditText
+        android:id="@+id/et_custom_notifyTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:hint="自定义接收方通知栏title" />
+
+    <EditText
+        android:id="@+id/et_custom_notifyAtPrefix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:hint="自定义接收方通知栏AtPrefix" />
+
+    <EditText
+        android:id="@+id/et_custom_notifyText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:hint="自定义接收方通知栏text" />
+
+    <EditText
+        android:id="@+id/et_custom_msg_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:hint="自定义消息的未读数,默认为1"/>
+</LinearLayout>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/conversation_target_input_layout" />
+
+    <EditText
+        android:id="@+id/et_receipt_msgid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="对应消息的local message id"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/bt_receipt_send_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="针对单条消息发送已读回执" />
+
+    <Button
+        android:id="@+id/bt_receipt_get_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取单条消息receipt info" />
+
+    <Button
+        android:id="@+id/bt_receipt_get_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取单条消息receipt details" />
+
+
+    <Button
+        android:id="@+id/bt_receipt_get_all_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取会话中所有消息的receipt info" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_receipt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
+</LinearLayout>

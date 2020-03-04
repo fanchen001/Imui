@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/et_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="需要添加的对象"/>
+    <EditText
+        android:id="@+id/et_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="需要添加对象的appkey"/>
+    <EditText
+        android:id="@+id/et_reason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="添加好友的原因"/>
+    <Button
+        android:id="@+id/bt_add_friend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加好友"
+        />
+</LinearLayout>

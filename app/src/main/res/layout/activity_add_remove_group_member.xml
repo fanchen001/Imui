@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_add_group_members"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="群组的id"
+        />
+    <EditText
+        android:id="@+id/et_add_or_delete_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="成员所属appKey,不输入则默认为本appKey"
+        />
+
+    <EditText
+        android:id="@+id/et_add_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="添加或删除的群成员username"
+        />
+
+    <EditText
+        android:id="@+id/et_add_reason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="添加理由"
+        />
+
+    <Button
+        android:id="@+id/bt_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加"
+        />
+
+    <Button
+        android:id="@+id/bt_remove"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="删除"
+        />
+</LinearLayout>

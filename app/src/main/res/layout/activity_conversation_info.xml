@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="消息对象userName"
+        />
+
+    <EditText
+        android:id="@+id/et_start_get"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:digits="0123456789"
+        android:hint="获取message起始位置"
+        />
+
+    <EditText
+        android:id="@+id/et_end_get"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:digits="0123456789"
+        android:hint="获取的消息条数"
+        />
+
+    <EditText
+        android:id="@+id/et_inset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入true按指定位置升序，不输则降序"
+        />
+
+    <Button
+        android:id="@+id/bt_get_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="按指定信息排序message,不指定即获取所有"
+        />
+
+    <TextView
+        android:id="@+id/tv_show_message_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

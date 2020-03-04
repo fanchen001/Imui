@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:inputType="number"
+        android:id="@+id/et_group_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="群组id"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:digits="10"
+            android:maxLength="1"
+            android:id="@+id/et_set_or_del"
+            android:hint="1屏蔽,0取消"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/bt_set"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="设置"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_get"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取当前群组是否被屏蔽"/>
+
+    <Button
+        android:id="@+id/bt_get_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取屏蔽列表"/>
+    <TextView
+        android:id="@+id/blocked_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

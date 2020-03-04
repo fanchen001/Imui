@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/et_add_users_to_black_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="username"
+        />
+
+    <EditText
+        android:id="@+id/et_add_or_remove_black_list_appkey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="user所在的appKey,空为本应用appKey"
+        />
+
+    <Button
+        android:id="@+id/bt_add_users_to_black_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加"
+        />
+    <Button
+        android:id="@+id/bt_remove_users_to_black_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="移出"
+        />
+
+</LinearLayout>

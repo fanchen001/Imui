@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_userExtraKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="extraKey"
+                />
+
+            <EditText
+                android:id="@+id/et_userExtraValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="extraValue"
+                />
+
+
+            <Button
+                android:id="@+id/bt_update_user_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="通过key-value更新用户扩展字段"
+                />
+
+            <EditText
+                android:id="@+id/et_userMapKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="新建一个map 设置key"
+                />
+
+            <EditText
+                android:id="@+id/et_userMapValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="新建一个map 设置value"
+                />
+
+            <Button
+                android:id="@+id/bt_update_user_extras_form_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="通过map更新用户扩展字段"
+                />
+
+            <EditText
+                android:id="@+id/et_extraKey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="key"
+                />
+
+            <Button
+                android:id="@+id/bt_get_user_extra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="通过key获取用户指定扩展字段内容"
+                />
+
+            <Button
+                android:id="@+id/bt_get_user_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取用户所有扩展字段内容"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_getUserExtras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
+
+</LinearLayout>

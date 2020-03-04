@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="nickname"
+        />
+
+    <EditText
+        android:inputType="number"
+        android:id="@+id/et_birthday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="birthday:格式如20160101"
+        />
+
+    <EditText
+        android:id="@+id/et_region"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="region"
+        />
+
+    <EditText
+        android:id="@+id/et_signature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="signature"
+        />
+    <TextView
+        android:id="@+id/et_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="gender:"
+        />
+
+    <RadioGroup
+        android:id="@+id/rg_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <RadioButton
+            android:id="@+id/rb_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="女"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_unknown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未知"
+            />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/bt_update_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="更新信息"
+        />
+
+    <TextView
+        android:id="@+id/tv_updateInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="20"
+        />
+
+
+</LinearLayout>

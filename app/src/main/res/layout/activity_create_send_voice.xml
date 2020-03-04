@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="接收对象的username"
+        />
+    <EditText
+        android:id="@+id/et_for_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="自定义name"
+        />
+
+
+    <Button
+        android:id="@+id/bt_get_voice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取内置voice"
+        />
+
+    <Button
+        android:id="@+id/bt_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送"
+        />
+
+    <TextView
+        android:id="@+id/tv_show_voice_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

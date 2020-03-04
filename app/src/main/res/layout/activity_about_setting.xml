@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bt_set_notification_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置通知栏通知展示方式" />
+
+            <Button
+                android:id="@+id/bt_get_user_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="指定用户(免打扰/信息获取)" />
+
+            <Button
+                android:id="@+id/bt_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 用户登出" />
+
+            <Button
+                android:id="@+id/bt_iscurrent_user_password_valid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 输入的字符串是否匹配当前密码" />
+
+            <Button
+                android:id="@+id/bt_update_user_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 更新当前用户密码" />
+
+            <Button
+                android:id="@+id/bt_update_my_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 更新当前用户信息" />
+
+            <Button
+                android:id="@+id/bt_update_user_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 更新当前头像" />
+
+            <Button
+                android:id="@+id/bt_update_user_extras"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 更新当前用户扩展字段" />
+
+            <Button
+                android:id="@+id/bt_get_my_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 获取当前用户信息" />
+
+            <Button
+                android:id="@+id/bt_get_black_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 获取当前用户的黑名单列表" />
+
+            <Button
+                android:id="@+id/bt_add_or_remove_users_to_blacklist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="把其他用户加入或移除黑名单" />
+
+            <Button
+                android:id="@+id/bt_get_no_disturb_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取当前用户设置的免打扰名单" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_set_no_disturb_global"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="1设置,其他取消"
+                    android:inputType="number" />
+
+                <Button
+                    android:id="@+id/bt_set_no_disturb_global"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="设置全局免打扰" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_show_no_disturb_global"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
+
+                <Button
+                    android:id="@+id/bt_get_no_disturb_global"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="获取全局免打扰标识" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/bt_get_sdk_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 获取sdk版本号" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

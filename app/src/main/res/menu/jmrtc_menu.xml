@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".JMRTCActivity">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/video_240P"
+            android:title="240P" />
+
+        <item
+            android:id="@+id/video_360P"
+            android:title="360P" />
+
+        <item
+            android:id="@+id/video_480P"
+            android:title="480P" />
+
+        <item
+            android:id="@+id/video_720P"
+            android:title="720P" />
+    </group>
+
+</menu>

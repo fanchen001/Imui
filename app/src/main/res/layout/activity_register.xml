@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/et_register_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="注册账号 (必填)"
+
+                />
+
+            <EditText
+                android:id="@+id/et_register_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="注册密码 （必填）"
+
+                />
+
+            <EditText
+                android:id="@+id/et_register_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="用户昵称"
+
+                />
+
+            <EditText
+                android:id="@+id/et_register_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="birthday:格式如20160101"
+
+                />
+
+
+            <EditText
+                android:id="@+id/et_register_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="signature"
+                />
+
+            <TextView
+                android:id="@+id/et_register_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="gender:"
+                />
+
+            <RadioGroup
+                android:id="@+id/rg_register_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <RadioButton
+                    android:id="@+id/rb_register_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="男"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rb_register_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="女"
+                    />
+
+                <RadioButton
+                    android:id="@+id/rb_register_unknown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="未知"
+                    />
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/et_register_region"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="region"
+                />
+
+            <EditText
+                android:id="@+id/et_register_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="address"
+                />
+
+            <EditText
+                android:id="@+id/et_register_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="avatar mediaID"
+                />
+
+            <EditText
+                android:id="@+id/et_register_extras_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="extras key"
+                />
+
+            <EditText
+                android:id="@+id/et_register_extras_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="extras value"
+                />
+
+            <Button
+                android:id="@+id/bt_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="注册"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

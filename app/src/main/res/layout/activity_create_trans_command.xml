@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/et_target_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="username"/>
+
+    <EditText
+        android:id="@+id/et_target_appKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="appkey"/>
+
+    <EditText
+        android:id="@+id/et_target_gid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="gid"/>
+
+    <EditText
+        android:id="@+id/et_cmd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="cmd"/>
+
+    <Button
+        android:id="@+id/bt_send_trans_command"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送"/>
+
+    <RadioGroup
+        android:id="@+id/rg_platform"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="android"/>
+
+        <RadioButton
+            android:id="@+id/rb_ios"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ios"/>
+
+        <RadioButton
+            android:id="@+id/rb_windows"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="windows"/>
+
+        <RadioButton
+            android:id="@+id/rb_web"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="web"/>
+
+        <RadioButton
+            android:id="@+id/rb_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="all"/>
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/bt_send_cross_device_trans_command"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="发送给自己当前多端在线的其他设备"/>
+
+</LinearLayout>

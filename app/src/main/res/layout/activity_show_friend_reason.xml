@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/accept_invitation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="接受对方好友请求"/>
+    <Button
+        android:id="@+id/declined_invitation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="拒绝对方好友请求"/>
+
+    <EditText
+        android:id="@+id/et_reason"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="拒绝申请好友添加理由"/>
+    <TextView
+        android:id="@+id/tv_show_add_friend_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <EditText
+                android:id="@+id/et_single_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="群成员userName"
+                />
+
+            <EditText
+                android:id="@+id/et_single_member_appkey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="群成员所属appKey"
+                />
+
+            <EditText
+                android:id="@+id/et_groupId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="群id"
+                android:inputType="number"
+                />
+
+            <Button
+                android:id="@+id/bt_get_group_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取指定群信息"
+                />
+
+            <Button
+                android:id="@+id/bt_get_group_member_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取单个群成员的信息"
+                />
+
+            <Button
+                android:id="@+id/bt_get_group_members_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" 获取群成员信息列表"
+                />
+            <EditText
+                android:id="@+id/et_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1代表免打扰，其他取消"
+                android:inputType="number"
+                />
+
+            <Button
+                android:id="@+id/bt_set_no_disturb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置免打扰"
+                />
+
+            <TextView
+                android:id="@+id/tv_show_group_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

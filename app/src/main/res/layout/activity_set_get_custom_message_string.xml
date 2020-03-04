@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/et_custom_message_str_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="custom key"
+        />
+
+    <EditText
+        android:id="@+id/et_custom_message_str_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="custom value"
+        />
+
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="发送对象userName"
+        />
+
+    <Button
+        android:id="@+id/bt_send_custom_message_str"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="string-string"
+        />
+    <Button
+        android:id="@+id/bt_send_custom_message_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="string-number"
+        />
+    <Button
+        android:id="@+id/bt_send_custom_message_boolean"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="string-boolean"
+        />
+    <Button
+        android:id="@+id/bt_set_all_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="将map中所有键值对放入消息体"
+        />
+
+
+</LinearLayout>
