@@ -56,8 +56,8 @@ import com.fanchen.R;
 import com.fanchen.chat.ChatInputView;
 import com.fanchen.chat.listener.OnCameraCallbackListener;
 import com.fanchen.chat.listener.OnMenuClickListener;
+import com.fanchen.chat.listener.OnRecordVoiceListener;
 import com.fanchen.chat.listener.OnSelectButtonListener;
-import com.fanchen.chat.listener.RecordVoiceListener;
 import com.fanchen.chat.model.FileItem;
 import com.fanchen.chat.model.VideoItem;
 import com.fanchen.filepicker.FilePicker;
@@ -659,7 +659,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
             }
         });
 
-        mChatView.setRecordVoiceListener(new RecordVoiceListener() {
+        mChatView.setRecordVoiceListener(new OnRecordVoiceListener() {
             @Override
             public void onStartRecord() {
                 // set voice file path, after recording, audio file will save here
@@ -707,28 +707,6 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 mAdapter.addToStart(message, true);
             }
 
-            @Override
-            public void onCancelRecord() {
-
-            }
-
-            /**
-             * In preview record voice layout, fires when click cancel button
-             * Add since chatinput v0.7.3
-             */
-            @Override
-            public void onPreviewCancel() {
-
-            }
-
-            /**
-             * In preview record voice layout, fires when click send button
-             * Add since chatinput v0.7.3
-             */
-            @Override
-            public void onPreviewSend() {
-
-            }
         });
 
         mChatView.setOnCameraCallbackListener(new OnCameraCallbackListener() {
@@ -773,20 +751,12 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 
             }
 
-            @Override
-            public void onStartVideoRecord() {
-
-            }
 
             @Override
             public void onFinishVideoRecord(String videoPath) {
 
             }
 
-            @Override
-            public void onCancelVideoRecord() {
-
-            }
         });
 
         mChatView.getChatInputView().getInputView().setOnTouchListener(new View.OnTouchListener() {

@@ -13,13 +13,14 @@ import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.fanchen.chat.listener.OnSelectButtonListener;
 import com.fanchen.ui.R;
 import com.fanchen.chat.ChatInputView;
 import com.fanchen.chat.listener.CustomMenuEventListener;
 import com.fanchen.chat.listener.OnCameraCallbackListener;
 import com.fanchen.chat.listener.OnClickEditTextListener;
 import com.fanchen.chat.listener.OnMenuClickListener;
-import com.fanchen.chat.listener.RecordVoiceListener;
+import com.fanchen.chat.listener.OnRecordVoiceListener;
 import com.fanchen.chat.menu.Menu;
 import com.fanchen.chat.menu.MenuManager;
 import com.fanchen.chat.menu.view.MenuFeature;
@@ -147,7 +148,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
         RecyclerView.LayoutManager layoutManager = getMessageListView().getLayoutManager();
         if (layoutManager instanceof LinearLayoutManager) {
             int position = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
-            postDelayed(new DelayedRunable(position), 200);
+            postDelayed(new DelayedRunnable(position), 200);
         }
     }
 
@@ -166,6 +167,10 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
         mChatInput.setMenuClickListener(listener);
     }
 
+    public void setOnSelectButtonListener(OnSelectButtonListener mOnSelectButtonListener) {
+        getChatInputView().setOnSelectButtonListener( mOnSelectButtonListener);
+    }
+
     public void setAdapter(MsgListAdapter adapter) {
         mMsgList.setAdapter(adapter);
     }
@@ -182,7 +187,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
         mChatInput.setCameraCaptureFile(path, fileName);
     }
 
-    public void setRecordVoiceListener(RecordVoiceListener listener) {
+    public void setRecordVoiceListener(OnRecordVoiceListener listener) {
         mChatInput.setRecordVoiceListener(listener);
     }
 
@@ -223,10 +228,10 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
 
     }
 
-    private class DelayedRunable implements Runnable {
+    private class DelayedRunnable implements Runnable {
         private int firstVisibleItemPosition;
 
-        public DelayedRunable(int firstVisibleItemPosition) {
+        public DelayedRunnable(int firstVisibleItemPosition) {
             this.firstVisibleItemPosition = firstVisibleItemPosition;
         }
 

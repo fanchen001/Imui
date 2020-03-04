@@ -21,8 +21,9 @@ import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.fanchen.chat.listener.OnRecordVoiceUIListener;
 import com.fanchen.ui.R;
-import com.fanchen.chat.listener.RecordVoiceListener;
+import com.fanchen.chat.listener.OnRecordVoiceListener;
 
 
 public class RecordVoiceButton extends AppCompatImageButton {
@@ -51,7 +52,7 @@ public class RecordVoiceButton extends AppCompatImageButton {
     private boolean mTimeUp = false;
     private final MyHandler myHandler = new MyHandler(this);
     private RecordVoiceBtnStyle mStyle;
-    private RecordVoiceListener mListener;
+    private OnRecordVoiceListener mListener;
     private RecordControllerView mControllerView;
     private boolean mSetController = false;
     private int mDuration;
@@ -73,7 +74,7 @@ public class RecordVoiceButton extends AppCompatImageButton {
         mVolumeHandler = new ShowVolumeHandler(this);
     }
 
-    public void setRecordVoiceListener(RecordVoiceListener listener) {
+    public void setRecordVoiceListener(OnRecordVoiceListener listener) {
         mListener = listener;
     }
 
@@ -259,9 +260,8 @@ public class RecordVoiceButton extends AppCompatImageButton {
         if (myRecAudioFile != null) {
             myRecAudioFile.delete();
         }
-
         if (mListener != null) {
-            mListener.onCancelRecord();
+            ((OnRecordVoiceUIListener)mListener).onCancelRecord();
         }
     }
 

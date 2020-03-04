@@ -53,6 +53,7 @@ import java.util.Locale;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import com.fanchen.chat.listener.OnCameraUICallbackListener;
 import com.fanchen.ui.R;
 import com.fanchen.chat.listener.CameraEventListener;
 import com.fanchen.chat.listener.OnCameraCallbackListener;
@@ -960,7 +961,9 @@ public class CameraNew implements CameraSupport {
         }
         try {
             if (mOnCameraCallbackListener != null) {
-                mOnCameraCallbackListener.onStartVideoRecord();
+                if(mOnCameraCallbackListener instanceof OnCameraUICallbackListener){
+                    ((OnCameraUICallbackListener)mOnCameraCallbackListener).onStartVideoRecord();
+                }
             }
             closePreviewSession();
             setUpMediaRecorder();
@@ -1011,7 +1014,9 @@ public class CameraNew implements CameraSupport {
             }
         }
         if (mOnCameraCallbackListener != null) {
-            mOnCameraCallbackListener.onCancelVideoRecord();
+            if(mOnCameraCallbackListener instanceof OnCameraUICallbackListener){
+                ((OnCameraUICallbackListener)mOnCameraCallbackListener).onCancelVideoRecord();
+            }
         }
     }
 

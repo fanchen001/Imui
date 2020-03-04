@@ -55,6 +55,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fanchen.chat.listener.OnRecordVoiceUIListener;
 import com.fanchen.ui.R;
 import com.fanchen.chat.camera.CameraNew;
 import com.fanchen.chat.camera.CameraOld;
@@ -74,7 +75,7 @@ import com.fanchen.chat.listener.CustomMenuEventListener;
 import com.fanchen.chat.listener.OnFileSelectedListener;
 import com.fanchen.chat.listener.OnMenuClickListener;
 import com.fanchen.chat.listener.OnSelectButtonListener;
-import com.fanchen.chat.listener.RecordVoiceListener;
+import com.fanchen.chat.listener.OnRecordVoiceListener;
 import com.fanchen.chat.menu.MenuManager;
 import com.fanchen.chat.model.FileItem;
 import com.fanchen.chat.model.VideoItem;
@@ -133,7 +134,7 @@ public class ChatInputView extends LinearLayout
     private OnClickEditTextListener mEditTextListener;
     private CameraControllerListener mCameraControllerListener;
     private OnSelectButtonListener mOnSelectButtonListener;
-    private RecordVoiceListener mRecordVoiceListener;
+    private OnRecordVoiceListener mRecordVoiceListener;
 
     private EmojiView mEmojiRl;
 
@@ -462,7 +463,7 @@ public class ChatInputView extends LinearLayout
     }
 
 
-    public void setRecordVoiceListener(RecordVoiceListener listener) {
+    public void setRecordVoiceListener(OnRecordVoiceListener listener) {
         this.mRecordVoiceBtn.setRecordVoiceListener(listener);
         this.mRecordVoiceListener = listener;
     }
@@ -666,7 +667,10 @@ public class ChatInputView extends LinearLayout
             mRecordVoiceBtn.cancelRecord();
             mChronometer.setText("00:00");
             if (mRecordVoiceListener != null) {
-                mRecordVoiceListener.onPreviewCancel();
+                if(mRecordVoiceListener instanceof OnRecordVoiceUIListener){
+                    ((OnRecordVoiceUIListener)mRecordVoiceListener).onPreviewCancel();
+                }
+
             }
 
         } else if (view.getId() == R.id.aurora_btn_recordvoice_send) {
@@ -676,7 +680,7 @@ public class ChatInputView extends LinearLayout
             mRecordVoiceBtn.finishRecord();
             mChronometer.setText("00:00");
             if (mRecordVoiceListener != null) {
-                mRecordVoiceListener.onPreviewSend();
+                ((OnRecordVoiceUIListener)mRecordVoiceListener).onPreviewSend();
             }
 
         } else if (view.getId() == R.id.aurora_ib_camera_full_screen) {

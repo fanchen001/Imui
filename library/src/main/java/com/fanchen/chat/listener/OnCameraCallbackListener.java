@@ -1,9 +1,7 @@
 package com.fanchen.chat.listener;
 
 
-
 public interface OnCameraCallbackListener {
-
 
     /**
      * Fires when take picture finished.
@@ -12,8 +10,6 @@ public interface OnCameraCallbackListener {
      */
     void onTakePictureCompleted(String photoPath);
 
-    void onStartVideoRecord();
-
     /**
      * Fires when record video finished.
      *
@@ -21,5 +17,4 @@ public interface OnCameraCallbackListener {
      */
     void onFinishVideoRecord(String videoPath);
 
-    void onCancelVideoRecord();
 }
