@@ -10,6 +10,7 @@ public class LocationBean implements Parcelable {
     private String city;
     private double lat;
     private double lng;
+    private int scale;
     private String name;
     private String address;
 
@@ -19,6 +20,8 @@ public class LocationBean implements Parcelable {
         lng = in.readDouble();
         address = in.readString();
         name = in.readString();
+        scale = in.readInt();
+
     }
 
     public LocationBean() {
@@ -72,6 +75,15 @@ public class LocationBean implements Parcelable {
         dest.writeDouble(lng);
         dest.writeString(address);
         dest.writeString(name);
+        dest.writeInt(scale);
+    }
+
+    public int getScale() {
+        return scale;
+    }
+
+    public void setScale(int scale) {
+        this.scale = scale;
     }
 
     @Override

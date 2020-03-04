@@ -16,8 +16,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Random;
 
-import com.fanchen.BuildConfig;
-import com.fanchen.R;
+import com.fanchen.ui.BuildConfig;
+import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.view.RoundImageView;
 import com.fanchen.message.view.RoundTextView;

@@ -55,7 +55,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.camera.CameraNew;
 import com.fanchen.chat.camera.CameraOld;
 import com.fanchen.chat.camera.CameraSupport;

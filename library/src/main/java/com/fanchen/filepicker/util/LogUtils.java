@@ -4,7 +4,7 @@ import android.os.Debug;
 import android.os.Environment;
 import android.util.Log;
 
-import com.fanchen.BuildConfig;
+import com.fanchen.ui.BuildConfig;
 
 import java.io.File;
 import java.io.PrintWriter;

@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.fanchen.filepicker.model.BreadModel;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 import java.util.List;
 

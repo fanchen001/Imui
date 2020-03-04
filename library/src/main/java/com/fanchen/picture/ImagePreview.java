@@ -7,7 +7,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.picture.bean.ImageInfo;
 import com.fanchen.picture.view.ImagePreviewActivity;
 import com.fanchen.picture.view.listener.OnBigImageClickListener;

@@ -32,7 +32,7 @@ import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.location.adapter.SearchPositionAdapter;
 import com.fanchen.location.adapter.ItemDecorntion;
 import com.fanchen.location.bean.LocationBean;

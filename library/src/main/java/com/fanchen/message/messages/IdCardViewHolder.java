@@ -9,8 +9,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.fanchen.BuildConfig;
-import com.fanchen.R;
+import com.fanchen.ui.BuildConfig;
+import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.view.RoundImageView;
 import com.fanchen.message.view.RoundTextView;
@@ -61,9 +61,11 @@ public class IdCardViewHolder<Message extends IMessage>  extends BaseMessageView
             mNameTv.setText(extras.get("idCardTitle"));
             mNumberTv.setText(extras.get("idCardNumber"));
             if(extras.get("path") != null){
-                Glide.with(mNumberIv.getContext()).load(R.mipmap.apk)
+                Glide.with(mNumberIv.getContext()).load(extras.get("path"))
                         .asBitmap().placeholder(R.mipmap.attachment)
                         .into(mNumberIv);
+            }else{
+                mNumberIv.setImageResource(R.mipmap.attachment);
             }
         }
         String timeString = message.getTimeString();
@@ -108,8 +110,14 @@ public class IdCardViewHolder<Message extends IMessage>  extends BaseMessageView
         mL.setOnClickListener(this);
 
         mL.setOnLongClickListener(this);
-        mAvatarIv.setTag(message);
-        mAvatarIv.setOnClickListener(this);
+        mAvatarIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mAvatarClickListener != null) {
+                    mAvatarClickListener.onAvatarClick(message);
+                }
+            }
+        });
     }
 
     @Override
@@ -155,11 +163,11 @@ public class IdCardViewHolder<Message extends IMessage>  extends BaseMessageView
     @Override
     public void onClick(View v) {
         Message message = (Message) v.getTag();
-        if(mAvatarIv == v){
+        /*if(mAvatarIv == v){
             if (mAvatarClickListener != null) {
                 mAvatarClickListener.onAvatarClick(message);
             }
-        }else if(mL == v){
+        }else*/ if(mL == v){
             if (mMsgClickListener != null) {
                 mMsgClickListener.onMessageClick(message);
             }

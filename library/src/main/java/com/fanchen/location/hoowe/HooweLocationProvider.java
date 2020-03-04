@@ -64,6 +64,7 @@ public class HooweLocationProvider {
     public void initialize(Context context) {
         this.mContext = context;
         SDKInitializer.initialize(context);
+        SDKInitializer.setHttpsEnable(true);
     }
 
     /**

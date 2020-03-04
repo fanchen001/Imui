@@ -4,20 +4,16 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
-import com.fanchen.R;
-import com.fanchen.filepicker.util.DateUtils;
+import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.utils.BitmapCache;
 import com.fanchen.message.view.RoundImageView;

@@ -9,7 +9,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 
 public class RoundImageView extends BaseImageView {

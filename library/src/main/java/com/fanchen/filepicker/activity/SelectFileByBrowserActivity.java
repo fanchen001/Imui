@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +19,8 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.fanchen.R;
+import com.fanchen.ui.R;
+import com.fanchen.base.BaseIActivity;
 import com.fanchen.filepicker.SelectOptions;
 import com.fanchen.filepicker.adapter.BreadAdapter;
 import com.fanchen.filepicker.adapter.FileListAdapter;
@@ -33,6 +33,7 @@ import com.fanchen.filepicker.task.EssFileCountTask;
 import com.fanchen.filepicker.task.EssFileListTask;
 import com.fanchen.filepicker.util.Const;
 import com.fanchen.filepicker.util.FileUtils;
+import com.fanchen.filepicker.util.UiUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ import java.util.List;
 /**
  * 文件浏览界面
  */
-public class SelectFileByBrowserActivity extends AppCompatActivity
+public class SelectFileByBrowserActivity extends BaseIActivity
         implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener,
         View.OnClickListener, EssFileListCallBack, EssFileCountCallBack, FileListAdapter.onLoadFileCountListener {
 
@@ -73,12 +74,6 @@ public class SelectFileByBrowserActivity extends AppCompatActivity
     private EssFileCountTask essFileCountTask;
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-       // SwipeBackHelper.onPostCreate(this);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(SelectOptions.getInstance().themeId);
         super.onCreate(savedInstanceState);
@@ -89,9 +84,7 @@ public class SelectFileByBrowserActivity extends AppCompatActivity
         }
         initUi();
         initData();
-
-
-        //SwipeBackHelper.onCreate(this);
+        UiUtils.setViewPadding(findViewById(R.id.abl_title));
 }
 
     @Override
@@ -313,7 +306,6 @@ public class SelectFileByBrowserActivity extends AppCompatActivity
         if(essFileCountTask!=null){
             essFileCountTask.cancel(true);
         }
-       // SwipeBackHelper.onDestroy(this);
     }
 
     @Override

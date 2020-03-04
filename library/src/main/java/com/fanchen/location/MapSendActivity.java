@@ -13,6 +13,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,21 +44,21 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.fanchen.R;
+import com.fanchen.ui.R;
+import com.fanchen.base.BaseIActivity;
 import com.fanchen.filepicker.util.UiUtils;
 import com.fanchen.location.adapter.ItemDecorntion;
 import com.fanchen.location.adapter.LocationAdapter;
 import com.fanchen.location.bean.LocationBean;
 import com.fanchen.location.utils.CommonUtils;
 import com.fanchen.location.view.FuckBaiduView;
-import com.jude.swipbackhelper.SwipeBackHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderResultListener,
+public class MapSendActivity extends BaseIActivity implements OnGetGeoCoderResultListener,
         BaseQuickAdapter.OnItemClickListener, BaiduMap.OnMapStatusChangeListener, View.OnClickListener,
         BaiduMap.OnMapTouchListener, BDLocationListener, BaiduMap.SnapshotReadyCallback {
 
@@ -113,34 +114,18 @@ public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderR
         setTheme(LocationPicker.themeId);
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(getApplicationContext());
+        //设置使用https请求
+        SDKInitializer.setHttpsEnable(true);
         setContentView(R.layout.activity_map_send);
         initView();
         initData();
         setListener();
-        SwipeBackHelper.onCreate(this);
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        SwipeBackHelper.onPostCreate(this);
     }
 
     private void initView() {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar_map);
         mToolbar.setTitle(R.string.location_message);
-        View viewById = findViewById(R.id.rl_map_title);
-        if(viewById != null){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                ViewGroup.LayoutParams layoutParams = viewById.getLayoutParams();
-                if (layoutParams != null) {
-                    layoutParams.height = layoutParams.height + UiUtils.dpToPx(this, 25);
-                    viewById.setLayoutParams(layoutParams);
-                }
-                viewById.setPadding(viewById.getPaddingLeft(), viewById.getPaddingTop() + UiUtils.dpToPx(this, 25),
-                        viewById.getPaddingRight(), viewById.getPaddingBottom());
-            }
-        }
+        UiUtils.setViewPadding(findViewById(R.id.rl_map_title));
         setSupportActionBar(mToolbar);
 
         mMapView = ((FuckBaiduView) findViewById(R.id.bmapView)).getMapView();
@@ -246,7 +231,6 @@ public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderR
         mBaiduMap.setMyLocationEnabled(false);
         mMapView.onDestroy();
         super.onDestroy();
-        SwipeBackHelper.onDestroy(this);
     }
 
     @Override
@@ -263,7 +247,7 @@ public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderR
             }
             runOnUiThread(new CencelRunnable());
             Intent intent = MapSendActivity.this.getIntent();
-            intent.putExtra("Location", lastLocation);
+            intent.putExtra("location", lastLocation);
             intent.putExtra("thumbnailPath", file.getAbsolutePath());
             MapSendActivity.this.setResult(RESULT_OK, intent);
             finish();
@@ -345,6 +329,9 @@ public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderR
     @Override
     public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
         if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR || !isTouch) {
+            if(result != null && result.error != SearchResult.ERRORNO.NO_ERROR){
+                CommonUtils.showToastShort(this, R.string.get_geo_error);
+            }
             return;
         }
         String address = result.getAddress();
@@ -357,9 +344,12 @@ public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderR
                 currentLocation.setLat(result.getLocation().latitude);
                 currentLocation.setLng(result.getLocation().longitude);
                 currentLocation.setCity(city);
+                currentLocation.setScale(mMapView.getMapLevel());
                 currentLocation.setName(getString(R.string.now_address));
                 lastLocation = currentLocation;
             }
+        }else if(result.getLocation() == null){
+            CommonUtils.showToastShort(this, R.string.get_location_null);
         }
         datas.clear();
         if (!TextUtils.isEmpty(address)) {
@@ -369,6 +359,7 @@ public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderR
         if (poiList == null || poiList.isEmpty()) {
             locatorAdapter.notifyDataSetChanged();
             progress_bar.setVisibility(View.GONE);
+            CommonUtils.showToastShort(this, R.string.get_poi_empty);
             return;
         }
         for (int i = 0; i < poiList.size(); i++) {
@@ -378,6 +369,7 @@ public class MapSendActivity extends AppCompatActivity implements OnGetGeoCoderR
                 location.setAddress(info.address);
                 location.setLat(info.location.latitude);
                 location.setLng(info.location.longitude);
+                location.setScale(mMapView.getMapLevel());
                 location.setCity(info.city);
                 location.setName(info.name);
                 if (!datas.contains(location)) {

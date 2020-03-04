@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.emoji.EmoticonsKeyboardUtils;
 
 

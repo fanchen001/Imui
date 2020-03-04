@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.fanchen.filepicker.BaseFileFragment;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.filepicker.SelectOptions;
 import com.fanchen.filepicker.adapter.FileListAdapter;
 import com.fanchen.filepicker.loader.EssMimeTypeCollection;

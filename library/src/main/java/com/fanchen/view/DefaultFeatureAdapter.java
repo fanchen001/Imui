@@ -6,7 +6,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 public class DefaultFeatureAdapter extends BaseAdapter {
 
@@ -17,6 +17,7 @@ public class DefaultFeatureAdapter extends BaseAdapter {
             R.drawable.aurora_menuitem_local,
             R.drawable.aurora_menuitem_idcard};
     String[] TITLES = {"订单咨询","商品咨询","购物车","发送文件","位置信息","发送名片"};
+
     @Override
     public int getCount() {
         return ICONS.length;

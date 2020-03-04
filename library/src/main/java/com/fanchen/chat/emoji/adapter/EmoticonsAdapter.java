@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.emoji.data.EmoticonPageEntity;
 import com.fanchen.chat.emoji.listener.EmoticonClickListener;
 import com.fanchen.chat.emoji.listener.EmoticonDisplayListener;

@@ -1,6 +1,6 @@
 package com.fanchen.chat.emoji;
 
-import com.fanchen.R.mipmap;
+import com.fanchen.ui.R.mipmap;
 
 public class DefEmoticons {
     public static final EmojiBean[] sEmojiArray;

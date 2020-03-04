@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 
 public class EmoticonPageView extends RelativeLayout {

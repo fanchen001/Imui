@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.filepicker.SelectOptions;
 import com.fanchen.filepicker.model.EssFile;
 import com.fanchen.picture.view.HackyViewPager;

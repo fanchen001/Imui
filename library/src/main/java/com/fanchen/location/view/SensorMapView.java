@@ -46,7 +46,7 @@ import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.location.utils.CommonUtils;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -195,17 +195,29 @@ public class SensorMapView extends FrameLayout implements BaiduMap.OnMapClickLis
 
     public void drivingSearch(DrivingRoutePlanOption search) {
         CommonUtils.showDialogNumal(getContext(),getContext().getString(R.string.map_search_ing));
-        mSearch.drivingSearch(search);
+        try {
+            mSearch.drivingSearch(search);
+        }catch (Throwable e){
+            CommonUtils.cencelDialog();
+        }
     }
 
     public void transitSearch(TransitRoutePlanOption search) {
         CommonUtils.showDialogNumal(getContext(),getContext().getString(R.string.map_search_ing));
-        mSearch.transitSearch(search);
+        try {
+            mSearch.transitSearch(search);
+        }catch (Throwable e){
+            CommonUtils.cencelDialog();
+        }
     }
 
     public void walkingSearch(WalkingRoutePlanOption search) {
         CommonUtils.showDialogNumal(getContext(),getContext().getString(R.string.map_search_ing));
-        mSearch.walkingSearch(search);
+        try {
+            mSearch.walkingSearch(search);
+        }catch (Throwable e){
+            CommonUtils.cencelDialog();
+        }
     }
 
     @Override

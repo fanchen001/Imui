@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.filepicker.model.UCropConfig;
 import com.fanchen.filepicker.util.FileUtils;
 

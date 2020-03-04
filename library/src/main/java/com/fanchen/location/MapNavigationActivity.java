@@ -20,7 +20,7 @@ import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.TransitRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.location.utils.CommonUtils;
 import com.fanchen.location.view.SensorMapView;
 
@@ -31,7 +31,6 @@ public class MapNavigationActivity extends AppCompatActivity {
     public static final String LONGITUDE = "LONGITUDE";
     public static final String ADDRESS = "ADDRESS";
 
-    private Menu mMenu = null;
     private String city = "";
     private double latitude = 0;
     private double longitude = 0;
@@ -45,6 +44,7 @@ public class MapNavigationActivity extends AppCompatActivity {
         //BaseMapNavStyle
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(this.getApplication());
+        SDKInitializer.setHttpsEnable(true);
         setContentView(R.layout.activity_map_navigation);
         mv_main = findViewById(R.id.mv_main_map);
         TextView tv_address = findViewById(R.id.tv_address_map);
@@ -61,7 +61,6 @@ public class MapNavigationActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.mMenu = menu;
         getMenuInflater().inflate(R.menu.menu_base_map, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -69,12 +68,7 @@ public class MapNavigationActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         BDLocation dbLocation = mv_main.mBDLocation;
-        Menu menu = mMenu;
-        if (dbLocation != null && menu != null) {
-            for (int i = 0; i < menu.size(); i++) {
-                menu.getItem(i).setCheckable(false);
-            }
-            item.setCheckable(true);
+        if (dbLocation != null) {
             PlanNode startNode = PlanNode.withLocation(new LatLng(dbLocation.getLatitude(), dbLocation.getLongitude()));
             PlanNode endNode = PlanNode.withLocation(new LatLng(latitude, longitude));
             if (item.getItemId() == R.id.action_drive) {
@@ -85,7 +79,7 @@ public class MapNavigationActivity extends AppCompatActivity {
                 mv_main.walkingSearch(new WalkingRoutePlanOption().from(startNode).to(endNode));
             }
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override

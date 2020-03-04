@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.filepicker.model.Album;
 
 /**

@@ -12,7 +12,7 @@ import android.view.ViewConfiguration;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.picture.ImagePreview;
 import com.fanchen.picture.view.nine.ViewHelper;
 import com.fanchen.picture.view.photoview.PhotoView;

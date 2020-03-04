@@ -11,7 +11,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 public class RecordControllerView extends View {
 
@@ -24,7 +24,7 @@ public class RecordControllerView extends View {
     private int mRecordBtnTop;
     private int mRecordBtnBottom;
     private RecordVoiceButton mRecordVoiceBtn;
-    private final int MAX_RADIUS = 90;
+    private int MAX_RADIUS = 90;
 
     private int mCurrentState = 0;
     private float mNowX;
@@ -34,6 +34,7 @@ public class RecordControllerView extends View {
     private final static int MOVING_RIGHT = 3;
     private final static int MOVE_ON_RIGHT = 4;
 
+    private int mBitmapRadius = 60;
     private Bitmap mCancelBmp;
     private Bitmap mPreviewBmp;
     private Bitmap mCancelPresBmp;
@@ -62,12 +63,15 @@ public class RecordControllerView extends View {
     }
 
     public void setWidth(int width) {
-        mWidth = width;
+        mWidth = width ;
+        mBitmapRadius = mWidth / 18;
+        MAX_RADIUS = (int)(mWidth / 12);
+        float a = 1080f / width;
         Log.e("RecordControllerView", "mWidth: " + mWidth);
-        mLeftRect = new Rect((int) (155 - 25 * Math.sqrt(2)), (int) (200 - 25 * Math.sqrt(2)),
-                (int) (155 + 25 * Math.sqrt(2)), (int) (200 + 25 * Math.sqrt(2)));
-        mRightRect = new Rect((int) (mWidth - 150 - 25 * Math.sqrt(2)), (int) (200 - 25 * Math.sqrt(2)),
-                (int) (mWidth - 150 + 25 * Math.sqrt(2)), (int) (200 + 25 * Math.sqrt(2)));
+        mLeftRect = new Rect((int) (155 - 25 * Math.sqrt(2) / a), (int) (200 - 25 * Math.sqrt(2) / a),
+                (int) (155 + 25 * Math.sqrt(2) / a), (int) (200 + 25 * Math.sqrt(2)/ a));
+        mRightRect = new Rect((int) (mWidth - 150 - 25 * Math.sqrt(2)/ a), (int) (200 - 25 * Math.sqrt(2)/ a),
+                (int) (mWidth - 150 + 25 * Math.sqrt(2)/ a), (int) (200 + 25 * Math.sqrt(2)/ a));
     }
 
     @Override
@@ -80,8 +84,8 @@ public class RecordControllerView extends View {
                 mPaint.setStyle(Paint.Style.STROKE);
                 mPaint.setAntiAlias(true);
                 mPaint.setStrokeWidth(2);
-                canvas.drawCircle(150, 200, 60, mPaint);
-                canvas.drawCircle(mWidth - 150, 200, 60, mPaint);
+                canvas.drawCircle(150, 200, mBitmapRadius, mPaint);
+                canvas.drawCircle(mWidth - 150, 200, mBitmapRadius, mPaint);
                 mPaint.setColor(Color.GRAY);
                 canvas.drawBitmap(mPreviewBmp, null, mLeftRect, mPaint);
                 canvas.drawBitmap(mCancelBmp, null, mRightRect, mPaint);
@@ -91,11 +95,11 @@ public class RecordControllerView extends View {
                 if (mNowX < 150 + MAX_RADIUS) {
                     radius = MAX_RADIUS;
                 } else {
-                    radius = 40.0f * (mRecordBtnLeft - mNowX) / (mRecordBtnLeft - 250.0f) + 60.0f;
+                    radius = 40.0f * (mRecordBtnLeft - mNowX) / (mRecordBtnLeft -(250.0f/ (1080f / mWidth))) + 60.0f;
                 }
                 mPaint.setColor(Color.rgb(211, 211, 211));
                 canvas.drawCircle(150, 200, radius, mPaint);
-                canvas.drawCircle(mWidth - 150, 200, 60, mPaint);
+                canvas.drawCircle(mWidth - 150, 200, mBitmapRadius, mPaint);
                 mPaint.setColor(Color.GRAY);
                 canvas.drawBitmap(mPreviewBmp, null, mLeftRect, mPaint);
                 canvas.drawBitmap(mCancelBmp, null, mRightRect, mPaint);
@@ -103,7 +107,7 @@ public class RecordControllerView extends View {
             case MOVING_RIGHT:
                 radius = 40.0f * (mNowX - mRecordBtnRight) / (mWidth - mRecordBtnRight) + 60.0f;
                 mPaint.setColor(Color.rgb(211, 211, 211));
-                canvas.drawCircle(150, 200, 60, mPaint);
+                canvas.drawCircle(150, 200, mBitmapRadius, mPaint);
                 canvas.drawCircle(mWidth - 150, 200, radius, mPaint);
                 mPaint.setColor(Color.GRAY);
                 canvas.drawBitmap(mPreviewBmp, null, mLeftRect, mPaint);
@@ -115,7 +119,7 @@ public class RecordControllerView extends View {
                 canvas.drawCircle(150, 200, radius, mPaint);
                 mPaint.setStyle(Paint.Style.STROKE);
                 canvas.drawBitmap(mPreviewPresBmp, null, mLeftRect, mPaint);
-                canvas.drawCircle(mWidth - 150, 200, 60, mPaint);
+                canvas.drawCircle(mWidth - 150, 200, mBitmapRadius, mPaint);
                 canvas.drawBitmap(mCancelBmp, null, mRightRect, mPaint);
                 break;
             case MOVE_ON_RIGHT:
@@ -123,7 +127,7 @@ public class RecordControllerView extends View {
                 mPaint.setStyle(Paint.Style.FILL);
                 canvas.drawCircle(mWidth - 150, 200, radius, mPaint);
                 mPaint.setStyle(Paint.Style.STROKE);
-                canvas.drawCircle(150, 200, 60, mPaint);
+                canvas.drawCircle(150, 200, mBitmapRadius, mPaint);
                 canvas.drawBitmap(mPreviewBmp, null, mLeftRect, mPaint);
                 canvas.drawBitmap(mCancelPresBmp, null, mRightRect, mPaint);
                 break;

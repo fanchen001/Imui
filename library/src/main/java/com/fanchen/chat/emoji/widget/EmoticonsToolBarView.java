@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.emoji.ImageLoader;
 import com.fanchen.chat.emoji.data.PageSetEntity;
 

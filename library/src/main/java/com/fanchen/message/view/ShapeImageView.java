@@ -14,7 +14,7 @@ import android.util.AttributeSet;
 
 import java.util.Arrays;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 
 public class ShapeImageView extends android.support.v7.widget.AppCompatImageView {

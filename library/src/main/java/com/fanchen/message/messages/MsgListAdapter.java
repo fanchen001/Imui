@@ -18,7 +18,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.message.commons.ImageLoader;
 import com.fanchen.message.commons.ViewHolder;
 import com.fanchen.message.commons.models.IMessage;
@@ -829,10 +829,10 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
 
 
             mSendGoodsLayout = R.layout.item_send_msg_goods;
-            mReceiveGoodsLayout = R.layout.item_send_msg_goods;
+            mReceiveGoodsLayout = R.layout.item_receive_msg_goods;
 
             mSendOrderLayout = R.layout.item_send_msg_order;
-            mReceiveOrderLayout = R.layout.item_send_msg_order;
+            mReceiveOrderLayout = R.layout.item_receive_msg_order;
 
             mSendIdcardLayout = R.layout.item_send_msg_idcard;
             mReceiveIdcardLayout = R.layout.item_receive_msg_idcard;

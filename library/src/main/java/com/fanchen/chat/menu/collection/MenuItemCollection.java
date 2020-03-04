@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.menu.Menu;
 import com.fanchen.chat.menu.view.MenuItem;
 import com.fanchen.chat.utils.ViewUtil;

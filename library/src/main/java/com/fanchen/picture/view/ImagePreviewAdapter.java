@@ -17,7 +17,7 @@ import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.Target;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.picture.ImagePreview;
 import com.fanchen.picture.bean.ImageInfo;
 import com.fanchen.picture.glide.ImageLoader;

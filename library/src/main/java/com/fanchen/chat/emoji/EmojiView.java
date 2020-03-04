@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 
 import java.util.ArrayList;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.emoji.adapter.PageSetAdapter;
 import com.fanchen.chat.emoji.data.PageSetEntity;
 import com.fanchen.chat.emoji.widget.AutoHeightLayout;

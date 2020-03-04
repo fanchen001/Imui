@@ -5,7 +5,7 @@ import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.location.bean.LocationBean;
 
 import java.util.List;

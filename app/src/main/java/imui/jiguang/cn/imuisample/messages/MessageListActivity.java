@@ -1,11 +1,13 @@
 package imui.jiguang.cn.imuisample.messages;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -19,9 +21,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,7 +41,8 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,6 +66,7 @@ import com.fanchen.filepicker.model.UCropConfig;
 import com.fanchen.filepicker.util.Const;
 import com.fanchen.filepicker.util.FileSizeUtil;
 import com.fanchen.location.LocationPicker;
+import com.fanchen.location.MapNavigationActivity;
 import com.fanchen.location.bean.LocationBean;
 import com.fanchen.message.commons.ImageLoader;
 import com.fanchen.message.commons.models.IMessage;
@@ -76,15 +81,41 @@ import com.fanchen.view.ChatView;
 import com.fanchen.view.DefaultFeatureAdapter;
 import com.jude.swipbackhelper.SwipeBackHelper;
 
+import cn.jmessage.biz.httptask.task.GetEventNotificationTaskMng;
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.callback.DownloadCompletionCallback;
+import cn.jpush.im.android.api.callback.ProgressUpdateCallback;
+import cn.jpush.im.android.api.content.FileContent;
+import cn.jpush.im.android.api.content.ImageContent;
+import cn.jpush.im.android.api.content.LocationContent;
+import cn.jpush.im.android.api.content.MessageContent;
+import cn.jpush.im.android.api.content.TextContent;
+import cn.jpush.im.android.api.content.VideoContent;
+import cn.jpush.im.android.api.content.VoiceContent;
+import cn.jpush.im.android.api.enums.ContentType;
+import cn.jpush.im.android.api.enums.ConversationType;
+import cn.jpush.im.android.api.event.MessageEvent;
+import cn.jpush.im.android.api.event.MessageReceiptStatusChangeEvent;
+import cn.jpush.im.android.api.event.MessageRetractEvent;
+import cn.jpush.im.android.api.event.OfflineMessageEvent;
+import cn.jpush.im.android.api.exceptions.JMFileSizeExceedException;
+import cn.jpush.im.android.api.model.Conversation;
+import cn.jpush.im.android.api.model.Message;
+import cn.jpush.im.android.api.model.UserInfo;
+import cn.jpush.im.api.BasicCallback;
 import imui.jiguang.cn.imuisample.models.DefaultUser;
+import imui.jiguang.cn.imuisample.models.DownloadCallback;
 import imui.jiguang.cn.imuisample.models.MyMessage;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
+
+import static cn.jpush.im.android.api.enums.ContentType.image;
 
 public class MessageListActivity extends Activity implements View.OnTouchListener,
         EasyPermissions.PermissionCallbacks, SensorEventListener {
 
     private final static String TAG = "MessageListActivity";
+    private static final int PAGE_MESSAGE_COUNT = 10;
     private final int RC_RECORD_VOICE = 0x0001;
     private final int RC_CAMERA = 0x0002;
     private final int RC_PHOTO = 0x0003;
@@ -101,7 +132,6 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     private PowerManager mPowerManager;
     private PowerManager.WakeLock mWakeLock;
     /**
-     * Store all image messages' path, pass it to {@link BrowserImageActivity},
      * so that click image message can browser all images.
      */
     private ArrayList<String> mPathList = new ArrayList<>();
@@ -110,85 +140,218 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 201 && data != null && resultCode == RESULT_OK ){
+        if (requestCode == 201 && data != null && resultCode == RESULT_OK) {
             File uCropFile = FilePicker.getUCropFile(data);
-            if(uCropFile != null){
-                MyMessage message = new MyMessage("", IMessage.MessageType.SEND_FILE.ordinal());
-                message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+            if (uCropFile != null) {
+//                MyMessage message = new MyMessage("", IMessage.MessageType.SEND_FILE.ordinal());
+//                message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+//                message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+//                message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
+//                HashMap<String, String> extras = message.getExtras();
+//                extras.put("fileTitle", uCropFile.getName());
+//                extras.put("fileSize", FileSizeUtil.getAutoFileOrFilesSize(uCropFile));
+//                mAdapter.addToStart(message, true);
+                UserInfo myInfo = JMessageClient.getMyInfo();
+
+                final MyMessage message = new MyMessage(IMessage.MessageType.SEND_IMAGE.ordinal());
+                message.setUserInfo(new DefaultUser(myInfo.getUserName(), myInfo.getDisplayName(), myInfo.getAvatarFile().getAbsolutePath()));
                 message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                 message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
-                HashMap<String, String> extras = message.getExtras();
-                extras.put("fileTitle", uCropFile.getName());
-                extras.put("fileSize", FileSizeUtil.getAutoFileOrFilesSize(uCropFile));
+                mPathList.add(uCropFile.getAbsolutePath());
+                mMsgIdList.add(message.getMsgId());
+                message.setMediaFilePath(uCropFile.getAbsolutePath());
+//                HashMap<String, String> extras = message.getExtras();
+//
+//
+//
+//                extras.put("fileTitle", uCropFile.getName());
+//                extras.put("fileSize", FileSizeUtil.getAutoFileOrFilesSize(uCropFile));
+
+                try {
+                    Message sendFileMessage = mConv.createSendImageMessage(uCropFile, uCropFile.getName());
+                    sendFileMessage.setOnSendCompleteCallback(new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                message.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                            } else {
+                                message.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    JMessageClient.sendMessage(sendFileMessage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+
                 mAdapter.addToStart(message, true);
+
             }
-        }else   if (requestCode == 202 && data != null && resultCode == RESULT_OK ){
+        } else if (requestCode == 202 && data != null && resultCode == RESULT_OK) {
+            UserInfo myInfo = JMessageClient.getMyInfo();
             ArrayList<EssFile> essFileList = data.getParcelableArrayListExtra(Const.EXTRA_RESULT_SELECTION);
             for (EssFile file : essFileList) {
-                MyMessage message = new MyMessage("", IMessage.MessageType.SEND_VIDEO.ordinal());
-                message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+                final MyMessage message = new MyMessage(IMessage.MessageType.SEND_VIDEO.ordinal());
+                message.setUserInfo(new DefaultUser(myInfo.getUserName(), myInfo.getDisplayName(), myInfo.getAvatarFile().getAbsolutePath()));
                 message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                 message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
                 message.setDuration(file.getDuration());
                 message.setMediaFilePath(file.getAbsolutePath());
-//                message.setDuration(((VideoItem) file).getDuration());
-//                message.putExtra("path", message.getMediaFilePath());
-//                message.putExtra("name", new File(message.getMediaFilePath()).getName());
-//                HashMap<String, String> extras = message.getExtras();
-//                extras.put("fileTitle", file.getName());
-//                extras.put("fileSize", FileSizeUtil.getAutoFileOrFilesSize(file.getFile()));
+
+                String to = getIntent().getStringExtra("to");
+                try {
+                    Message singleVideoMessage = JMessageClient.createSingleVideoMessage(to, null, null, null, new File(file.getAbsolutePath()), null, (int) file.getDuration());
+                    singleVideoMessage.setOnSendCompleteCallback(new BasicCallback() {
+
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                message.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                            } else {
+                                message.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+
+                    });
+                } catch (IOException e) {
+
+                }
+
                 mAdapter.addToStart(message, true);
             }
         }
         if ((requestCode == 500 || requestCode == 200) && data != null) {
+            UserInfo myInfo = JMessageClient.getMyInfo();
             ArrayList<EssFile> essFileList = data.getParcelableArrayListExtra(Const.EXTRA_RESULT_SELECTION);
             for (EssFile file : essFileList) {
-                MyMessage message = new MyMessage("", IMessage.MessageType.SEND_FILE.ordinal());
-                message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+                final MyMessage message = new MyMessage(IMessage.MessageType.SEND_FILE.ordinal());
+                message.setUserInfo(new DefaultUser(myInfo.getUserName(), myInfo.getDisplayName(), myInfo.getAvatarFile().getAbsolutePath()));
                 message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                 message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
                 HashMap<String, String> extras = message.getExtras();
-                extras.put("fileTitle", file.getName());
+                extras.put("fileName", file.getName());
                 extras.put("fileSize", FileSizeUtil.getAutoFileOrFilesSize(file.getFile()));
+                try {
+                    Message sendFileMessage = mConv.createSendFileMessage(file.getFile(), file.getName());
+                    sendFileMessage.getContent().setStringExtra("fileSize", FileSizeUtil.getAutoFileOrFilesSize(file.getFile()));
+                    sendFileMessage.setOnSendCompleteCallback(new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                message.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                            } else {
+                                message.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    JMessageClient.sendMessage(sendFileMessage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (JMFileSizeExceedException e) {
+                    e.printStackTrace();
+                }
                 mAdapter.addToStart(message, true);
             }
         } else if (requestCode == 600 && data != null) {
+            UserInfo myInfo = JMessageClient.getMyInfo();
             Map.Entry<String, LocationBean> location = LocationPicker.getLocation(data);
-
-            MyMessage message = new MyMessage("", IMessage.MessageType.SEND_LOCATION.ordinal());
-            message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+            final MyMessage message = new MyMessage(IMessage.MessageType.SEND_LOCATION.ordinal());
+            message.setUserInfo(new DefaultUser(myInfo.getUserName(), myInfo.getDisplayName(), myInfo.getAvatarFile().getAbsolutePath()));
             message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
             message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
             HashMap<String, String> extras = message.getExtras();
-
-            extras.put("locationTitle", location.getValue().getName());
-            extras.put("locationDetails", location.getValue().getAddress());
+            LocationBean value = location.getValue();
+            extras.put("locationTitle", value.getName());
+            extras.put("city", value.getCity());
+            extras.put("locationDetails", value.getAddress());
+            extras.put("scale", String.valueOf(value.getScale()));
+            extras.put("latitude",  String.valueOf(value.getLat()));
+            extras.put("longitude",  String.valueOf(value.getLng()));
             extras.put("path", location.getKey());
+
+            try {
+                Message fileMessage = mConv.createSendFileMessage(new File(location.getKey()), null);
+                MessageContent content = fileMessage.getContent();
+                content.setStringExtra("locationTitle",value.getName());
+                content.setStringExtra("locationDetails",value.getAddress());
+                content.setStringExtra("type","location");
+                content.setStringExtra("city",value.getCity());
+                content.setNumberExtra("scale",value.getScale());
+                content.setNumberExtra("latitude",value.getLat());
+                content.setNumberExtra("longitude",value.getLng());
+                fileMessage.setOnSendCompleteCallback(new BasicCallback() {
+                    @Override
+                    public void gotResult(int i, String s) {
+                        if (i == 0) {
+                            message.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                        } else {
+                            message.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+                JMessageClient.sendMessage(fileMessage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+//            Message locationMessage = mConv.createLocationMessage(value.getLat(), value.getLng(), value.getScale(), value.getAddress());
+//            locationMessage.getContent().setStringExtra("locationTitle", value.getName());
+
 
 
             mAdapter.addToStart(message, true);
+
+
         }
     }
 
     @Override
-    protected void onPostCreate( Bundle savedInstanceState) {
+    protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         SwipeBackHelper.onPostCreate(this);
     }
 
+    private Conversation mConv;
+    private int mOffset = PAGE_MESSAGE_COUNT;
+    private int mStart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        JMessageClient.registerEventReceiver(this);
         SwipeBackHelper.onCreate(this);
 
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_chat_);
+
+        String stringExtra = getIntent().getStringExtra("to");
+
+
+        mConv = JMessageClient.getSingleConversation(stringExtra);
+        if (mConv == null) {
+            mConv = Conversation.createSingleConversation(stringExtra);
+        }
+
+
+
+
+
+//        List<Message> allMessage = mConv.getAllMessage();
 
 
         this.mImm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mWindow = getWindow();
         registerProximitySensorListener();
         mChatView = (ChatView) findViewById(R.id.chat_view);
+
+        mChatView.getTitleTextView().setText("与[" + stringExtra+ "]聊天");
+
         mChatView.customMenuBuild("6666", new DefaultFeatureAdapter(), new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -200,25 +363,80 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                             .requestCode(500)
                             .start();
                 } else if (position == 4) {
-                    LocationPicker.startSendActivity(MessageListActivity.this,600);
+                    LocationPicker.startSendActivity(MessageListActivity.this, 600);
                 } else if (position == 5) {
-                    MyMessage message2 = new MyMessage("", IMessage.MessageType.SEND_ID_CARD.ordinal());
-                    message2.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+                    UserInfo myInfo1 = JMessageClient.getMyInfo();
+                    final MyMessage message2 = new MyMessage(IMessage.MessageType.SEND_ID_CARD.ordinal());
+                    message2.setUserInfo(new DefaultUser(myInfo1.getUserName(),myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
                     message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
-                    message2.setMessageStatus(IMessage.MessageStatus.SEND_DRAFT);
+                    message2.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
                     mAdapter.addToStart(message2, true);
+
+                    HashMap<String, String> stringStringHashMap = new HashMap<>();
+                    stringStringHashMap.put("type","id");
+                    Message message = mConv.createSendCustomMessage(stringStringHashMap);
+                    message.setOnSendCompleteCallback(new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                message2.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                            } else {
+                                message2.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    JMessageClient.sendMessage(message);
+
                 } else if (position == 0) {
-                    MyMessage message2 = new MyMessage("", IMessage.MessageType.SEND_ORDER.ordinal());
-                    message2.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+                    UserInfo myInfo1 = JMessageClient.getMyInfo();
+                    final MyMessage message2 = new MyMessage(IMessage.MessageType.SEND_ORDER.ordinal());
+                    message2.setUserInfo(new DefaultUser(myInfo1.getUserName(),myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
                     message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
-                    message2.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                    message2.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
                     mAdapter.addToStart(message2, true);
+
+                    HashMap<String, String> stringStringHashMap = new HashMap<>();
+                    stringStringHashMap.put("type","order");
+                    Message message = mConv.createSendCustomMessage(stringStringHashMap);
+                    message.setOnSendCompleteCallback(new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                message2.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                            } else {
+                                message2.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    JMessageClient.sendMessage(message);
                 } else if (position == 1) {
-                    MyMessage message2 = new MyMessage("", IMessage.MessageType.SEND_GOODS.ordinal());
-                    message2.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+                    UserInfo myInfo1 = JMessageClient.getMyInfo();
+                    final MyMessage message2 = new MyMessage(IMessage.MessageType.SEND_GOODS.ordinal());
+                    message2.setUserInfo(new DefaultUser(myInfo1.getUserName(),myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
                     message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
-                    message2.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                    message2.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
                     mAdapter.addToStart(message2, true);
+
+                    HashMap<String, String> stringStringHashMap = new HashMap<>();
+                    stringStringHashMap.put("type","goods");
+                    Message message = mConv.createSendCustomMessage(stringStringHashMap);
+                    message.setOnSendCompleteCallback(new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                message2.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                            } else {
+                                message2.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    JMessageClient.sendMessage(message);
                 }
             }
         });
@@ -235,41 +453,69 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 if (input.length() == 0) {
                     return false;
                 }
-                {
 
+                UserInfo myInfo = JMessageClient.getMyInfo();
 
-                    MyMessage message1 = new MyMessage(input.toString(), IMessage.MessageType.SEND_FILE.ordinal());
-                    message1.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
-                    message1.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
-                    message1.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
-                    mAdapter.addToStart(message1, true);
+                final MyMessage message1 = new MyMessage(input.toString(), IMessage.MessageType.SEND_TEXT.ordinal());
 
-                    MyMessage message2 = new MyMessage(input.toString(), IMessage.MessageType.SEND_ID_CARD.ordinal());
-                    message2.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
-                    message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
-                    message2.setMessageStatus(IMessage.MessageStatus.SEND_DRAFT);
-                    mAdapter.addToStart(message2, true);
-                }
+                Message sendTextMessage = mConv.createSendTextMessage(input.toString());
+                sendTextMessage.setOnSendCompleteCallback(new BasicCallback() {
 
-                {
-                    MyMessage message = new MyMessage(input.toString(), IMessage.MessageType.RECEIVE_FILE.ordinal());
-                    message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
-                    message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
-                    message.setMessageStatus(IMessage.MessageStatus.RECEIVE_SUCCEED);
-                    mAdapter.addToStart(message, true);
+                    @Override
+                    public void gotResult(int i, String s) {
+                        if (i == 0) {
+                            message1.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                        } else {
+                            message1.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                    }
 
-                    MyMessage message1 = new MyMessage(input.toString(), IMessage.MessageType.RECEIVE_ID_CARD.ordinal());
-                    message1.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
-                    message1.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
-                    message1.setMessageStatus(IMessage.MessageStatus.RECEIVE_FAILED);
-                    mAdapter.addToStart(message1, true);
+                });
+                JMessageClient.sendMessage(sendTextMessage);
 
-                    MyMessage message2 = new MyMessage(input.toString(), IMessage.MessageType.RECEIVE_LOCATION.ordinal());
-                    message2.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
-                    message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
-                    message2.setMessageStatus(IMessage.MessageStatus.RECEIVE_GOING);
-                    mAdapter.addToStart(message2, true);
-                }
+                message1.setUserInfo(new DefaultUser(myInfo.getUserName(), myInfo.getDisplayName(), myInfo.getAvatarFile().getAbsolutePath()));
+
+                message1.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+                message1.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
+
+                mAdapter.addToStart(message1, true);
+
+//                {
+//
+//
+//                    MyMessage message1 = new MyMessage(input.toString(), IMessage.MessageType.SEND_FILE.ordinal());
+//                    message1.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+//                    message1.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+//                    message1.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+//                    mAdapter.addToStart(message1, true);
+//
+//                    MyMessage message2 = new MyMessage(input.toString(), IMessage.MessageType.SEND_ID_CARD.ordinal());
+//                    message2.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+//                    message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+//                    message2.setMessageStatus(IMessage.MessageStatus.SEND_DRAFT);
+//                    mAdapter.addToStart(message2, true);
+//                }
+//
+//                {
+//                    MyMessage message = new MyMessage(input.toString(), IMessage.MessageType.RECEIVE_FILE.ordinal());
+//                    message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+//                    message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+//                    message.setMessageStatus(IMessage.MessageStatus.RECEIVE_SUCCEED);
+//                    mAdapter.addToStart(message, true);
+//
+//                    MyMessage message1 = new MyMessage(input.toString(), IMessage.MessageType.RECEIVE_ID_CARD.ordinal());
+//                    message1.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+//                    message1.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+//                    message1.setMessageStatus(IMessage.MessageStatus.RECEIVE_FAILED);
+//                    mAdapter.addToStart(message1, true);
+//
+//                    MyMessage message2 = new MyMessage(input.toString(), IMessage.MessageType.RECEIVE_LOCATION.ordinal());
+//                    message2.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+//                    message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+//                    message2.setMessageStatus(IMessage.MessageStatus.RECEIVE_GOING);
+//                    mAdapter.addToStart(message2, true);
+//                }
 
                 return true;
             }
@@ -279,25 +525,67 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 if (list == null || list.isEmpty()) {
                     return;
                 }
-
                 MyMessage message;
+                Message sendImageMessage = null;
                 for (FileItem item : list) {
                     if (item.getType() == FileItem.Type.Image) {
                         message = new MyMessage(null, IMessage.MessageType.SEND_IMAGE.ordinal());
                         mPathList.add(item.getFilePath());
                         mMsgIdList.add(message.getMsgId());
+                        try {
+                            final MyMessage message1 = message;
+                            sendImageMessage = mConv.createSendImageMessage(new File(item.getFilePath()));
+                            sendImageMessage.setOnSendCompleteCallback(new BasicCallback() {
+                                @Override
+                                public void gotResult(int i, String s) {
+                                    if (i == 0) {
+                                        message1.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                                    } else {
+                                        message1.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                                    }
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        JMessageClient.sendMessage(sendImageMessage);
                     } else if (item.getType() == FileItem.Type.Video) {
                         message = new MyMessage(null, IMessage.MessageType.SEND_VIDEO.ordinal());
+                        VideoItem v = ((VideoItem) item);
                         message.setDuration(((VideoItem) item).getDuration());
+                        final long duration = ((VideoItem) item).getDuration();
+                        final MyMessage message1 = message;
+                        final String filePath = item.getFilePath();
+                        try {
+                            String to = getIntent().getStringExtra("to");
+                            Message videoMessage = JMessageClient.createSingleVideoMessage(to, null, null, null, new File(filePath), null, (int) duration);
+                            videoMessage.setOnSendCompleteCallback(new BasicCallback() {
 
+                                @Override
+                                public void gotResult(int i, String s) {
+                                    if (i == 0) {
+                                        message1.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                                    } else {
+                                        message1.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                                    }
+                                    mAdapter.notifyDataSetChanged();
+                                }
+
+                            });
+                            JMessageClient.sendMessage(videoMessage);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         throw new RuntimeException("Invalid FileItem type. Must be Type.Image or Type.Video");
                     }
 
                     message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                     message.setMediaFilePath(item.getFilePath());
-                    message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
-
+                    UserInfo myInfo = JMessageClient.getMyInfo();
+                    message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
+                    message.setUserInfo(new DefaultUser(myInfo.getUserName(), myInfo.getDisplayName(), myInfo.getAvatarFile().getAbsolutePath()));
                     final MyMessage fMsg = message;
                     MessageListActivity.this.runOnUiThread(new Runnable() {
                         @Override
@@ -386,11 +674,36 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 
             @Override
             public void onFinishRecord(File voiceFile, int duration) {
-                MyMessage message = new MyMessage(null, IMessage.MessageType.SEND_VOICE.ordinal());
-                message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+
+
+                UserInfo myInfo1 = JMessageClient.getMyInfo();
+
+                final MyMessage message = new MyMessage(null, IMessage.MessageType.SEND_VOICE.ordinal());
+                message.setUserInfo(new DefaultUser(myInfo1.getUserName(), myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
                 message.setMediaFilePath(voiceFile.getPath());
                 message.setDuration(duration);
                 message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+
+                try {
+                    Message sendVoiceMessage = mConv.createSendVoiceMessage(new File(voiceFile.getPath()), duration);
+
+                    sendVoiceMessage.setOnSendCompleteCallback(new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                message.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                            } else {
+                                message.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    JMessageClient.sendMessage(sendVoiceMessage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+
                 mAdapter.addToStart(message, true);
             }
 
@@ -424,15 +737,40 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 final MyMessage message = new MyMessage(null, IMessage.MessageType.SEND_IMAGE.ordinal());
                 message.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                 message.setMediaFilePath(photoPath);
+                message.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
                 mPathList.add(photoPath);
                 mMsgIdList.add(message.getMsgId());
-                message.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+                UserInfo myInfo1 = JMessageClient.getMyInfo();
+
+                message.setUserInfo(new DefaultUser(myInfo1.getUserName(),myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
                 MessageListActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         mAdapter.addToStart(message, true);
                     }
                 });
+
+                try {
+                    Message sendImageMessage = mConv.createSendImageMessage(new File(photoPath));
+                    sendImageMessage.setOnSendCompleteCallback(new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                message.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                            } else {
+                                message.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    JMessageClient.sendMessage(sendImageMessage);
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+
             }
 
             @Override
@@ -497,6 +835,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 //        });
     }
 
+    @SuppressLint("InvalidWakeLockTag")
     private void registerProximitySensorListener() {
         try {
             mPowerManager = (PowerManager) getSystemService(POWER_SERVICE);
@@ -546,6 +885,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         }
     }
 
+    @SuppressLint("InvalidWakeLockTag")
     private void setScreenOff() {
         if (mWakeLock == null) {
             mWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, TAG);
@@ -753,7 +1093,12 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
             @Override
             public void onMessageChildClick(View v, MyMessage message) {
                 if (v.getId() == R.id.aurora_tv_msgitem_see) {
-                    LocationPicker.startNavigayionActivity(MessageListActivity.this);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(MapNavigationActivity.ADDRESS,message.getExtras().get("locationDetails"));
+                    bundle.putString(MapNavigationActivity.CITY,message.getExtras().get("city"));
+                    bundle.putDouble(MapNavigationActivity.LATITUDE,Double.valueOf(message.getExtras().get("latitude")));
+                    bundle.putDouble(MapNavigationActivity.LONGITUDE,Double.valueOf(message.getExtras().get("longitude")));
+                    LocationPicker.startNavigayionActivity(MessageListActivity.this,bundle);
                 } else if (v.getId() == R.id.aurora_tv_msgitem_to) {
                     LocationPicker.showMapChoiceDialog(MessageListActivity.this, 0, 0, "");
                 }
@@ -788,31 +1133,70 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
             }
         });
 
-        MyMessage message = new MyMessage("Hello World", IMessage.MessageType.RECEIVE_TEXT.ordinal());
-        message.setUserInfo(new DefaultUser("0", "Deadpool", "R.drawable.deadpool"));
-        mAdapter.addToStart(message, true);
-        MyMessage voiceMessage = new MyMessage("", IMessage.MessageType.RECEIVE_VOICE.ordinal());
-        voiceMessage.setUserInfo(new DefaultUser("0", "Deadpool", "R.drawable.deadpool"));
-        voiceMessage.setMediaFilePath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/voice/2018-02-28-105103.m4a");
-        voiceMessage.setDuration(4);
+//        MyMessage message = new MyMessage("Hello World", IMessage.MessageType.RECEIVE_TEXT.ordinal());
+//        message.setUserInfo(new DefaultUser("0", "Deadpool", "R.drawable.deadpool"));
+//        mAdapter.addToStart(message, true);
+//        MyMessage voiceMessage = new MyMessage("", IMessage.MessageType.RECEIVE_VOICE.ordinal());
+//        voiceMessage.setUserInfo(new DefaultUser("0", "Deadpool", "R.drawable.deadpool"));
+//        voiceMessage.setMediaFilePath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/voice/2018-02-28-105103.m4a");
+//        voiceMessage.setDuration(4);
+//
+//        mAdapter.addToStart(voiceMessage, true);
+//
+//        MyMessage sendVoiceMsg = new MyMessage("", IMessage.MessageType.SEND_VOICE.ordinal());
+//        sendVoiceMsg.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
+//        sendVoiceMsg.setMediaFilePath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/voice/2018-02-28-105103.m4a");
+//        sendVoiceMsg.setDuration(4);
+//        sendVoiceMsg.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+//        mAdapter.addToStart(sendVoiceMsg, true);
+//        MyMessage eventMsg = new MyMessage("haha", IMessage.MessageType.EVENT.ordinal());
+//        mAdapter.addToStart(eventMsg, true);
+//
+//        MyMessage receiveVideo = new MyMessage("", IMessage.MessageType.RECEIVE_VIDEO.ordinal());
+//        receiveVideo.setMediaFilePath(Environment.getExternalStorageDirectory().getPath() + "/Pictures/Hangouts/video-20170407_135638.3gp");
+//        receiveVideo.setDuration(4);
+//        receiveVideo.setUserInfo(new DefaultUser("0", "Deadpool", "R.drawable.deadpool"));
+//        mAdapter.addToStart(receiveVideo, true);
+//        mAdapter.addToEndChronologically(mData);
 
-        mAdapter.addToStart(voiceMessage, true);
+        UserInfo myInfo = JMessageClient.getMyInfo();
+        List<Message> messagesFromNewest = null;
+        if (mConv.getUnReadMsgCnt() > PAGE_MESSAGE_COUNT) {
+            messagesFromNewest = mConv.getMessagesFromNewest(0, mConv.getUnReadMsgCnt());
+            mStart = mConv.getUnReadMsgCnt();
+        } else {
+            messagesFromNewest = mConv.getMessagesFromNewest(0, mOffset);
+            mStart = mOffset;
+        }
 
-        MyMessage sendVoiceMsg = new MyMessage("", IMessage.MessageType.SEND_VOICE.ordinal());
-        sendVoiceMsg.setUserInfo(new DefaultUser("1", "Ironman", "R.drawable.ironman"));
-        sendVoiceMsg.setMediaFilePath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/voice/2018-02-28-105103.m4a");
-        sendVoiceMsg.setDuration(4);
-        sendVoiceMsg.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
-        mAdapter.addToStart(sendVoiceMsg, true);
-        MyMessage eventMsg = new MyMessage("haha", IMessage.MessageType.EVENT.ordinal());
-        mAdapter.addToStart(eventMsg, true);
-
-        MyMessage receiveVideo = new MyMessage("", IMessage.MessageType.RECEIVE_VIDEO.ordinal());
-        receiveVideo.setMediaFilePath(Environment.getExternalStorageDirectory().getPath() + "/Pictures/Hangouts/video-20170407_135638.3gp");
-        receiveVideo.setDuration(4);
-        receiveVideo.setUserInfo(new DefaultUser("0", "Deadpool", "R.drawable.deadpool"));
-        mAdapter.addToStart(receiveVideo, true);
-        mAdapter.addToEndChronologically(mData);
+        ArrayList<MyMessage> myMessages = new ArrayList<>();
+        for (Message m : messagesFromNewest){
+            MyMessage from = MyMessage.from(m, m.getFromUser().getUserName().equals(myInfo.getUserName()), new DownloadCallback() {
+                @Override
+                public void onComplete(MyMessage msg, File file) {
+                    Log.e("DownloadCallback", "onComplete -> " + file.getAbsolutePath());
+                    Message message = (Message) msg.getTag();
+                    switch (message.getContentType()) {
+                        case file:
+                            break;
+                        case image:
+                            mPathList.add(file.getAbsolutePath());
+                            mMsgIdList.add(msg.getMsgId());
+                            msg.setMediaFilePath(file.getAbsolutePath());
+                            break;
+                        case video:
+                            msg.setMediaFilePath(file.getAbsolutePath());
+                            break;
+                        case voice:
+                            msg.setMediaFilePath(file.getAbsolutePath());
+                            break;
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
+            myMessages.add(from);
+        }
+        mAdapter.addToEndChronologically(myMessages);
         PullToRefreshLayout layout = mChatView.getPtrLayout();
         layout.setPtrHandler(new PtrHandler() {
             @Override
@@ -913,8 +1297,205 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        JMessageClient.unRegisterEventReceiver(this);
         SwipeBackHelper.onDestroy(this);
         unregisterReceiver(mReceiver);
         mSensorManager.unregisterListener(this);
     }
+
+    public void onEventMainThread(MessageEvent event) {
+        Log.e("onEventMainThread", "收消息事件 ====> " + event.toString());
+        final Message message = event.getMessage();
+        if (message.getTargetType() == ConversationType.single) {
+            final MyMessage from = MyMessage.from(message, new DownloadCallback() {
+
+                @Override
+                public void onComplete(MyMessage msg, File file) {
+                    Log.e("DownloadCallback", "onComplete -> " + file.getAbsolutePath());
+                    Message message = (Message) msg.getTag();
+                    MessageContent content = message.getContent();
+                    switch (message.getContentType()) {
+                        case file:
+                            String type = content.getStringExtra("type");
+                            switch (type){
+                                case "location":
+                                    msg.getExtras().put("path",file.getAbsolutePath());
+                                    break;
+                            }
+                            break;
+                        case image:
+                            mPathList.add(file.getAbsolutePath());
+                            mMsgIdList.add(msg.getMsgId());
+                            msg.setMediaFilePath(file.getAbsolutePath());
+                            break;
+                        case video:
+                            msg.setMediaFilePath(file.getAbsolutePath());
+                            break;
+                        case voice:
+                            msg.setMediaFilePath(file.getAbsolutePath());
+                            break;
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+
+            });
+            Log.e("onEventMainThread", "收消息事件 ====> " + from.toString());
+            mAdapter.addToStart(from, true);
+//            UserInfo userInfo = (UserInfo) message.getTargetInfo();
+//            String targetId = userInfo.getUserName();
+//            String appKey = userInfo.getAppKey();
+//            switch (message.getContentType()) {
+//                case file: {
+//                    FileContent fileContent = (FileContent) message.getContent();
+//                    MyMessage msg = new MyMessage(IMessage.MessageType.RECEIVE_FILE.ordinal());
+//                    msg.setUserInfo(new DefaultUser(userInfo.getUserName(), userInfo.getDisplayName(), userInfo.getAvatar()));
+//                    msg.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(message.getCreateTime())));
+//                    msg.setMessageStatus(IMessage.MessageStatus.RECEIVE_SUCCEED);
+//                    HashMap<String, String> extras = msg.getExtras();
+//                    extras.put("fileTitle", fileContent.getFileName());
+//                    extras.put("fileSize", message.getContent().getStringExtra("fileSize"));
+//                    mAdapter.addToStart(msg, true);
+//                }
+//                break;
+//                case image: {
+//                    ImageContent imageContent = (ImageContent) message.getContent();
+//                    final MyMessage msg = new MyMessage(IMessage.MessageType.RECEIVE_IMAGE.ordinal());
+//                    final String localThumbnailPath = imageContent.getLocalThumbnailPath();
+//                    if (!TextUtils.isEmpty(localThumbnailPath)) {
+//                        msg.setMediaFilePath(localThumbnailPath);
+//                        mPathList.add(localThumbnailPath);
+//                        mMsgIdList.add(String.valueOf(message.getId()));
+//                        msg.setMessageStatus(IMessage.MessageStatus.RECEIVE_SUCCEED);
+//                    } else {
+//                        msg.setMediaFilePath("");
+//                        msg.setMessageStatus(IMessage.MessageStatus.RECEIVE_GOING);
+//                        imageContent.downloadThumbnailImage(message, new DownloadCompletionCallback() {
+//                            @Override
+//                            public void onComplete(int i, String s, File file) {
+//                                mPathList.add(localThumbnailPath);
+//                                mMsgIdList.add(String.valueOf(message.getId()));
+//                                msg.setMessageStatus(IMessage.MessageStatus.RECEIVE_SUCCEED);
+//                                mAdapter.notifyDataSetChanged();
+//                            }
+//                        });
+//                    }
+//                    msg.setUserInfo(new DefaultUser(userInfo.getUserName(), userInfo.getDisplayName(), userInfo.getAvatar()));
+//                    msg.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(message.getCreateTime())));
+//                    mAdapter.addToStart(msg, true);
+//                }
+//                break;
+//                case text: {
+//                    TextContent imageContent = (TextContent) message.getContent();
+//                    MyMessage msg = new MyMessage(imageContent.getText(), IMessage.MessageType.RECEIVE_TEXT.ordinal());
+//                    msg.setUserInfo(new DefaultUser(userInfo.getUserName(), userInfo.getDisplayName(), userInfo.getAvatar()));
+//                    msg.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(message.getCreateTime())));
+//                    msg.setMessageStatus(IMessage.MessageStatus.RECEIVE_SUCCEED);
+//                    mAdapter.addToStart(msg, true);
+//                }
+//                break;
+//                case location: {
+//                    LocationContent imageContent = (LocationContent) message.getContent();
+//                    MyMessage msg = new MyMessage(IMessage.MessageType.RECEIVE_LOCATION.ordinal());
+//                    msg.setUserInfo(new DefaultUser(userInfo.getUserName(), userInfo.getDisplayName(), userInfo.getAvatar()));
+//                    msg.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(message.getCreateTime())));
+//                    msg.setMessageStatus(IMessage.MessageStatus.RECEIVE_SUCCEED);
+//                    HashMap<String, String> extras = msg.getExtras();
+//                    extras.put("locationTitle", imageContent.getStringExtra("locationTitle"));
+//                    extras.put("locationDetails", imageContent.getAddress());
+//                    extras.put("path", "");
+//                    mAdapter.addToStart(msg, true);
+//                }
+//                break;
+//                case video: {
+//                    VideoContent imageContent = (VideoContent) message.getContent();
+//                    final MyMessage msg = new MyMessage(IMessage.MessageType.RECEIVE_VIDEO.ordinal());
+//                    msg.setUserInfo(new DefaultUser(userInfo.getUserName(), userInfo.getDisplayName(), userInfo.getAvatar()));
+//                    msg.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(message.getCreateTime())));
+//                    msg.setMessageStatus(IMessage.MessageStatus.RECEIVE_GOING);
+//                    msg.setDuration(imageContent.getDuration());
+//                    imageContent.downloadThumbImage(message, new DownloadCompletionCallback() {
+//
+//                        @Override
+//                        public void onComplete(int i, String s, File file) {
+//
+//                        }
+//
+//                    });
+//
+//                    imageContent.downloadVideoFile(message, new DownloadCompletionCallback() {
+//
+//                        @Override
+//                        public void onComplete(int i, String s, File file) {
+//                            msg.setMessageStatus(IMessage.MessageStatus.RECEIVE_SUCCEED);
+//                            msg.setMediaFilePath(file.getAbsolutePath());
+//                            mAdapter.notifyDataSetChanged();
+//                        }
+//
+//                    });
+//                    mAdapter.addToStart(msg, true);
+//                }
+//                break;
+//                case voice: {
+//                    VoiceContent imageContent = (VoiceContent) message.getContent();
+//                    final MyMessage msg = new MyMessage(IMessage.MessageType.RECEIVE_VOICE.ordinal());
+//                    msg.setUserInfo(new DefaultUser(userInfo.getUserName(), userInfo.getDisplayName(), userInfo.getAvatar()));
+//                    msg.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(message.getCreateTime())));
+//                    msg.setMessageStatus(IMessage.MessageStatus.RECEIVE_GOING);
+//                    msg.setDuration(imageContent.getDuration());
+//
+//                    imageContent.downloadVoiceFile(message, new DownloadCompletionCallback() {
+//                        @Override
+//                        public void onComplete(int i, String s, File file) {
+//                            msg.setMediaFilePath(file.getAbsolutePath());
+//                            msg.setMessageStatus(IMessage.MessageStatus.RECEIVE_SUCCEED);
+//                            mAdapter.notifyDataSetChanged();
+//                        }
+//                    });
+//                    mAdapter.addToStart(msg, true);
+//                }
+//                break;
+//            }
+        }
+    }
+
+    /**
+     * 当在聊天界面断网再次连接时收离线事件刷新
+     */
+    public void onEventMainThread(OfflineMessageEvent event) {
+        Log.e("onEventMainThread", " 收离线事件刷新 ====> " + event.toString());
+        Conversation conv = event.getConversation();
+        if (conv.getType().equals(ConversationType.single)) {
+            UserInfo userInfo = (UserInfo) conv.getTargetInfo();
+            String targetId = userInfo.getUserName();
+            String appKey = userInfo.getAppKey();
+//            if (targetId.equals(mTargetId)) {
+//                List<Message> singleOfflineMsgList = event.getOfflineMessageList();
+//                if (singleOfflineMsgList != null && singleOfflineMsgList.size() > 0) {
+//                    mChatView.setToBottom();
+//                    mChatAdapter.addMsgListToList(singleOfflineMsgList);
+//                }
+//            }
+        }
+    }
+
+    //消息撤回
+    public void onEventMainThread(MessageRetractEvent event) {
+        Log.e("onEventMainThread", " 消息撤回 ====> " + event.toString());
+        Message retractedMessage = event.getRetractedMessage();
+//        mChatAdapter.delMsgRetract(retractedMessage);
+    }
+
+    /**
+     * 消息已读事件
+     */
+    public void onEventMainThread(MessageReceiptStatusChangeEvent event) {
+        List<MessageReceiptStatusChangeEvent.MessageReceiptMeta> messageReceiptMetas = event.getMessageReceiptMetas();
+        for (MessageReceiptStatusChangeEvent.MessageReceiptMeta meta : messageReceiptMetas) {
+            Log.e("onEventMainThread", "消息已读事件 ====> " + event.toString());
+            long serverMsgId = meta.getServerMsgId();
+            int unReceiptCnt = meta.getUnReceiptCnt();
+//            mChatAdapter.setUpdateReceiptCount(serverMsgId, unReceiptCnt);
+        }
+    }
+
 }

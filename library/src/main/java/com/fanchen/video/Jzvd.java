@@ -25,7 +25,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

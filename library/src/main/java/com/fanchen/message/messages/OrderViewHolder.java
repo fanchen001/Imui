@@ -4,19 +4,22 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.fanchen.BuildConfig;
-import com.fanchen.R;
+import com.bumptech.glide.Glide;
+import com.fanchen.ui.BuildConfig;
+import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.view.RoundImageView;
 import com.fanchen.message.view.RoundTextView;
 
+import java.util.HashMap;
 import java.util.Random;
 
-public class OrderViewHolder<Message extends IMessage>  extends BaseMessageViewHolder<Message>
-        implements MsgListAdapter.DefaultMessageViewHolder, View.OnClickListener, View.OnLongClickListener  {
+public class OrderViewHolder<Message extends IMessage> extends BaseMessageViewHolder<Message>
+        implements MsgListAdapter.DefaultMessageViewHolder, View.OnClickListener, View.OnLongClickListener {
 
     private RoundTextView mDateTv;
     private TextView mDisplayNameTv;
@@ -24,9 +27,10 @@ public class OrderViewHolder<Message extends IMessage>  extends BaseMessageViewH
     private ImageButton mResendIb;
     private ProgressBar mSendingPb;
 
-//    private TextView mNameTv;
-//    private TextView mSizeTv;
-//    private ImageView mTypeIv;
+    private TextView mNameTv;
+    private TextView mNumTv;
+    private TextView mTimeTv;
+    private ImageView mImgIv;
 
     private View mL;
 
@@ -35,37 +39,39 @@ public class OrderViewHolder<Message extends IMessage>  extends BaseMessageViewH
     public OrderViewHolder(View itemView, boolean isSender) {
         super(itemView);
         this.isSender = isSender;
-        mL =  itemView.findViewById(R.id.aurora_ll_msgitem_order);
-//        mNameTv =  itemView.findViewById(R.id.aurora_tv_msgitem_file);
-//        mSizeTv =  itemView.findViewById(R.id.aurora_tv_msgitem_size);
-//        mTypeIv =  itemView.findViewById(R.id.aurora_iv_msgitem_file);
-
-        mDateTv =  itemView.findViewById(R.id.aurora_tv_msgitem_date);
-        mAvatarIv =  itemView.findViewById(R.id.aurora_iv_msgitem_avatar);
+        mL = itemView.findViewById(R.id.aurora_ll_msgitem_order);
+        mDateTv = itemView.findViewById(R.id.aurora_tv_msgitem_date);
+        mAvatarIv = itemView.findViewById(R.id.aurora_iv_msgitem_avatar);
         if (isSender) {
             mDisplayNameTv = (TextView) itemView.findViewById(R.id.aurora_tv_msgitem_sender_display_name);
         } else {
             mDisplayNameTv = (TextView) itemView.findViewById(R.id.aurora_tv_msgitem_receiver_display_name);
         }
-        mResendIb =  itemView.findViewById(R.id.aurora_ib_msgitem_resend);
+        mResendIb = itemView.findViewById(R.id.aurora_ib_msgitem_resend);
         mSendingPb = itemView.findViewById(R.id.aurora_pb_msgitem_sending);
+
+        mNameTv = itemView.findViewById(R.id.aurora_tv_msgitem_oname);
+        mNumTv = itemView.findViewById(R.id.aurora_tv_msgitem_onumber);
+        mTimeTv = itemView.findViewById(R.id.aurora_tv_msgitem_otime);
+        mImgIv = itemView.findViewById(R.id.aurora_iv_msgitem_order);
     }
 
     @Override
     public void onBind(final Message message) {
-//        HashMap<String, String> extras = message.getExtras();
-//        if(extras != null && !extras.isEmpty()){
-//            mNameTv.setText(extras.get("fileTitle"));
-//            mSizeTv.setText(extras.get("fileSize"));
-//            if(extras.get("path") != null){
-//                Glide.with(mTypeIv.getContext()).load(R.mipmap.apk)
-//                        .asBitmap().placeholder(R.mipmap.attachment)
-//                        .into(mTypeIv);
-//            }
-//        }
+        HashMap<String, String> extras = message.getExtras();
+        if (extras != null && !extras.isEmpty()) {
+            mNameTv.setText(extras.get("orderTitle"));
+            mNumTv.setText(extras.get("orderNumber"));
+            mTimeTv.setText(extras.get("orderTime"));
+            if (extras.get("path") != null) {
+                Glide.with(mImgIv.getContext()).load(extras.get("path")).asBitmap().placeholder(R.mipmap.attachment).into(mImgIv);
+            } else {
+                mImgIv.setImageResource(R.mipmap.attachment);
+            }
+        }
         String timeString = message.getTimeString();
         mDateTv.setVisibility(View.VISIBLE);
-        if (timeString != null && !TextUtils.isEmpty(timeString)&&new Random().nextInt() % 3 == 0) {
+        if (timeString != null && !TextUtils.isEmpty(timeString) && new Random().nextInt() % 3 == 0) {
             mDateTv.setText(timeString);
         } else {
             mDateTv.setVisibility(View.GONE);
@@ -77,9 +83,12 @@ public class OrderViewHolder<Message extends IMessage>  extends BaseMessageViewH
         } else if (mImageLoader == null) {
             mAvatarIv.setVisibility(View.GONE);
         }
-        if (mDisplayNameTv.getVisibility() == View.VISIBLE) {
-            mDisplayNameTv.setText(message.getFromUser().getDisplayName());
+        if (mDisplayNameTv != null) {
+            if (mDisplayNameTv.getVisibility() == View.VISIBLE) {
+                mDisplayNameTv.setText(message.getFromUser().getDisplayName());
+            }
         }
+
         if (isSender) {
             switch (message.getMessageStatus()) {
                 case SEND_GOING:
@@ -106,8 +115,14 @@ public class OrderViewHolder<Message extends IMessage>  extends BaseMessageViewH
         mL.setOnClickListener(this);
 
         mL.setOnLongClickListener(this);
-        mAvatarIv.setTag(message);
-        mAvatarIv.setOnClickListener(this);
+        mAvatarIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mAvatarClickListener != null) {
+                    mAvatarClickListener.onAvatarClick(message);
+                }
+            }
+        });
     }
 
     @Override
@@ -119,23 +134,31 @@ public class OrderViewHolder<Message extends IMessage>  extends BaseMessageViewH
             if (style.getSendingIndeterminateDrawable() != null) {
                 mSendingPb.setIndeterminateDrawable(style.getSendingIndeterminateDrawable());
             }
-            if (style.getShowSenderDisplayName()) {
-                mDisplayNameTv.setVisibility(View.VISIBLE);
-            } else {
-                mDisplayNameTv.setVisibility(View.GONE);
+            if (mDisplayNameTv != null) {
+                if (style.getShowSenderDisplayName()) {
+                    mDisplayNameTv.setVisibility(View.VISIBLE);
+                } else {
+                    mDisplayNameTv.setVisibility(View.GONE);
+                }
             }
+
         } else {
-            if (style.getShowReceiverDisplayName()) {
-                mDisplayNameTv.setVisibility(View.VISIBLE);
-            } else {
-                mDisplayNameTv.setVisibility(View.GONE);
+            if (mDisplayNameTv != null) {
+                if (style.getShowReceiverDisplayName()) {
+                    mDisplayNameTv.setVisibility(View.VISIBLE);
+                } else {
+                    mDisplayNameTv.setVisibility(View.GONE);
+                }
             }
+
         }
-        mDisplayNameTv.setTextSize(style.getDisplayNameTextSize());
-        mDisplayNameTv.setTextColor(style.getDisplayNameTextColor());
-        mDisplayNameTv.setPadding(style.getDisplayNamePaddingLeft(), style.getDisplayNamePaddingTop(),
-                style.getDisplayNamePaddingRight(), style.getDisplayNamePaddingBottom());
-        mDisplayNameTv.setEms(style.getDisplayNameEmsNumber());
+        if (mDisplayNameTv != null) {
+            mDisplayNameTv.setTextSize(style.getDisplayNameTextSize());
+            mDisplayNameTv.setTextColor(style.getDisplayNameTextColor());
+            mDisplayNameTv.setPadding(style.getDisplayNamePaddingLeft(), style.getDisplayNamePaddingTop(),
+                    style.getDisplayNamePaddingRight(), style.getDisplayNamePaddingBottom());
+            mDisplayNameTv.setEms(style.getDisplayNameEmsNumber());
+        }
         mDateTv.setTextSize(style.getDateTextSize());
         mDateTv.setTextColor(style.getDateTextColor());
         mDateTv.setPadding(style.getDatePaddingLeft(), style.getDatePaddingTop(), style.getDatePaddingRight(),
@@ -153,15 +176,16 @@ public class OrderViewHolder<Message extends IMessage>  extends BaseMessageViewH
     @Override
     public void onClick(View v) {
         Message message = (Message) v.getTag();
-        if(mAvatarIv == v){
+        /*if(mAvatarIv == v){
             if (mAvatarClickListener != null) {
                 mAvatarClickListener.onAvatarClick(message);
             }
-        }else if(mL == v){
+        }else */
+        if (mL == v) {
             if (mMsgClickListener != null) {
                 mMsgClickListener.onMessageClick(message);
             }
-        }else if(mResendIb == v){
+        } else if (mResendIb == v) {
             if (mMsgStatusViewClickListener != null) {
                 mMsgStatusViewClickListener.onStatusViewClick(message);
             }

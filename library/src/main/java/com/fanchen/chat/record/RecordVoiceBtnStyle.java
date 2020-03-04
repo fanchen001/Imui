@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.Style;
 
 public class RecordVoiceBtnStyle extends Style {

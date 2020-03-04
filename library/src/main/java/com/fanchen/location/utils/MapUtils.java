@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;

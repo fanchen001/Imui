@@ -11,7 +11,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.view.WindowManager;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.message.commons.Style;
 
 public class MessageListStyle extends Style {

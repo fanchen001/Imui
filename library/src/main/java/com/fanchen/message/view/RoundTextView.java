@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 
 public class RoundTextView extends AppCompatTextView {

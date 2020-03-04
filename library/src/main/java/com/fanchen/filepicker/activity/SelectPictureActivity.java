@@ -22,11 +22,13 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.fanchen.R;
+import com.fanchen.ui.R;
+import com.fanchen.base.BaseIActivity;
 import com.fanchen.filepicker.SelectOptions;
 import com.fanchen.filepicker.adapter.BuketAdapter;
 import com.fanchen.filepicker.adapter.EssMediaAdapter;
@@ -39,7 +41,6 @@ import com.fanchen.filepicker.util.UiUtils;
 import com.fanchen.filepicker.widget.MediaItemDecoration;
 import com.fanchen.filepicker.widget.ToolbarSpinner;
 import com.fanchen.video.SimpleVideoActivity;
-import com.jude.swipbackhelper.SwipeBackHelper;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -53,7 +54,7 @@ import java.util.Locale;
 /**
  * 选择图片界面
  */
-public class SelectPictureActivity extends AppCompatActivity implements
+public class SelectPictureActivity extends BaseIActivity implements
         EssAlbumCollection.EssAlbumCallbacks, AdapterView.OnItemSelectedListener,
         EssMediaCollection.EssMediaCallbacks, BaseQuickAdapter.OnItemChildClickListener,
         BaseQuickAdapter.OnItemClickListener {
@@ -84,7 +85,6 @@ public class SelectPictureActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_select_picture);
         mRecyclerView = findViewById(R.id.rcv_file_picture_list);
         initUI();
-        SwipeBackHelper.onCreate(this);
         // android 7.0系统解决拍照的问题
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -93,12 +93,7 @@ public class SelectPictureActivity extends AppCompatActivity implements
                 builder.detectFileUriExposure();
             }
         }
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        SwipeBackHelper.onPostCreate(this);
+        UiUtils.setViewPadding(findViewById(R.id.abl_title));
     }
 
     private void initUI() {
@@ -156,7 +151,6 @@ public class SelectPictureActivity extends AppCompatActivity implements
         super.onDestroy();
         mAlbumCollection.onDestroy();
         mMediaCollection.onDestroy();
-        SwipeBackHelper.onDestroy(this);
     }
 
     @Override
@@ -321,9 +315,9 @@ public class SelectPictureActivity extends AppCompatActivity implements
         } else if (requestCode != 404 && data != null && resultCode == RESULT_OK) {
             setResult(resultCode, data);
             finish();
-        } else if (mOutImage != null && mOutImage.exists()&& resultCode == RESULT_OK) {
+        } else if (mOutImage != null && mOutImage.exists() && resultCode == RESULT_OK) {
             mCameraList.add(new EssFile(mOutImage));
-        }else if(requestCode == SelectOptions.getInstance().request_code && resultCode == RESULT_OK){
+        } else if (requestCode == SelectOptions.getInstance().request_code && resultCode == RESULT_OK) {
             SelectOptions.getInstance().cropConfig = null;
             setResult(resultCode, data);
             finish();

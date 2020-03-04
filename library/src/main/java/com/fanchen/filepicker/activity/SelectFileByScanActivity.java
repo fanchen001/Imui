@@ -15,7 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
+import com.fanchen.base.BaseIActivity;
 import com.fanchen.filepicker.SelectOptions;
 import com.fanchen.filepicker.adapter.FragmentPagerAdapter;
 import com.fanchen.filepicker.loader.EssMimeTypeCollection;
@@ -26,7 +27,6 @@ import com.fanchen.filepicker.model.FileScanSortChangedEvent;
 import com.fanchen.filepicker.util.Const;
 import com.fanchen.filepicker.util.FileUtils;
 import com.fanchen.filepicker.util.UiUtils;
-import com.jude.swipbackhelper.SwipeBackHelper;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * 通过扫描来选择文件
  */
-public class SelectFileByScanActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class SelectFileByScanActivity extends BaseIActivity implements ViewPager.OnPageChangeListener {
 
     /*todo 是否可预览文件，默认可预览*/
     private boolean mCanPreview = true;
@@ -60,19 +60,7 @@ public class SelectFileByScanActivity extends AppCompatActivity implements ViewP
         setContentView(R.layout.activity_select_file_by_scan);
         EventBus.getDefault().register(this);
         initUi();
-        initData();
-        SwipeBackHelper.onCreate(this);
-
-//
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        SwipeBackHelper.onPostCreate(this);
-    }
-
-    private void initData() {
+        UiUtils.setViewPadding(findViewById(R.id.abl_title));
     }
 
     private void initUi() {
@@ -134,7 +122,6 @@ public class SelectFileByScanActivity extends AppCompatActivity implements ViewP
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        SwipeBackHelper.onDestroy(this);
     }
 
     @Override

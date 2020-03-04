@@ -12,7 +12,7 @@ import android.graphics.RectF;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.util.Log;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

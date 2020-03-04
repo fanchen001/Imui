@@ -3,26 +3,19 @@
 
     <item
         android:id="@+id/action_walk"
-        android:checkable="true"
-        android:checked="true"
         android:orderInCategory="90"
         android:title="@string/base_walk_map"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_drive"
-        android:checkable="true"
-        android:checked="false"
         android:orderInCategory="90"
         android:title="@string/base_drive_map"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_public"
-        android:checkable="true"
-        android:checked="false"
         android:orderInCategory="90"
         android:title="@string/base_public_map"
         app:showAsAction="never" />
-
 </menu>

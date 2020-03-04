@@ -53,7 +53,7 @@ import java.util.Locale;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.listener.CameraEventListener;
 import com.fanchen.chat.listener.OnCameraCallbackListener;
 

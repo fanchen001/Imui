@@ -10,7 +10,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.message.MessageListView;
 
 /**

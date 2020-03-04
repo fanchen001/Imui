@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.filepicker.model.EssFile;
 import com.fanchen.filepicker.util.PathUtils;
 import com.fanchen.picture.view.photoview.PhotoView;

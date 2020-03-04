@@ -14,7 +14,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.emoji.Constants;
 import com.fanchen.chat.emoji.DefEmoticons;
 import com.fanchen.chat.emoji.EmojiBean;

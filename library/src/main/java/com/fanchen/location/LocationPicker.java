@@ -3,11 +3,13 @@ package com.fanchen.location;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.location.bean.LocationBean;
 import com.fanchen.location.utils.CommonUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public final class LocationPicker {
@@ -22,9 +24,11 @@ public final class LocationPicker {
         }
     }
 
-    public static void startNavigayionActivity(Activity context) {
+    public static void startNavigayionActivity(Activity context, Bundle bundle) {
         try {
-            context.startActivity(new Intent(context, MapNavigationActivity.class));
+            Intent intent = new Intent(context, MapNavigationActivity.class);
+            intent.putExtras(bundle);
+            context.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,7 +38,7 @@ public final class LocationPicker {
         if (data == null) {
             return null;
         }
-        final LocationBean bean = data.getParcelableExtra("Location");
+        final LocationBean bean = data.getParcelableExtra("location");
         final String thumbnailPath = data.getStringExtra("thumbnailPath");
         return new Map.Entry<String, LocationBean>() {
             @Override

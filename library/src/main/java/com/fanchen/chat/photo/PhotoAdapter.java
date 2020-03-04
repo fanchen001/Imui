@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.fanchen.chat.ChatInputView;
 import com.fanchen.chat.listener.OnFileSelectedListener;
 import com.fanchen.chat.model.FileItem;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.model.VideoItem;
 
 import static android.view.View.GONE;

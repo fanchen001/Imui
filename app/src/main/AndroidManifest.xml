@@ -3,57 +3,208 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.fanchen">
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <permission
+        android:name="${applicationId}.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
 
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--//获取设备网络状态，禁用后无法获取网络状态-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--//网络权限，当禁用后，无法进行检索等相关业务-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--//读取设备硬件信息，统计数据-->
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <!--//读取系统信息，包含系统版本等信息，用作统计-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!--//获取设备的网络状态，鉴权所需网络代理-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--//允许sd卡写权限，需写入地图数据，禁用后无法显示地图-->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <!--//获取统计数据-->
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    <!--//鉴权所需该权限获取进程列表-->
-    <!--关于定位的权限-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+    <!-- Required -->
+    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="imui.jiguang.cn.imuisample.IMUISampleApplication"
+        android:name="im.sdk.debug.application.IMDebugApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-     <activity
-         android:theme="@style/AppTheme1"
-            android:name="imui.jiguang.cn.imuisample.messages.MessageListActivity"
+        <activity
+            android:name="imui.jiguang.cn.imuisample.messages.LoginActivity"
+            android:theme="@style/AppTheme1"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name="imui.jiguang.cn.imuisample.messages.MessageListActivity"
+            android:theme="@style/AppTheme1"
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="c31eucvLutGc3c4pihAKNFRHIwGzHsLd" />
 
+        <!-- Required SDK 核心功能-->
+        <!-- 可配置android:process参数将PushService放在其他进程中 -->
+        <service
+            android:name="imui.jiguang.cn.imuisample.jpush.PushService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":pushcore">
+            <intent-filter>
+                <action android:name="cn.jiguang.user.service.action" />
+            </intent-filter>
+        </service>
+
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+                <!-- Required 显示通知栏 -->
+                <category android:name="${applicationId}" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife" />
+            </intent-filter>
+            <!-- Optional -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.im.android.helpers.IMReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.android.service.AlarmReceiver"
+            android:exported="false" />
+
+        <!-- Required since JCore 1.1.7. SDK 核心功能-->
+        <provider
+            android:name="cn.jpush.android.service.DataProvider"
+            android:authorities="${applicationId}.DataProvider"
+            android:exported="false" />
+
+        <!-- since JCore 1.8.0 option 可选项可选项。用于同一设备中不同应用的 JMessage服务相互拉起的功能。 -->
+        <!-- 若不启用该功能可删除该组件，或把 enabled 设置成 false ；拉起服务被关闭，App 不会通过拉起服务拉起其他的 App，也不会被其他 App 拉起。 -->
+        <service
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.DaemonService" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </service>
+
+        <!-- Required since JMessage 2.7.0 SDK 核心功能-->
+        <provider
+            android:name="cn.jpush.im.android.helpers.ipc.IMProvider"
+            android:authorities="${applicationId}.IMProvider"
+            android:exported="false" />
+
+        <!-- Required. For publish channel feature -->
+        <!-- JPUSH_CHANNEL 是为了方便开发者统计APK分发渠道。-->
+        <!-- 例如: -->
+        <!-- 发到 Google Play 的APK可以设置为 google-play; -->
+        <!-- 发到其他市场的 APK 可以设置为 xxx-market。 -->
+        <!-- 目前这个渠道统计功能的报表还未开放。-->
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+
+        <!-- Required. AppKey copied from Portal -->
+
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="5bbecb1a6093499aed76ecc2" />
+
+        <activity android:name="im.sdk.debug.activity.setting.RegisterActivity" />
+        <activity android:name="im.sdk.debug.activity.setting.SettingMainActivity" />
+        <activity
+            android:name="im.sdk.debug.activity.TypeActivity"
+            android:launchMode="singleTask" />
+        <activity android:name="im.sdk.debug.activity.setting.InfoActivity" />
+        <activity android:name="im.sdk.debug.activity.setting.AssertEqualsActivity" />
+        <activity android:name="im.sdk.debug.activity.setting.GetUserInfoActivity" />
+        <activity android:name="im.sdk.debug.activity.setting.UpdatePassword" />
+        <activity android:name="im.sdk.debug.activity.setting.UpdateUserInfoActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateMessageActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateSigTextMessageActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.GroupInfoActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.CreateGroupActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.GetGroupInfoActivity" />
+        <activity android:name="im.sdk.debug.activity.conversation.ConversationActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.AddRemoveGroupMemberActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.UpdateGroupInfoActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.ExitGroupActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.GetLocalGroupMembersActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateGroupTextMsgActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateSigCustomMsgActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateSigImageMessageActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.ShowMessageActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateGroupImageMsgActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateSigVoiceMsgActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateGroupCustomMsgActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateGroupVoiceMsgActivity" />
+        <activity android:name="im.sdk.debug.activity.notify.NotifyTypeActivity" />
+        <activity android:name="im.sdk.debug.activity.setting.GetBlackListActivity" />
+        <activity android:name="im.sdk.debug.activity.setting.AddRemoveBlackListActivity" />
+        <activity android:name="im.sdk.debug.activity.setting.UpdateUserAvatar" />
+        <activity android:name="im.sdk.debug.activity.setting.UpdateUserExtras" />
+        <activity android:name="im.sdk.debug.activity.messagecontent.SetGetStringExtraActivity" />
+        <activity android:name="im.sdk.debug.activity.messagecontent.SetGetNumberExtraActivity" />
+        <activity android:name="im.sdk.debug.activity.messagecontent.SetGetBooleanExtraActivity" />
+        <activity android:name="im.sdk.debug.activity.messagecontent.SetGetExtraActivity" />
+        <activity android:name="im.sdk.debug.activity.conversation.GetConversationInfoActivity" />
+        <activity android:name="im.sdk.debug.activity.conversation.OrderMessageActivity" />
+        <activity android:name="im.sdk.debug.activity.conversation.IsShowNotifySigActivity" />
+        <activity android:name="im.sdk.debug.activity.conversation.DeleteConversationActivity" />
+        <activity android:name="im.sdk.debug.activity.setting.NoDisturbListActivity" />
+        <activity android:name="im.sdk.debug.activity.setting.ShowLogoutReasonActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateSendFileActivity" />
+        <activity android:name="im.sdk.debug.activity.friend.FriendContactManager" />
+        <activity android:name="im.sdk.debug.activity.friend.AddFriendActivity" />
+        <activity android:name="im.sdk.debug.activity.friend.ShowFriendReasonActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateLocationMessageActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.BlockedGroupMsgActivity" />
+        <activity android:name="im.sdk.debug.activity.showinfo.ShowMyInfoUpdateActivity" />
+        <activity android:name="im.sdk.debug.activity.conversation.RetractMessageActivity" />
+        <activity android:name="im.sdk.debug.activity.conversation.ForwardMessageActivity" />
+        <activity android:name="im.sdk.debug.activity.conversation.MessageReceiptActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateTransCommandActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.ShowTransCommandActivity" />
+        <activity android:name="im.sdk.debug.activity.chatroom.ChatRoomActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.ApplyJoinGroupActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.ShowGroupApprovalActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.SetGroupMemSilenceActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.GetPublicGroupInfosActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.GroupKeeperActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.DissolveGroupActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.ChangeGroupAdminActivity" />
+        <activity android:name="im.sdk.debug.activity.jmrtc.JMRTCActivity" />
+        <activity android:name="im.sdk.debug.activity.createmessage.CreateVideoMsgActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.HandleGroupApprovalInBatchActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.GroupMemNicknameActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.ShowMemNicknameChangedActivity" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.GroupAnnouncementActivity" />
+        <activity
+            android:name="im.sdk.debug.activity.showinfo.ShowAnnouncementChangedActivity"
+            android:launchMode="singleTask" />
+        <activity android:name="im.sdk.debug.activity.groupinfo.GroupBlackListActivity" />
+        <activity
+            android:name="im.sdk.debug.activity.showinfo.ShowGroupBlcakListChangedActivity"
+            android:launchMode="singleTask" />
+        <activity android:name="im.sdk.debug.activity.showinfo.ShowChatRoomNotificationActivity" />
     </application>
 </manifest>

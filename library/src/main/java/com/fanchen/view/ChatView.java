@@ -13,7 +13,7 @@ import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.ChatInputView;
 import com.fanchen.chat.listener.CustomMenuEventListener;
 import com.fanchen.chat.listener.OnCameraCallbackListener;

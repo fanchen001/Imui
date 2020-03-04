@@ -10,7 +10,7 @@ import com.bumptech.glide.DrawableTypeRequest;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.filepicker.SelectOptions;
 import com.fanchen.filepicker.model.EssFile;
 import com.fanchen.filepicker.util.UiUtils;

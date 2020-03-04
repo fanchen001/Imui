@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.listener.OnFileSelectedListener;
 import com.fanchen.chat.listener.OnMenuClickListener;
 import com.fanchen.chat.model.FileItem;

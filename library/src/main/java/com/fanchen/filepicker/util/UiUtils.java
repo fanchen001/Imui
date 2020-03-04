@@ -1,6 +1,7 @@
 package com.fanchen.filepicker.util;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -13,18 +14,23 @@ import android.view.ViewGroup;
  */
 public class UiUtils {
 
-    public static ViewGroup.LayoutParams setViewPadding(View view){
-        if(view == null) return null;
-        int statusBarHeight = getStatusBarHeight(view.getContext());
-        view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + statusBarHeight,
-                view.getPaddingRight(), view.getPaddingBottom());
-        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        if (layoutParams != null) {
-            layoutParams.height = layoutParams.height + statusBarHeight;
-            view.setLayoutParams(layoutParams);
-            return layoutParams;
-        } else {
-            return null;
+    public static void setViewPadding(final View view){
+        if(view == null) return ;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            view.post(new Runnable() {
+
+                @Override
+                public void run() {
+                    int statusBarHeight = getStatusBarHeight(view.getContext());
+                    view.setPadding(view.getPaddingLeft(), view.getPaddingTop() + statusBarHeight,view.getPaddingRight(), view.getPaddingBottom());
+                    ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                    if (layoutParams != null) {
+                        layoutParams.height = view.getMeasuredHeight() + statusBarHeight;
+                        view.setLayoutParams(layoutParams);
+                    }
+                }
+
+            });
         }
     }
 

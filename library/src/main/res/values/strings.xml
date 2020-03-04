@@ -96,4 +96,7 @@
 
     <string name="pic_indicator">%1$s/%2$s</string>
     <string name="chat_simple">chat simple</string>
+    <string name="get_geo_error">get geoCode error</string>
+    <string name="get_poi_empty">poi list empty</string>
+    <string name="get_location_null">location null</string>
 </resources>

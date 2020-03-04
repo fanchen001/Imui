@@ -78,4 +78,5 @@
     <dimen name="pic_item_spacing">8dp</dimen>
     <dimen name="pic_media_margin">2dp</dimen>
     <dimen name="pic_corner_radius">2dp</dimen>
+    <dimen name="base_padding_rv">3dp</dimen>
 </resources>

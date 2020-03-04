@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 public class ChatInputStyle extends Style {
 

@@ -112,7 +112,6 @@
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
 
-
     <style name="BaseMapStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@style/BaseAnimStyle</item>
@@ -121,8 +120,8 @@
         <item name="colorPrimaryDark">@color/elec_primary_dark</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
         <item name="android:colorForeground">#55000000</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name="BaseAnimFade" parent="@android:style/Animation.Activity">
@@ -156,20 +155,20 @@
 
     <style name="FilePicker.Elec" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
         <!--Android 5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色-->
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/elec_primary
-        </item>
-        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
         <item name="android:windowAnimationStyle">@style/SlideRightAnimation</item>
         <item name="colorAccent">@color/ucrop_base_color_widget_active</item>
         <item name="colorPrimary">@color/elec_primary</item>
         <item name="colorPrimaryDark">@color/elec_primary_dark</item>
+
         <item name="toolbar">@style/Toolbar.elec</item>
         <item name="album.dropdown.title.color">@color/elec_album_dropdown_title_text</item>
         <item name="album.dropdown.count.color">@color/elec_album_dropdown_count_text</item>
         <item name="album.element.color">@android:color/white</item>
-        <item name="album.thumbnail.placeholder">@color/elec_album_dropdown_thumbnail_placeholder
-        </item>
+        <item name="album.thumbnail.placeholder">@color/elec_album_dropdown_thumbnail_placeholder</item>
         <item name="album.emptyView">@drawable/ic_empty_elec</item>
         <item name="album.emptyView.textColor">@color/elec_album_empty_view</item>
         <item name="item.placeholder">@color/elec_item_placeholder</item>
@@ -190,9 +189,9 @@
         <item name="capture.textColor">@color/elec_capture</item>
     </style>
 
-    <style name="Toolbar.elec" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>
+    <style name="Toolbar.elec" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="Popup.elec" parent="Widget.AppCompat.Light.ListPopupWindow"></style>
+    <style name="Popup.elec" parent="Widget.AppCompat.Light.ListPopupWindow"/>
 
     //===================================== Theme Dracula ==========================================
 

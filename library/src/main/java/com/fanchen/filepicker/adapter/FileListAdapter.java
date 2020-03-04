@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.fanchen.filepicker.model.EssFile;
 import com.fanchen.filepicker.util.FileSizeUtil;
 import com.fanchen.filepicker.util.FileUtils;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 import java.util.List;
 

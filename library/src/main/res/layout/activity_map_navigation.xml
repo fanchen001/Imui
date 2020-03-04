@@ -38,6 +38,7 @@
                     android:id="@+id/tv_address_map"
                     style="@style/BaseMapAddressTextView"
                     android:layout_width="fill_parent"
+                    android:singleLine="true"
                     android:layout_height="fill_parent"
                     android:hint="@string/map_local" />
             </android.support.v7.widget.Toolbar>

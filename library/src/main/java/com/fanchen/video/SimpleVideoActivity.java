@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.bumptech.glide.Glide;
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 public class SimpleVideoActivity extends Activity {
 

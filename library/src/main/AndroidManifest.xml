@@ -1,16 +1,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.fanchen">
+    package="com.fanchen.ui">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--//获取设备网络状态，禁用后无法获取网络状态-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--//网络权限，当禁用后，无法进行检索等相关业务-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--//读取设备硬件信息，统计数据-->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <!--//读取系统信息，包含系统版本等信息，用作统计-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!--//允许sd卡写权限，需写入地图数据，禁用后无法显示地图-->
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
     <!--//获取统计数据-->
     <uses-permission android:name="android.permission.GET_TASKS" />
@@ -22,7 +35,6 @@
 
     <uses-feature android:name="android.hardware.camera" />
 
-
     <uses-feature
         android:name="android.hardware.camera2"
         android:required="false" />
@@ -32,30 +44,30 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".filepicker.activity.SelectFileByBrowserActivity"
+            android:name="com.fanchen.filepicker.activity.SelectFileByBrowserActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".filepicker.activity.SelectPictureActivity"
+            android:name="com.fanchen.filepicker.activity.SelectPictureActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".filepicker.activity.PictureViewActivity"
+            android:name="com.fanchen.filepicker.activity.PictureViewActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".video.SimpleVideoActivity"
+            android:name="com.fanchen.video.SimpleVideoActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
 
-        <activity android:name=".filepicker.activity.SelectFileByScanActivity" />
+        <activity android:name="com.fanchen.filepicker.activity.SelectFileByScanActivity" />
 
         <activity
-            android:name=".location.MapSendActivity"
+            android:name="com.fanchen.location.MapSendActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".location.MapNavigationActivity"
+            android:name="com.fanchen.location.MapNavigationActivity"
             android:screenOrientation="portrait" />
 
         <activity
@@ -64,7 +76,7 @@
             android:theme="@style/BaseBoxingAppThemeNoActionBar" />
 
         <provider
-            android:name=".filepicker.model.EssFileProvider"
+            android:name="com.fanchen.filepicker.model.EssFileProvider"
             android:authorities="${applicationId}.fanchen.file.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -78,15 +90,12 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <service android:name=".location.service.TrackerService" />
+        <service android:name="com.fanchen.location.service.TrackerService" />
 
         <activity
-            android:name=".picture.view.ImagePreviewActivity"
+            android:name="com.fanchen.picture.view.ImagePreviewActivity"
             android:screenOrientation="portrait" />
 
-        <!-- glide 声明自定义的module -->
-       <!-- <meta-data
-            android:name="com.fanchen.picture.glide.engine.OkHttpProgressGlideModule"
-            android:value="GlideModule" />-->
+
     </application>
 </manifest>

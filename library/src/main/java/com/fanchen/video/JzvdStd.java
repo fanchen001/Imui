@@ -28,7 +28,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayDeque;

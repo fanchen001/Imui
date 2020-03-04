@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.chat.listener.RecordVoiceListener;
 
 

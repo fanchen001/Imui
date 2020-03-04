@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.filepicker.model.Album;
 import com.fanchen.filepicker.util.Platform;
 

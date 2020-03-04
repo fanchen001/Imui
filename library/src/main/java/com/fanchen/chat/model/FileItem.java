@@ -17,6 +17,7 @@ public class FileItem implements Comparable<FileItem> {
 
     private Type mType;
 
+
     public FileItem(@NonNull String path, String name, String size, String date) {
         this.mFilePath = path;
         this.mFileName = name;

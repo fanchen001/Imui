@@ -2,7 +2,7 @@ package com.fanchen.message.messages;
 
 import android.view.View;
 
-import com.fanchen.R;
+import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.view.RoundTextView;
 
