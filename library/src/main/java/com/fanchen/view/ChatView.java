@@ -48,6 +48,7 @@ import com.fanchen.message.messages.ptr.PtrDefaultHeader;
 import com.fanchen.message.messages.ptr.PullToRefreshLayout;
 import com.fanchen.message.utils.DisplayUtil;
 import com.fanchen.video.JZUtils;
+import com.fanchen.video.Jzvd;
 
 public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         View.OnTouchListener, SensorEventListener, View.OnClickListener {
@@ -93,7 +94,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     }
 
     @SuppressLint("InvalidWakeLockTag")
-    public void useDefaultWakeLock() {
+    public void registerDefaultWakeLock() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPowerManager = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
             mWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "ChatView");
@@ -101,6 +102,12 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
             mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
             mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
             mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+        }
+    }
+
+    public void unregisterDefaultWakeLock() {
+        if (mSensorManager != null) {
+            mSensorManager.unregisterListener(this);
         }
     }
 
@@ -327,6 +334,15 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+
+    public boolean onBackPressed() {
+        return Jzvd.backPress();
+    }
+
+    public void onPause() {
+        Jzvd.releaseAllVideos();
     }
 
     @Override
