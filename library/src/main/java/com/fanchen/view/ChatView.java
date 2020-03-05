@@ -1,12 +1,27 @@
 package com.fanchen.view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.media.AudioManager;
+import android.os.Build;
+import android.os.PowerManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -14,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.fanchen.chat.listener.OnSelectButtonListener;
+import com.fanchen.message.messages.ViewHolderController;
 import com.fanchen.ui.R;
 import com.fanchen.chat.ChatInputView;
 import com.fanchen.chat.listener.CustomMenuEventListener;
@@ -33,13 +49,26 @@ import com.fanchen.message.messages.ptr.PullToRefreshLayout;
 import com.fanchen.message.utils.DisplayUtil;
 import com.fanchen.video.JZUtils;
 
-public class ChatView extends RelativeLayout implements CustomMenuEventListener {
+public class ChatView extends RelativeLayout implements CustomMenuEventListener,
+        View.OnTouchListener, SensorEventListener, View.OnClickListener {
 
     private RelativeLayout mTitleContainer;
     private MessageListView mMsgList;
     private ChatInputView mChatInput;
     private RecordVoiceButton mRecordVoiceBtn;
     private PullToRefreshLayout mPtrLayout;
+
+    private BroadcastReceiver mReceiver;
+
+    private InputMethodManager mImm;
+    private Window mWindow;
+    private Activity mActivity;
+
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+    private PowerManager mPowerManager;
+    private PowerManager.WakeLock mWakeLock;
+    private AudioManager mAudioManager;
 
     public ChatView(Context context) {
         this(context, null);
@@ -52,7 +81,27 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
     public ChatView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         View.inflate(context, R.layout.view_chat_wrap, this);
+        Activity activity = JZUtils.scanForActivity(context);
+        Log.e("ChatView", "context -> " + context);
+        Log.e("ChatView", "Activity -> " + activity);
+        if (activity != null) {
+            mActivity = activity;
+            mWindow = mActivity.getWindow();
+            mImm = (InputMethodManager) mActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        }
         initModule();
+    }
+
+    @SuppressLint("InvalidWakeLockTag")
+    public void useDefaultWakeLock() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mPowerManager = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
+            mWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "ChatView");
+            mSensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
+            mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+            mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+        }
     }
 
     public RelativeLayout getTitleContainer() {
@@ -66,17 +115,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
     private void initModule() {
         mTitleContainer = findViewById(R.id.title_container);
         View viewById = findViewById(R.id.iv_chat_back);
-        if (viewById != null) {
-            viewById.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Activity activity = JZUtils.scanForActivity(getContext());
-                    if (activity != null) {
-                        activity.finish();
-                    }
-                }
-            });
-        }
+        if (viewById != null) viewById.setOnClickListener(this);
         mMsgList = findViewById(R.id.msg_list);
         mChatInput = findViewById(R.id.chat_input);
         mPtrLayout = findViewById(R.id.pull_to_refresh_layout);
@@ -103,19 +142,15 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
         mPtrLayout.addPtrUIHandler(header);
         // 下拉刷新时，内容固定，只有 Header 变化
         mPtrLayout.setPinContent(true);
-        // set show display name or not
 //        mMsgList.setShowReceiverDisplayName(true);
 //        mMsgList.setShowSenderDisplayName(false);
-        // add Custom Menu View
 //        MenuManager menuManager = mChatInput.getMenuManager();
 //        menuManager.addCustomMenu("MY_CUSTOM", R.layout.menu_text_item, R.layout.menu_text_feature);
-////        // Custom menu order
 //        menuManager.setMenu(Menu.newBuilder().
 //                customize(true).
 //                setRight(Menu.TAG_SEND).
 //                setBottom(Menu.TAG_VOICE, Menu.TAG_EMOJI, Menu.TAG_GALLERY, Menu.TAG_CAMERA, "MY_CUSTOM").
 //                build());
-
 //        menuManager.setCustomMenuClickListener(new CustomMenuEventListener() {
 //            @Override
 //            public boolean onMenuItemClick(String tag, MenuItem menuItem) {
@@ -129,7 +164,6 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
 //                }
 //            }
 //        });
-
     }
 
     public void customMenuBuild(String tag, BaseAdapter adapter, AdapterView.OnItemClickListener l) {
@@ -168,7 +202,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
     }
 
     public void setOnSelectButtonListener(OnSelectButtonListener mOnSelectButtonListener) {
-        getChatInputView().setOnSelectButtonListener( mOnSelectButtonListener);
+        getChatInputView().setOnSelectButtonListener(mOnSelectButtonListener);
     }
 
     public void setAdapter(MsgListAdapter adapter) {
@@ -195,8 +229,15 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
         mChatInput.setOnCameraCallbackListener(listener);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void setOnTouchListener(OnTouchListener listener) {
         mMsgList.setOnTouchListener(listener);
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void defaultOnTouchListener() {
+        mMsgList.setOnTouchListener(this);
+        mChatInput.getInputView().setOnTouchListener(this);
     }
 
     public void setOnTouchEditTextListener(OnClickEditTextListener listener) {
@@ -225,7 +266,76 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
 
     @Override
     public void onMenuFeatureVisibilityChanged(int visibility, String tag, MenuFeature menuFeature) {
+    }
 
+    public void scrollToBottom(int delayed) {
+        postDelayed(new DelayedRunnable(0), delayed);
+    }
+
+    public void scrollToBottom() {
+        scrollToBottom(200);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (mMsgList == getMessageListView()) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    if (mChatInput.getMenuState() == View.VISIBLE) {
+                        mChatInput.dismissMenuLayout();
+                    }
+                    hideSoftInput(v);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    v.performClick();
+                    break;
+            }
+        } else {
+            scrollToBottom();
+        }
+        return false;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (mAudioManager == null || mAudioManager.isBluetoothA2dpOn() || mAudioManager.isWiredHeadsetOn()) {
+            return;
+        }
+        MsgListAdapter<?> adapter = getMsgListAdapter();
+        if (mSensor != null && adapter != null && adapter.getMediaPlayer().isPlaying()) {
+            float distance = event.values[0];
+            if (distance >= mSensor.getMaximumRange()) {
+                adapter.setAudioPlayByEarPhone(0);
+                setScreen(true);
+            } else {
+                adapter.setAudioPlayByEarPhone(2);
+                ViewHolderController.getInstance().replayVoice();
+                setScreen(false);
+            }
+        } else {
+            if (mWakeLock != null && mWakeLock.isHeld()) {
+                try {
+                    mWakeLock.release();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            mWakeLock = null;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.iv_chat_back) {
+            if (mActivity != null) {
+                mActivity.finish();
+            }
+        }
     }
 
     private class DelayedRunnable implements Runnable {
@@ -237,8 +347,95 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener 
 
         @Override
         public void run() {
-            getMessageListView().smoothScrollToPosition(firstVisibleItemPosition);
+            MessageListView messageListView = getMessageListView();
+            if (messageListView == null) return;
+            RecyclerView.Adapter adapter = messageListView.getAdapter();
+            if (adapter == null) return;
+            if (adapter.getItemCount() > firstVisibleItemPosition && firstVisibleItemPosition >= 0) {
+                getMessageListView().smoothScrollToPosition(firstVisibleItemPosition);
+            }
         }
 
     }
+
+    private void hideSoftInput(View v) {
+        if (mActivity != null) {
+            View view = mActivity.getCurrentFocus();
+            if (mImm != null && view != null) {
+                mImm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                mWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                v.clearFocus();
+            }
+        }
+    }
+
+    public void unregistertDetectReceiver() {
+        try {
+            getContext().unregisterReceiver(mReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void registertDetectReceiver() {
+        try {
+            mReceiver = new HeadsetDetectReceiver();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_HEADSET_PLUG);
+            getContext().registerReceiver(mReceiver, intentFilter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private MsgListAdapter<?> getMsgListAdapter() {
+        MessageListView messageListView = getMessageListView();
+        if (messageListView == null) return null;
+        RecyclerView.Adapter adapter = messageListView.getAdapter();
+        if (adapter == null) return null;
+        if (!(adapter instanceof MsgListAdapter<?>)) return null;
+        return (MsgListAdapter<?>) adapter;
+    }
+
+    @SuppressLint({"WakelockTimeout", "InvalidWakeLockTag"})
+    private void setScreen(boolean bool) {
+        if (bool) {
+            if (mWakeLock != null) {
+                try {
+                    mWakeLock.setReferenceCounted(false);
+                    mWakeLock.release();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            mWakeLock = null;
+        } else {
+            if (mWakeLock == null && mPowerManager != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mWakeLock = mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "ChatView");
+                }
+            }
+            if (mWakeLock != null) {
+                try {
+                    mWakeLock.acquire();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private class HeadsetDetectReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            MsgListAdapter<?> adapter = getMsgListAdapter();
+            if (adapter != null && intent != null && intent.getAction() != null && intent.getAction().equals(Intent.ACTION_HEADSET_PLUG) && intent.hasExtra("state")) {
+                int state = intent.getIntExtra("state", 0);
+                adapter.setAudioPlayByEarPhone(state);
+            }
+        }
+
+    }
+
 }
