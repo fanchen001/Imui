@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.fanchen.base.BaseIActivity;
 import com.fanchen.ui.R;
 import com.fanchen.filepicker.SelectOptions;
 import com.fanchen.filepicker.model.EssFile;
@@ -23,7 +24,7 @@ import com.fanchen.picture.view.HackyViewPager;
 
 import java.util.ArrayList;
 
-public class PictureViewActivity extends AppCompatActivity {
+public class PictureViewActivity extends BaseIActivity {
 
     public static final String EXTRA_TYPE_BACK = "type_back";
     public static final String EXTRA_SELECTED_MEDIA = "EXTRA_SELECTED_MEDIA";
@@ -49,6 +50,11 @@ public class PictureViewActivity extends AppCompatActivity {
     private ArrayList<EssFile> mImages;
     private ArrayList<EssFile> mSelectedImages;
     private MenuItem mSelectedMenuItem;
+
+    @Override
+    protected boolean isSwipeActivity() {
+        return false;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

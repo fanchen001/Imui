@@ -25,6 +25,7 @@ public class BaseIActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
             Log.e("BaseIActivity", "onCreate fixOrientation when Oreo, result = " + fuckAndroidOCrash());
+        }else{
         }
         super.onCreate(savedInstanceState);
         SwipeBackHelper.onCreate(this);

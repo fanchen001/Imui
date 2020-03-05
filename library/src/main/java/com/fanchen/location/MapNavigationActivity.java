@@ -20,11 +20,12 @@ import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.TransitRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
+import com.fanchen.base.BaseIActivity;
 import com.fanchen.ui.R;
 import com.fanchen.location.utils.CommonUtils;
 import com.fanchen.location.view.SensorMapView;
 
-public class MapNavigationActivity extends AppCompatActivity {
+public class MapNavigationActivity extends BaseIActivity {
 
     public static final String CITY = "CITY";
     public static final String LATITUDE = "LATITUDE";
@@ -38,7 +39,13 @@ public class MapNavigationActivity extends AppCompatActivity {
     private SensorMapView mv_main;
 
     @Override
+    protected boolean isSwipeActivity() {
+        return false;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         setTheme(LocationPicker.themeId);
         //windowTranslucentStatus
         //BaseMapNavStyle

@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.fanchen.base.BaseIActivity;
 import com.fanchen.ui.R;
 import com.fanchen.picture.ImagePreview;
 import com.fanchen.picture.bean.ImageInfo;
@@ -39,7 +40,7 @@ import java.util.List;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
-public class ImagePreviewActivity extends AppCompatActivity
+public class ImagePreviewActivity extends BaseIActivity
         implements Handler.Callback, View.OnClickListener {
 
     public static final String TAG = "ImagePreview";
@@ -83,6 +84,11 @@ public class ImagePreviewActivity extends AppCompatActivity
         intent.setClass(context, ImagePreviewActivity.class);
         context.startActivity(intent);
         ((Activity) context).overridePendingTransition(R.anim.pic_fade_in, R.anim.pic_fade_out);
+    }
+
+    @Override
+    protected boolean isSwipeActivity() {
+        return false;
     }
 
     @Override
