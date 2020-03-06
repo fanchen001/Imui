@@ -23,6 +23,7 @@ import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -65,15 +66,18 @@ import com.fanchen.filepicker.model.EssFile;
 import com.fanchen.filepicker.model.UCropConfig;
 import com.fanchen.filepicker.util.Const;
 import com.fanchen.filepicker.util.FileSizeUtil;
+import com.fanchen.filepicker.util.UiUtils;
 import com.fanchen.location.LocationPicker;
 import com.fanchen.location.MapNavigationActivity;
 import com.fanchen.location.bean.LocationBean;
+import com.fanchen.location.utils.CommonUtils;
 import com.fanchen.message.commons.ImageLoader;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.messages.MsgListAdapter;
 import com.fanchen.message.messages.ptr.PtrHandler;
 import com.fanchen.message.messages.ptr.PullToRefreshLayout;
 import com.fanchen.message.messages.ViewHolderController;
+import com.fanchen.message.utils.DateUtil;
 import com.fanchen.picture.ImagePreview;
 import com.fanchen.video.Jzvd;
 import com.fanchen.video.SimpleVideoActivity;
@@ -94,6 +98,7 @@ import cn.jpush.im.android.api.content.VideoContent;
 import cn.jpush.im.android.api.content.VoiceContent;
 import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.enums.ConversationType;
+import cn.jpush.im.android.api.enums.MessageStatus;
 import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.event.MessageReceiptStatusChangeEvent;
 import cn.jpush.im.android.api.event.MessageRetractEvent;
@@ -329,7 +334,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         SwipeBackHelper.onCreate(this);
 
         setContentView(R.layout.activity_chat_);
-
+//        SoftHideKeyBoardUtil.assistActivity(this);
         String stringExtra = getIntent().getStringExtra("to");
 
 
@@ -350,7 +355,11 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         registerProximitySensorListener();
         mChatView = (ChatView) findViewById(R.id.chat_view);
 
+//        CommonUtils.mChatView
+
         mChatView.getTitleTextView().setText("与[" + stringExtra+ "]聊天");
+
+        UiUtils.setViewPadding(mChatView.getTitleContainer());
 
         mChatView.customMenuBuild("6666", new DefaultFeatureAdapter(), new AdapterView.OnItemClickListener() {
             @Override
@@ -478,7 +487,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 
                 message1.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                 message1.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
-
+                message1.setTag(sendTextMessage);
                 mAdapter.addToStart(message1, true);
 
 //                {
@@ -1078,9 +1087,34 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         mAdapter.setMsgLongClickListener(new MsgListAdapter.OnMsgLongClickListener<MyMessage>() {
             @Override
             public void onMessageLongClick(View view, MyMessage message) {
-                Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.message_long_click_hint),
-                        Toast.LENGTH_SHORT).show();
+                Log.e("MyMessage","onMessageLongClick = " + message);
+               Message m = (Message) message.getTag();
+                Log.e("MyMessage","onMessageLongClick = " + m);
+                Message message1 = mConv.getMessage(m.getId());
+                if(message1 == null){
+                    Toast.makeText(getApplicationContext(), "message1 == null" , Toast.LENGTH_SHORT).show();
+                }
+
+                mConv.retractMessage(message1, new BasicCallback() {
+
+                  @Override
+                  public void gotResult(int i, String s) {
+                      if(i == 0){
+                          Toast.makeText(getApplicationContext(),
+                                  "消息撤回成功" + s,
+                                  Toast.LENGTH_SHORT).show();
+                      }else{
+                          Toast.makeText(getApplicationContext(),
+                                  "消息撤回失败" + s,
+                                  Toast.LENGTH_SHORT).show();
+                      }
+
+                  }
+
+              });
+
+
+
                 // do something
             }
         });
@@ -1164,8 +1198,13 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                     mAdapter.notifyDataSetChanged();
                 }
             });
+            from.i = m.getCreateTime();
+
+            Log.e("MyMessage","from = " + from.getTag());
+
             myMessages.add(from);
         }
+        DateUtil.updateShowTime(myMessages,500);
         mAdapter.addToEndChronologically(myMessages);
         PullToRefreshLayout layout = mChatView.getPtrLayout();
         layout.setPtrHandler(new PtrHandler() {
@@ -1183,6 +1222,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 //                loadNextPage();
             }
         });
+
 
         mChatView.setAdapter(mAdapter);
         mAdapter.getLayoutManager().scrollToPosition(0);
@@ -1452,6 +1492,21 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     public void onEventMainThread(MessageRetractEvent event) {
         Log.e("onEventMainThread", " 消息撤回 ====> " + event.toString());
         Message retractedMessage = event.getRetractedMessage();
+        List<MyMessage> messageList = mAdapter.getMessageList();
+        MyMessage mmm = null;
+        for (MyMessage m : messageList){
+            Message tag = (Message) m.getTag();
+            if(tag != null && tag.getId() == retractedMessage.getId()){
+                mmm = m;
+            }
+        }
+        UserInfo myInfo = JMessageClient.getMyInfo();
+        if(mmm != null){
+            MyMessage myMessage = new MyMessage(myInfo.getUserName().equals(retractedMessage.getFromUser().getUserName()) ? IMessage.MessageType.SEND_RECALL.ordinal() : IMessage.MessageType.RECEIVE_RECALL.ordinal());
+            mAdapter.getMessageList().remove(mmm);
+            mAdapter.addToStart(myMessage,true);
+        }
+
 //        mChatAdapter.delMsgRetract(retractedMessage);
     }
 
