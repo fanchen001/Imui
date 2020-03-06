@@ -38,10 +38,8 @@
                 android:id="@+id/aurora_tv_msgitem_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:paddingBottom="20dp"
                 android:paddingTop="20dp"
-
                 android:background="@drawable/aurora_sendtxt_bubble"
                 android:maxWidth="220dp" />
 
@@ -98,7 +96,6 @@
             android:layout_marginRight="3dp"
             android:layout_toLeftOf="@id/aurora_fl_msgitem_voice_container"
             android:visibility="visible" />
-
     </RelativeLayout>
 
 </LinearLayout>
