@@ -1,10 +1,14 @@
 package com.fanchen.picture.view;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -204,16 +208,28 @@ public class ImagePreviewAdapter extends PagerAdapter {
             @Override
             public boolean onLongClick(View v) {
                 if (ImagePreview.getInstance().getBigImageLongClickListener() != null) {
-                    return ImagePreview.getInstance().getBigImageLongClickListener().onLongClick(v, position);
+                    Bitmap bitmap = null;
+                    if(v instanceof  SubsamplingScaleImageViewDragClose){
+                        bitmap = ((SubsamplingScaleImageViewDragClose) v).getBitmap();
+                    }
+                    return ImagePreview.getInstance().getBigImageLongClickListener().onLongClick(v, position, bitmap);
                 }
                 return false;
             }
         });
+
         imageGif.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if (ImagePreview.getInstance().getBigImageLongClickListener() != null) {
-                    return ImagePreview.getInstance().getBigImageLongClickListener().onLongClick(v, position);
+                    Bitmap bitmap = null;
+                    if(v instanceof  ImageView){
+                        Drawable drawable = ((ImageView) v).getDrawable();
+                        if(drawable instanceof BitmapDrawable){
+                            bitmap  = ((BitmapDrawable) drawable).getBitmap();
+                        }
+                    }
+                    return ImagePreview.getInstance().getBigImageLongClickListener().onLongClick(v, position, bitmap);
                 }
                 return false;
             }

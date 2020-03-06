@@ -292,6 +292,10 @@ public class SubsamplingScaleImageViewDragClose extends View {
 	public boolean atYEdge;
 	private int mTouchslop;
 
+	public Bitmap getBitmap(){
+		return bitmap;
+	}
+
 	public SubsamplingScaleImageViewDragClose(Context context, AttributeSet attr) {
 		super(context, attr);
 		density = getResources().getDisplayMetrics().density;
