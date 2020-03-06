@@ -70,10 +70,10 @@ import com.fanchen.filepicker.util.UiUtils;
 import com.fanchen.location.LocationPicker;
 import com.fanchen.location.MapNavigationActivity;
 import com.fanchen.location.bean.LocationBean;
-import com.fanchen.location.utils.CommonUtils;
 import com.fanchen.message.commons.ImageLoader;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.messages.MsgListAdapter;
+import com.fanchen.message.messages.QPopuWindow;
 import com.fanchen.message.messages.ptr.PtrHandler;
 import com.fanchen.message.messages.ptr.PullToRefreshLayout;
 import com.fanchen.message.messages.ViewHolderController;
@@ -85,20 +85,9 @@ import com.fanchen.view.ChatView;
 import com.fanchen.view.DefaultFeatureAdapter;
 import com.jude.swipbackhelper.SwipeBackHelper;
 
-import cn.jmessage.biz.httptask.task.GetEventNotificationTaskMng;
 import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.android.api.callback.DownloadCompletionCallback;
-import cn.jpush.im.android.api.callback.ProgressUpdateCallback;
-import cn.jpush.im.android.api.content.FileContent;
-import cn.jpush.im.android.api.content.ImageContent;
-import cn.jpush.im.android.api.content.LocationContent;
 import cn.jpush.im.android.api.content.MessageContent;
-import cn.jpush.im.android.api.content.TextContent;
-import cn.jpush.im.android.api.content.VideoContent;
-import cn.jpush.im.android.api.content.VoiceContent;
-import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.enums.ConversationType;
-import cn.jpush.im.android.api.enums.MessageStatus;
 import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.event.MessageReceiptStatusChangeEvent;
 import cn.jpush.im.android.api.event.MessageRetractEvent;
@@ -113,8 +102,6 @@ import imui.jiguang.cn.imuisample.models.DownloadCallback;
 import imui.jiguang.cn.imuisample.models.MyMessage;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
-
-import static cn.jpush.im.android.api.enums.ContentType.image;
 
 public class MessageListActivity extends Activity implements View.OnTouchListener,
         EasyPermissions.PermissionCallbacks, SensorEventListener {
@@ -274,20 +261,20 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
             extras.put("city", value.getCity());
             extras.put("locationDetails", value.getAddress());
             extras.put("scale", String.valueOf(value.getScale()));
-            extras.put("latitude",  String.valueOf(value.getLat()));
-            extras.put("longitude",  String.valueOf(value.getLng()));
+            extras.put("latitude", String.valueOf(value.getLat()));
+            extras.put("longitude", String.valueOf(value.getLng()));
             extras.put("path", location.getKey());
 
             try {
                 Message fileMessage = mConv.createSendFileMessage(new File(location.getKey()), null);
                 MessageContent content = fileMessage.getContent();
-                content.setStringExtra("locationTitle",value.getName());
-                content.setStringExtra("locationDetails",value.getAddress());
-                content.setStringExtra("type","location");
-                content.setStringExtra("city",value.getCity());
-                content.setNumberExtra("scale",value.getScale());
-                content.setNumberExtra("latitude",value.getLat());
-                content.setNumberExtra("longitude",value.getLng());
+                content.setStringExtra("locationTitle", value.getName());
+                content.setStringExtra("locationDetails", value.getAddress());
+                content.setStringExtra("type", "location");
+                content.setStringExtra("city", value.getCity());
+                content.setNumberExtra("scale", value.getScale());
+                content.setNumberExtra("latitude", value.getLat());
+                content.setNumberExtra("longitude", value.getLng());
                 fileMessage.setOnSendCompleteCallback(new BasicCallback() {
                     @Override
                     public void gotResult(int i, String s) {
@@ -309,7 +296,6 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 //            locationMessage.getContent().setStringExtra("locationTitle", value.getName());
 
 
-
             mAdapter.addToStart(message, true);
 
 
@@ -325,6 +311,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     private Conversation mConv;
     private int mOffset = PAGE_MESSAGE_COUNT;
     private int mStart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -344,9 +331,6 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         }
 
 
-
-
-
 //        List<Message> allMessage = mConv.getAllMessage();
 
 
@@ -357,7 +341,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 
 //        CommonUtils.mChatView
 
-        mChatView.getTitleTextView().setText("与[" + stringExtra+ "]聊天");
+        mChatView.getTitleTextView().setText("与[" + stringExtra + "]聊天");
 
         UiUtils.setViewPadding(mChatView.getTitleContainer());
 
@@ -376,13 +360,13 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 } else if (position == 5) {
                     UserInfo myInfo1 = JMessageClient.getMyInfo();
                     final MyMessage message2 = new MyMessage(IMessage.MessageType.SEND_ID_CARD.ordinal());
-                    message2.setUserInfo(new DefaultUser(myInfo1.getUserName(),myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
+                    message2.setUserInfo(new DefaultUser(myInfo1.getUserName(), myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
                     message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                     message2.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
                     mAdapter.addToStart(message2, true);
 
                     HashMap<String, String> stringStringHashMap = new HashMap<>();
-                    stringStringHashMap.put("type","id");
+                    stringStringHashMap.put("type", "id");
                     Message message = mConv.createSendCustomMessage(stringStringHashMap);
                     message.setOnSendCompleteCallback(new BasicCallback() {
                         @Override
@@ -401,13 +385,13 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 } else if (position == 0) {
                     UserInfo myInfo1 = JMessageClient.getMyInfo();
                     final MyMessage message2 = new MyMessage(IMessage.MessageType.SEND_ORDER.ordinal());
-                    message2.setUserInfo(new DefaultUser(myInfo1.getUserName(),myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
+                    message2.setUserInfo(new DefaultUser(myInfo1.getUserName(), myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
                     message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                     message2.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
                     mAdapter.addToStart(message2, true);
 
                     HashMap<String, String> stringStringHashMap = new HashMap<>();
-                    stringStringHashMap.put("type","order");
+                    stringStringHashMap.put("type", "order");
                     Message message = mConv.createSendCustomMessage(stringStringHashMap);
                     message.setOnSendCompleteCallback(new BasicCallback() {
                         @Override
@@ -425,13 +409,13 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 } else if (position == 1) {
                     UserInfo myInfo1 = JMessageClient.getMyInfo();
                     final MyMessage message2 = new MyMessage(IMessage.MessageType.SEND_GOODS.ordinal());
-                    message2.setUserInfo(new DefaultUser(myInfo1.getUserName(),myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
+                    message2.setUserInfo(new DefaultUser(myInfo1.getUserName(), myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
                     message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
                     message2.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
                     mAdapter.addToStart(message2, true);
 
                     HashMap<String, String> stringStringHashMap = new HashMap<>();
-                    stringStringHashMap.put("type","goods");
+                    stringStringHashMap.put("type", "goods");
                     Message message = mConv.createSendCustomMessage(stringStringHashMap);
                     message.setOnSendCompleteCallback(new BasicCallback() {
                         @Override
@@ -729,7 +713,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 mMsgIdList.add(message.getMsgId());
                 UserInfo myInfo1 = JMessageClient.getMyInfo();
 
-                message.setUserInfo(new DefaultUser(myInfo1.getUserName(),myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
+                message.setUserInfo(new DefaultUser(myInfo1.getUserName(), myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
                 MessageListActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -1073,45 +1057,40 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
             public void onMessageChildClick(View v, MyMessage message) {
                 if (v.getId() == R.id.aurora_tv_msgitem_see) {
                     Bundle bundle = new Bundle();
-                    bundle.putString(MapNavigationActivity.ADDRESS,message.getExtras().get("locationDetails"));
-                    bundle.putString(MapNavigationActivity.CITY,message.getExtras().get("city"));
-                    bundle.putDouble(MapNavigationActivity.LATITUDE,Double.valueOf(message.getExtras().get("latitude")));
-                    bundle.putDouble(MapNavigationActivity.LONGITUDE,Double.valueOf(message.getExtras().get("longitude")));
-                    LocationPicker.startNavigayionActivity(MessageListActivity.this,bundle);
+                    bundle.putString(MapNavigationActivity.ADDRESS, message.getExtras().get("locationDetails"));
+                    bundle.putString(MapNavigationActivity.CITY, message.getExtras().get("city"));
+                    bundle.putDouble(MapNavigationActivity.LATITUDE, Double.valueOf(message.getExtras().get("latitude")));
+                    bundle.putDouble(MapNavigationActivity.LONGITUDE, Double.valueOf(message.getExtras().get("longitude")));
+                    LocationPicker.startNavigayionActivity(MessageListActivity.this, bundle);
                 } else if (v.getId() == R.id.aurora_tv_msgitem_to) {
                     LocationPicker.showMapChoiceDialog(MessageListActivity.this, 0, 0, "");
                 }
             }
         });
 
+
         mAdapter.setMsgLongClickListener(new MsgListAdapter.OnMsgLongClickListener<MyMessage>() {
             @Override
             public void onMessageLongClick(View view, MyMessage message) {
-                Log.e("MyMessage","onMessageLongClick = " + message);
-               Message m = (Message) message.getTag();
-                Log.e("MyMessage","onMessageLongClick = " + m);
-                Message message1 = mConv.getMessage(m.getId());
-                if(message1 == null){
-                    Toast.makeText(getApplicationContext(), "message1 == null" , Toast.LENGTH_SHORT).show();
+                int[] aa = new int[2];
+                view.getLocationOnScreen(aa);
+                int width = getWindowManager().getDefaultDisplay().getWidth();
+                int ccc = 0;
+                if(aa[0] > width / 2 ){
+                    ccc =(aa[0] + view.getWidth())/2;
+                }else{
+                    ccc = (aa[0] + view.getWidth())/2;
                 }
+                QPopuWindow.getInstance(MessageListActivity.this).builder
+                        .bindView(view)
+                        .setPopupItemList(new String[]{"复制", "转发", "撤回"})
+                        .setPointers((int) xxxx, (int) yyyy - 50)
+                        .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+                            @Override
+                            public void onPopuListItemClick(View anchorView, int anchorViewPosition) {
+                            }
+                        }).show();
 
-                mConv.retractMessage(message1, new BasicCallback() {
-
-                  @Override
-                  public void gotResult(int i, String s) {
-                      if(i == 0){
-                          Toast.makeText(getApplicationContext(),
-                                  "消息撤回成功" + s,
-                                  Toast.LENGTH_SHORT).show();
-                      }else{
-                          Toast.makeText(getApplicationContext(),
-                                  "消息撤回失败" + s,
-                                  Toast.LENGTH_SHORT).show();
-                      }
-
-                  }
-
-              });
 
 
 
@@ -1174,7 +1153,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         }
 
         ArrayList<MyMessage> myMessages = new ArrayList<>();
-        for (Message m : messagesFromNewest){
+        for (Message m : messagesFromNewest) {
             MyMessage from = MyMessage.from(m, m.getFromUser().getUserName().equals(myInfo.getUserName()), new DownloadCallback() {
                 @Override
                 public void onComplete(MyMessage msg, File file) {
@@ -1200,11 +1179,11 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
             });
             from.i = m.getCreateTime();
 
-            Log.e("MyMessage","from = " + from.getTag());
+            Log.e("MyMessage", "from = " + from.getTag());
 
             myMessages.add(from);
         }
-        DateUtil.updateShowTime(myMessages,500);
+        DateUtil.updateShowTime(myMessages, 500);
         mAdapter.addToEndChronologically(myMessages);
         PullToRefreshLayout layout = mChatView.getPtrLayout();
         layout.setPtrHandler(new PtrHandler() {
@@ -1226,6 +1205,13 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 
         mChatView.setAdapter(mAdapter);
         mAdapter.getLayoutManager().scrollToPosition(0);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        xxxx= (int) ev.getRawX();
+        yyyy= (int) ev.getRawY();
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -1278,8 +1264,13 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         }, 200);
     }
 
+    private float xxxx;
+    private float yyyy;
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        xxxx = motionEvent.getRawX();
+        yyyy = motionEvent.getRawY();
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 ChatInputView chatInputView = mChatView.getChatInputView();
@@ -1327,9 +1318,9 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                     switch (message.getContentType()) {
                         case file:
                             String type = content.getStringExtra("type");
-                            switch (type){
+                            switch (type) {
                                 case "location":
-                                    msg.getExtras().put("path",file.getAbsolutePath());
+                                    msg.getExtras().put("path", file.getAbsolutePath());
                                     break;
                             }
                             break;
@@ -1494,17 +1485,17 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         Message retractedMessage = event.getRetractedMessage();
         List<MyMessage> messageList = mAdapter.getMessageList();
         MyMessage mmm = null;
-        for (MyMessage m : messageList){
+        for (MyMessage m : messageList) {
             Message tag = (Message) m.getTag();
-            if(tag != null && tag.getId() == retractedMessage.getId()){
+            if (tag != null && tag.getId() == retractedMessage.getId()) {
                 mmm = m;
             }
         }
         UserInfo myInfo = JMessageClient.getMyInfo();
-        if(mmm != null){
+        if (mmm != null) {
             MyMessage myMessage = new MyMessage(myInfo.getUserName().equals(retractedMessage.getFromUser().getUserName()) ? IMessage.MessageType.SEND_RECALL.ordinal() : IMessage.MessageType.RECEIVE_RECALL.ordinal());
             mAdapter.getMessageList().remove(mmm);
-            mAdapter.addToStart(myMessage,true);
+            mAdapter.addToStart(myMessage, true);
         }
 
 //        mChatAdapter.delMsgRetract(retractedMessage);
