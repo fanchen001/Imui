@@ -23,7 +23,7 @@
         <activity
             android:name="imui.jiguang.cn.imuisample.messages.LoginActivity"
             android:theme="@style/AppTheme1"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

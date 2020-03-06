@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Random;
 import java.util.UUID;
 
 import cn.jpush.im.android.api.content.CustomContent;
@@ -155,6 +156,9 @@ public class MyMessage implements IMessage {
                         break;
                 }
                 break;
+                default:
+                    msg = new MyMessage(isSend ? MessageType.SEND_RECALL.ordinal():MessageType.RECEIVE_RECALL.ordinal());
+                    break;
         }
         if (msg != null) msg.setTag(message);
         if (callback != null) callback.setMyMessage(msg, isSend);
@@ -244,6 +248,27 @@ public class MyMessage implements IMessage {
     @Override
     public String getTimeString() {
         return timeString;
+    }
+
+    @Override
+    public long getTime() {
+        return i;
+    }
+    public long i;
+private boolean is;
+    @Override
+    public boolean showTime() {
+        return is;
+    }
+
+    @Override
+    public void setShowTime(boolean show) {
+        this.is = show;
+    }
+
+    @Override
+    public boolean haveRead() {
+        return new Random().nextInt() % 2 == 1;
     }
 
     public void setType(int type) {
