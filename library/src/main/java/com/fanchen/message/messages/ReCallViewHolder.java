@@ -12,7 +12,7 @@ public class ReCallViewHolder<Message extends IMessage> extends BaseMessageViewH
     public ReCallViewHolder(View itemView, boolean isSender) {
         super(itemView);
        TextView v =  itemView.findViewById(R.id.aurora_tv_msgitem_recall);
-       v.setText(isSender ? mContext.getString(R.string.recalled_send_message) : mContext.getString(R.string.recalled_receive_message));
+       v.setText(isSender ? itemView.getContext().getString(R.string.recalled_send_message) : itemView.getContext().getString(R.string.recalled_receive_message));
     }
 
     @Override
