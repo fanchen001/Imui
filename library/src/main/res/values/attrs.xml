@@ -47,6 +47,7 @@
         <attr name="avatarRadius" format="dimension|reference" />
         <attr name="showSenderDisplayName" format="boolean" />
         <attr name="showReceiverDisplayName" format="boolean" />
+        <attr name="showReadStatus" format="boolean" />
         <attr name="displayNameTextSize" format="dimension|reference" />
         <attr name="displayNameTextColor" format="color|reference" />
         <attr name="displayNamePadding" format="dimension|reference" />

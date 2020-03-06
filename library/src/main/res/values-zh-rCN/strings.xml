@@ -102,4 +102,10 @@
     <string name="get_geo_error">反向地理编码出错</string>
     <string name="get_poi_empty">信息点结果为空</string>
     <string name="get_location_null">经纬度信息为空</string>
+
+    <string name="im_read">已读</string>
+    <string name="im_un_read">未读</string>
+
+    <string name="recalled_send_message">您已成功撤回一条消息~</string>
+    <string name="recalled_receive_message">对方已撤回一条消息~</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.fanchen.message.messages;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -8,13 +7,14 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.fanchen.message.utils.DateUtil;
 import com.fanchen.ui.BuildConfig;
 import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.view.RoundImageView;
 import com.fanchen.message.view.RoundTextView;
 
-import java.util.Random;
+import java.util.Date;
 
 public class TxtViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHolder<MESSAGE>
         implements MsgListAdapter.DefaultMessageViewHolder {
@@ -26,6 +26,7 @@ public class TxtViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHold
     private ImageButton mResendIb;
     private ProgressBar mSendingPb;
     private boolean mIsSender;
+    private TextView mReadTv;
 
     public TxtViewHolder(View itemView, boolean isSender) {
         super(itemView);
@@ -34,6 +35,7 @@ public class TxtViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHold
         mDateTv = (RoundTextView) itemView.findViewById(R.id.aurora_tv_msgitem_date);
         mAvatarIv = (RoundImageView) itemView.findViewById(R.id.aurora_iv_msgitem_avatar);
         if (isSender) {
+            mReadTv = itemView.findViewById(R.id.aurora_ib_msgitem_read_status);
             mDisplayNameTv = (TextView) itemView.findViewById(R.id.aurora_tv_msgitem_sender_display_name);
         } else { 
             mDisplayNameTv = (TextView) itemView.findViewById(R.id.aurora_tv_msgitem_receiver_display_name);
@@ -45,12 +47,16 @@ public class TxtViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHold
     @Override
     public void onBind(final MESSAGE message) {
         mMsgTv.setText(message.getText());
-        String timeString = message.getTimeString();
-        mDateTv.setVisibility(View.VISIBLE);
-        if (timeString != null && !TextUtils.isEmpty(timeString) && new Random().nextInt() % 3 == 0) {
-            mDateTv.setText(timeString);
+        if (message.getTime() > 0 && message.showTime()) {
+            mDateTv.setVisibility(View.VISIBLE);
+            mDateTv.setText(DateUtil.getTimeStringAutoShort2(new Date(message.getTime()),true));
         } else {
             mDateTv.setVisibility(View.GONE);
+        }
+        if(mReadTv != null && message.getMessageStatus() == IMessage.MessageStatus.SEND_SUCCEED){
+            mReadTv.setText(message.haveRead() ? mContext.getString(R.string.im_read):mContext.getString(R.string.im_un_read));
+        }else if(mReadTv != null){
+            mReadTv.setText("");
         }
         boolean isAvatarExists = message.getFromUser().getAvatarFilePath() != null
                 && !message.getFromUser().getAvatarFilePath().isEmpty();
@@ -125,6 +131,9 @@ public class TxtViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHold
 
     @Override
     public void applyStyle(MessageListStyle style) {
+        if(mReadTv != null){
+            mReadTv.setVisibility(style.isShowReadStatus() ? View.VISIBLE : View.GONE);
+        }
         mMsgTv.setMaxWidth((int) (style.getWindowWidth() * style.getBubbleMaxWidth()));
         mMsgTv.setLineSpacing(style.getLineSpacingExtra(), style.getLineSpacingMultiplier());
         if (mIsSender) {

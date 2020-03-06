@@ -65,6 +65,9 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
     private final int TYPE_SEND_ORDER = 19;
     private final int TYPE_RECEIVER_ORDER = 20;
 
+    private final int TYPE_SEND_RECALL = 21;
+    private final int TYPE_RECEIVE_RECALL = 22;
+
     private SparseArray<CustomMsgConfig> mCustomMsgList;
 
     private Context mContext;
@@ -176,6 +179,10 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
                 return getHolder(parent, mHolders.mReceiveOrderLayout, mHolders.mReceiveOrderHolder, false);
             case TYPE_EVENT:
                 return getHolder(parent, mHolders.mEventLayout, mHolders.mEventMsgHolder, true);
+            case TYPE_SEND_RECALL:
+                return getHolder(parent, R.layout.item_send_msg_recall, DefaultReCallViewHolder.class, true);
+            case TYPE_RECEIVE_RECALL:
+                return getHolder(parent, R.layout.item_send_msg_recall, DefaultReCallViewHolder.class, false);
             default:
                 if (mCustomMsgList != null && mCustomMsgList.size() > 0) {
                     return getHolder(parent, mCustomMsgList.get(viewType).getResourceId(),
@@ -213,7 +220,11 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
                 return TYPE_EVENT;
             } else if (message.getType() == IMessage.MessageType.SEND_TEXT.ordinal()) {
                 return TYPE_SEND_TXT;
-            } else if (message.getType() == IMessage.MessageType.RECEIVE_TEXT.ordinal()) {
+            } else if (message.getType() == IMessage.MessageType.SEND_RECALL.ordinal()) {
+                return TYPE_SEND_RECALL;
+            }else if (message.getType() == IMessage.MessageType.RECEIVE_RECALL.ordinal()) {
+                return TYPE_RECEIVE_RECALL;
+            }  else if (message.getType() == IMessage.MessageType.RECEIVE_TEXT.ordinal()) {
                 return TYPE_RECEIVE_TXT;
             } else if (message.getType() == IMessage.MessageType.SEND_IMAGE.ordinal()) {
                 return TYPE_SEND_IMAGE;
@@ -1109,6 +1120,14 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
     private static class DefaultLocationViewHolder extends LocationViewHolder<IMessage> {
 
         public DefaultLocationViewHolder(View itemView, boolean isSender) {
+            super(itemView, isSender);
+        }
+
+    }
+
+    private static class DefaultReCallViewHolder extends ReCallViewHolder<IMessage> {
+
+        public DefaultReCallViewHolder(View itemView, boolean isSender) {
             super(itemView, isSender);
         }
 

@@ -23,6 +23,14 @@ public interface IMessage {
      */
     String getTimeString();
 
+    long getTime();
+
+    boolean showTime();
+
+    void setShowTime(boolean show);
+
+    //新增，已读
+    boolean haveRead();
     /**
      * Type of Message
      */
@@ -56,7 +64,10 @@ public interface IMessage {
         RECEIVE_ORDER,
 
         SEND_CUSTOM,
-        RECEIVE_CUSTOM;
+        RECEIVE_CUSTOM,
+
+        SEND_RECALL, // 撤回
+        RECEIVE_RECALL; // 撤回
 
         MessageType() {
         }

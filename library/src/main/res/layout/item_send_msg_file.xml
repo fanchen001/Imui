@@ -14,6 +14,17 @@
         android:gravity="end"
         android:orientation="horizontal">
 
+        <TextView
+            android:id="@+id/aurora_ib_msgitem_read_status"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:visibility="gone"
+            android:textColor="#777"
+            android:textSize="@dimen/textsize_input_im_status"
+            android:layout_toLeftOf="@+id/aurora_ll_msgitem_file"
+            android:layout_height="wrap_content" />
+
         <ImageButton
             android:id="@+id/aurora_ib_msgitem_resend"
             android:layout_width="20dp"

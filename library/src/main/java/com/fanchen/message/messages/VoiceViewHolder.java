@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Random;
 
+import com.fanchen.message.utils.DateUtil;
 import com.fanchen.ui.BuildConfig;
 import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
@@ -43,6 +45,7 @@ public class VoiceViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHo
     private int mPlaySendAnim;
     private int mPlayReceiveAnim;
     private ViewHolderController mController;
+    private TextView mReadTv;
 
     public VoiceViewHolder(View itemView, boolean isSender) {
         super(itemView);
@@ -56,6 +59,7 @@ public class VoiceViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHo
             mUnreadStatusIv = (ImageView) itemView.findViewById(R.id.aurora_iv_msgitem_read_status);
             mDisplayNameTv = (TextView) itemView.findViewById(R.id.aurora_tv_msgitem_receiver_display_name);
         } else {
+            mReadTv = itemView.findViewById(R.id.aurora_ib_msgitem_read_status);
             mSendingPb = (ProgressBar) itemView.findViewById(R.id.aurora_pb_msgitem_sending);
             mDisplayNameTv = (TextView) itemView.findViewById(R.id.aurora_tv_msgitem_sender_display_name);
         }
@@ -74,12 +78,16 @@ public class VoiceViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHo
                 return false;
             }
         });
-        String timeString = message.getTimeString();
-        mDateTv.setVisibility(View.VISIBLE);
-        if (timeString != null && !TextUtils.isEmpty(timeString) && new Random().nextInt() % 3 == 0) {
-            mDateTv.setText(timeString);
+        if (message.getTime() > 0 && message.showTime()) {
+            mDateTv.setVisibility(View.VISIBLE);
+            mDateTv.setText(DateUtil.getTimeStringAutoShort2(new Date(message.getTime()),true));
         } else {
             mDateTv.setVisibility(View.GONE);
+        }
+        if(mReadTv != null && message.getMessageStatus() == IMessage.MessageStatus.SEND_SUCCEED){
+            mReadTv.setText(message.haveRead() ? mContext.getString(R.string.im_read):mContext.getString(R.string.im_un_read));
+        }else if(mReadTv != null){
+            mReadTv.setText("");
         }
         boolean isAvatarExists = message.getFromUser().getAvatarFilePath() != null
                 && !message.getFromUser().getAvatarFilePath().isEmpty();
@@ -255,6 +263,9 @@ public class VoiceViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHo
 
     @Override
     public void applyStyle(MessageListStyle style) {
+        if(mReadTv != null){
+            mReadTv.setVisibility(style.isShowReadStatus() ? View.VISIBLE : View.GONE);
+        }
         mDateTv.setTextSize(style.getDateTextSize());
         mDateTv.setTextColor(style.getDateTextColor());
         mDateTv.setPadding(style.getDatePaddingLeft(), style.getDatePaddingTop(), style.getDatePaddingRight(),

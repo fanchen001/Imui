@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -213,6 +214,14 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     }
 
     public void setAdapter(MsgListAdapter adapter) {
+        setAdapter(adapter,false);
+    }
+
+    public void setAdapter(MsgListAdapter adapter,boolean supportAnimations) {
+        RecyclerView.ItemAnimator itemAnimator = mMsgList.getItemAnimator();
+        if(itemAnimator instanceof SimpleItemAnimator){
+            ((SimpleItemAnimator) itemAnimator).setSupportsChangeAnimations(supportAnimations);
+        }
         mMsgList.setAdapter(adapter);
     }
 

@@ -79,4 +79,5 @@
     <dimen name="pic_media_margin">2dp</dimen>
     <dimen name="pic_corner_radius">2dp</dimen>
     <dimen name="base_padding_rv">3dp</dimen>
+    <dimen name="textsize_input_im_status">13sp</dimen>
 </resources>

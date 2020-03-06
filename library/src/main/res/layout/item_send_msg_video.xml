@@ -70,6 +70,17 @@
                 tools:text="00:02" />
         </FrameLayout>
 
+        <TextView
+            android:id="@+id/aurora_ib_msgitem_read_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:textColor="#777"
+            android:textSize="@dimen/textsize_input_im_status"
+            android:visibility="gone"
+            android:layout_toLeftOf="@+id/aurora_fl_msgitem_video_container" />
+
         <ImageButton
             android:id="@+id/aurora_ib_msgitem_resend"
             android:layout_width="20dp"

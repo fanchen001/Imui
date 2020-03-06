@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.fanchen.message.utils.DateUtil;
 import com.fanchen.ui.BuildConfig;
 import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
@@ -15,6 +16,7 @@ import com.fanchen.message.view.RoundImageView;
 import com.fanchen.message.view.RoundTextView;
 import com.fanchen.message.view.ShapeImageView;
 
+import java.util.Date;
 import java.util.Random;
 
 public class PhotoViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHolder<MESSAGE>
@@ -27,7 +29,7 @@ public class PhotoViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHo
     private RoundImageView mAvatarIv;
     private ProgressBar mSendingPb;
     private ImageButton mResendIb;
-
+    private TextView mReadTv;
 
 
     public PhotoViewHolder(View itemView, boolean isSender) {
@@ -37,6 +39,7 @@ public class PhotoViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHo
         mPhotoIv = (ShapeImageView) itemView.findViewById(R.id.aurora_iv_msgitem_photo);
         mAvatarIv = (RoundImageView) itemView.findViewById(R.id.aurora_iv_msgitem_avatar);
         if (mIsSender) {
+            mReadTv = itemView.findViewById(R.id.aurora_ib_msgitem_read_status);
             mSendingPb = (ProgressBar) itemView.findViewById(R.id.aurora_pb_msgitem_sending);
             mResendIb = (ImageButton) itemView.findViewById(R.id.aurora_ib_msgitem_resend);
             mDisplayNameTv = (TextView) itemView.findViewById(R.id.aurora_tv_msgitem_sender_display_name);
@@ -47,12 +50,16 @@ public class PhotoViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHo
 
     @Override
     public void onBind(final MESSAGE message) {
-        String timeString = message.getTimeString();
-        mDateTv.setVisibility(View.VISIBLE);
-        if (timeString != null && !TextUtils.isEmpty(timeString) && new Random().nextInt() % 3 == 0) {
-            mDateTv.setText(timeString);
+        if (message.getTime() > 0 && message.showTime()) {
+            mDateTv.setVisibility(View.VISIBLE);
+            mDateTv.setText(DateUtil.getTimeStringAutoShort2(new Date(message.getTime()),true));
         } else {
             mDateTv.setVisibility(View.GONE);
+        }
+        if(mReadTv != null && message.getMessageStatus() == IMessage.MessageStatus.SEND_SUCCEED){
+            mReadTv.setText(message.haveRead() ? mContext.getString(R.string.im_read):mContext.getString(R.string.im_un_read));
+        }else if(mReadTv != null){
+            mReadTv.setText("");
         }
         boolean isAvatarExists = message.getFromUser().getAvatarFilePath() != null
                 && !message.getFromUser().getAvatarFilePath().isEmpty();
@@ -132,6 +139,9 @@ public class PhotoViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHo
 
     @Override
     public void applyStyle(MessageListStyle style) {
+        if(mReadTv != null){
+            mReadTv.setVisibility(style.isShowReadStatus() ? View.VISIBLE : View.GONE);
+        }
         mDateTv.setTextSize(style.getDateTextSize());
         mDateTv.setTextColor(style.getDateTextColor());
         mDateTv.setPadding(style.getDatePaddingLeft(), style.getDatePaddingTop(),

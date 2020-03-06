@@ -1,6 +1,5 @@
 package com.fanchen.message.messages;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -9,16 +8,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.fanchen.message.utils.DateUtil;
 import com.fanchen.ui.BuildConfig;
 import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.view.RoundImageView;
 import com.fanchen.message.view.RoundTextView;
 
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Random;
 
-public class IdCardViewHolder<Message extends IMessage>  extends BaseMessageViewHolder<Message>
+public class IdCardViewHolder<Message extends IMessage> extends BaseMessageViewHolder<Message>
         implements MsgListAdapter.DefaultMessageViewHolder, View.OnClickListener, View.OnLongClickListener {
 
     private RoundTextView mDateTv;
@@ -30,6 +30,7 @@ public class IdCardViewHolder<Message extends IMessage>  extends BaseMessageView
     private TextView mNameTv;
     private TextView mNumberTv;
     private ImageView mNumberIv;
+    private TextView mReadTv;
 
     private View mL;
 
@@ -38,40 +39,40 @@ public class IdCardViewHolder<Message extends IMessage>  extends BaseMessageView
     public IdCardViewHolder(View itemView, boolean isSender) {
         super(itemView);
         this.isSender = isSender;
-        mL =  itemView.findViewById(R.id.aurora_ll_msgitem_idcard);
-        mNameTv =  itemView.findViewById(R.id.aurora_tv_msgitem_name);
-        mNumberTv =  itemView.findViewById(R.id.aurora_tv_msgitem_number);
-        mNumberIv =  itemView.findViewById(R.id.aurora_iv_msgitem_card);
+        mL = itemView.findViewById(R.id.aurora_ll_msgitem_idcard);
+        mNameTv = itemView.findViewById(R.id.aurora_tv_msgitem_name);
+        mNumberTv = itemView.findViewById(R.id.aurora_tv_msgitem_number);
+        mNumberIv = itemView.findViewById(R.id.aurora_iv_msgitem_card);
 
-        mDateTv =  itemView.findViewById(R.id.aurora_tv_msgitem_date);
-        mAvatarIv =  itemView.findViewById(R.id.aurora_iv_msgitem_avatar);
+        mDateTv = itemView.findViewById(R.id.aurora_tv_msgitem_date);
+        mAvatarIv = itemView.findViewById(R.id.aurora_iv_msgitem_avatar);
         if (isSender) {
+            mReadTv = itemView.findViewById(R.id.aurora_ib_msgitem_read_status);
             mDisplayNameTv = itemView.findViewById(R.id.aurora_tv_msgitem_sender_display_name);
         } else {
             mDisplayNameTv = itemView.findViewById(R.id.aurora_tv_msgitem_receiver_display_name);
         }
-        mResendIb =  itemView.findViewById(R.id.aurora_ib_msgitem_resend);
+        mResendIb = itemView.findViewById(R.id.aurora_ib_msgitem_resend);
         mSendingPb = itemView.findViewById(R.id.aurora_pb_msgitem_sending);
     }
 
     @Override
     public void onBind(final Message message) {
         HashMap<String, String> extras = message.getExtras();
-        if(extras != null && !extras.isEmpty()){
+        if (extras != null && !extras.isEmpty()) {
             mNameTv.setText(extras.get("idCardTitle"));
             mNumberTv.setText(extras.get("idCardNumber"));
-            if(extras.get("path") != null){
+            if (extras.get("path") != null) {
                 Glide.with(mNumberIv.getContext()).load(extras.get("path"))
                         .asBitmap().placeholder(R.mipmap.attachment)
                         .into(mNumberIv);
-            }else{
+            } else {
                 mNumberIv.setImageResource(R.mipmap.attachment);
             }
         }
-        String timeString = message.getTimeString();
-        mDateTv.setVisibility(View.VISIBLE);
-        if (timeString != null && !TextUtils.isEmpty(timeString)&&new Random().nextInt() % 3 == 0) {
-            mDateTv.setText(timeString);
+        if (message.getTime() > 0 && message.showTime()) {
+            mDateTv.setVisibility(View.VISIBLE);
+            mDateTv.setText(DateUtil.getTimeStringAutoShort2(new Date(message.getTime()), true));
         } else {
             mDateTv.setVisibility(View.GONE);
         }
@@ -81,6 +82,11 @@ public class IdCardViewHolder<Message extends IMessage>  extends BaseMessageView
             mImageLoader.loadAvatarImage(mAvatarIv, message.getFromUser().getAvatarFilePath());
         } else if (mImageLoader == null) {
             mAvatarIv.setVisibility(View.GONE);
+        }
+        if (mReadTv != null && message.getMessageStatus() == IMessage.MessageStatus.SEND_SUCCEED) {
+            mReadTv.setText(message.haveRead() ? mContext.getString(R.string.im_read) : mContext.getString(R.string.im_un_read));
+        }else if(mReadTv != null){
+            mReadTv.setText("");
         }
         if (mDisplayNameTv.getVisibility() == View.VISIBLE) {
             mDisplayNameTv.setText(message.getFromUser().getDisplayName());
@@ -122,6 +128,9 @@ public class IdCardViewHolder<Message extends IMessage>  extends BaseMessageView
 
     @Override
     public void applyStyle(MessageListStyle style) {
+        if (mReadTv != null) {
+            mReadTv.setVisibility(style.isShowReadStatus() ? View.VISIBLE : View.GONE);
+        }
         if (isSender) {
             if (style.getSendingProgressDrawable() != null) {
                 mSendingPb.setProgressDrawable(style.getSendingProgressDrawable());
@@ -167,11 +176,12 @@ public class IdCardViewHolder<Message extends IMessage>  extends BaseMessageView
             if (mAvatarClickListener != null) {
                 mAvatarClickListener.onAvatarClick(message);
             }
-        }else*/ if(mL == v){
+        }else*/
+        if (mL == v) {
             if (mMsgClickListener != null) {
                 mMsgClickListener.onMessageClick(message);
             }
-        }else if(mResendIb == v){
+        } else if (mResendIb == v) {
             if (mMsgStatusViewClickListener != null) {
                 mMsgStatusViewClickListener.onStatusViewClick(message);
             }

@@ -99,4 +99,8 @@
     <string name="get_geo_error">get geoCode error</string>
     <string name="get_poi_empty">poi list empty</string>
     <string name="get_location_null">location null</string>
+    <string name="im_read">un read</string>
+    <string name="im_un_read">read</string>
+    <string name="recalled_send_message">You have successfully recalled a message~</string>
+    <string name="recalled_receive_message">The other party has withdrawn a message~</string>
 </resources>

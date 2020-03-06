@@ -89,6 +89,7 @@ public class MessageListStyle extends Style {
     private float lineSpacingMultiplier;
 
     private int windowWidth;
+    private boolean showReadStatus;
     private Drawable sendingProgressDrawable;
     private Drawable sendingIndeterminateDrawable;
 
@@ -97,6 +98,7 @@ public class MessageListStyle extends Style {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MessageListView);
         int dateTextSizePixel = typedArray.getDimensionPixelSize(R.styleable.MessageListView_dateTextSize,
                 context.getResources().getDimensionPixelSize(R.dimen.aurora_size_date_text));
+        style.showReadStatus = typedArray.getBoolean(R.styleable.MessageListView_showReadStatus,false);
         style.dateTextSize = getSPTextSize(context, dateTextSizePixel);
         style.dateTextColor = typedArray.getColor(R.styleable.MessageListView_dateTextColor,
                 ContextCompat.getColor(context, R.color.aurora_msg_date_text_color));
@@ -733,5 +735,9 @@ public class MessageListStyle extends Style {
         this.sendBubblePaddingTop = top;
         this.sendBubblePaddingRight = right;
         this.sendBubblePaddingBottom = bottom;
+    }
+
+    public boolean isShowReadStatus() {
+        return showReadStatus;
     }
 }

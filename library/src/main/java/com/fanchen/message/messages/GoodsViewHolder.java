@@ -9,12 +9,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.fanchen.message.utils.DateUtil;
 import com.fanchen.ui.BuildConfig;
 import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.view.RoundImageView;
 import com.fanchen.message.view.RoundTextView;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -31,7 +33,7 @@ public class GoodsViewHolder<Message extends IMessage> extends BaseMessageViewHo
     private TextView mNumTv;
     private TextView mPriceTv;
     private ImageView mImgIv;
-
+    private TextView mReadTv;
     private View mL;
 
     private boolean isSender;
@@ -49,6 +51,7 @@ public class GoodsViewHolder<Message extends IMessage> extends BaseMessageViewHo
         mDateTv = itemView.findViewById(R.id.aurora_tv_msgitem_date);
         mAvatarIv = itemView.findViewById(R.id.aurora_iv_msgitem_avatar);
         if (isSender) {
+            mReadTv = itemView.findViewById(R.id.aurora_ib_msgitem_read_status);
             mDisplayNameTv = (TextView) itemView.findViewById(R.id.aurora_tv_msgitem_sender_display_name);
         } else {
             mDisplayNameTv = (TextView) itemView.findViewById(R.id.aurora_tv_msgitem_receiver_display_name);
@@ -72,12 +75,16 @@ public class GoodsViewHolder<Message extends IMessage> extends BaseMessageViewHo
                 mImgIv.setImageResource(R.mipmap.attachment);
             }
         }
-        String timeString = message.getTimeString();
-        mDateTv.setVisibility(View.VISIBLE);
-        if (timeString != null && !TextUtils.isEmpty(timeString) && new Random().nextInt() % 3 == 0) {
-            mDateTv.setText(timeString);
+        if (message.getTime() > 0 && message.showTime()) {
+            mDateTv.setVisibility(View.VISIBLE);
+            mDateTv.setText(DateUtil.getTimeStringAutoShort2(new Date(message.getTime()),true));
         } else {
             mDateTv.setVisibility(View.GONE);
+        }
+        if(mReadTv != null && message.getMessageStatus() == IMessage.MessageStatus.SEND_SUCCEED){
+            mReadTv.setText(message.haveRead() ? mContext.getString(R.string.im_read):mContext.getString(R.string.im_un_read));
+        }else if(mReadTv != null){
+            mReadTv.setText("");
         }
         boolean isAvatarExists = message.getFromUser().getAvatarFilePath() != null
                 && !message.getFromUser().getAvatarFilePath().isEmpty();
@@ -130,6 +137,9 @@ public class GoodsViewHolder<Message extends IMessage> extends BaseMessageViewHo
 
     @Override
     public void applyStyle(MessageListStyle style) {
+        if(mReadTv != null){
+            mReadTv.setVisibility(style.isShowReadStatus() ? View.VISIBLE : View.GONE);
+        }
         if (isSender) {
             if (style.getSendingProgressDrawable() != null) {
                 mSendingPb.setProgressDrawable(style.getSendingProgressDrawable());
