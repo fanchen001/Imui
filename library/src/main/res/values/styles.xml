@@ -292,8 +292,8 @@
     </style>
 
     <style name="ChatInputIcon">
-        <item name="android:layout_width">24dp</item>
-        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_width">22dp</item>
+        <item name="android:layout_height">22dp</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
 </resources>

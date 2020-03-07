@@ -68,7 +68,7 @@ public class PhotoViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHo
         if (mScroll) {
             mPhotoIv.setImageResource(R.drawable.aurora_picture_not_found);
         } else {
-            mImageLoader.loadImage(mPhotoIv, message.getMediaFilePath());
+            mImageLoader.loadImage(mPhotoIv, message.getMediaFilePath(),mLayoutManager);
         }
 
 

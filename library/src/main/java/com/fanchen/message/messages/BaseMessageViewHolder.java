@@ -2,6 +2,7 @@ package com.fanchen.message.messages;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public abstract class BaseMessageViewHolder<MESSAGE extends IMessage>
     protected MediaPlayer mMediaPlayer;
     protected boolean mScroll;
     protected List<MsgListAdapter.Wrapper> mData;
+    protected RecyclerView.LayoutManager mLayoutManager;
 
     public BaseMessageViewHolder(View itemView) {
         super(itemView);

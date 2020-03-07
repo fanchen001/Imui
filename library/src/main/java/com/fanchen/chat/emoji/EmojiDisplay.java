@@ -19,7 +19,7 @@ public class EmojiDisplay {
     public static final int WRAP_DRAWABLE = -1;
     public static final Pattern EMOJI_RANGE = Pattern.compile("[\\u20a0-\\u32ff\\ud83c\\udc00-\\ud83d\\udeff\\udbb9\\udce5-\\udbb9\\udcee]");
 
-    public EmojiDisplay() {
+    public EmojiDisplay() {//[\u20a0-\u32ff\ud83c\udc00-\ud83d\udeff\udbb9\udce5-\udbb9\udcee]
     }
 
     public static Matcher getMatcher(CharSequence matchStr) {

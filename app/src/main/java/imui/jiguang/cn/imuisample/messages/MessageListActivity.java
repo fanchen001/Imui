@@ -62,6 +62,7 @@ import com.fanchen.chat.listener.OnCameraCallbackListener;
 import com.fanchen.chat.listener.OnMenuClickListener;
 import com.fanchen.chat.listener.OnRecordVoiceListener;
 import com.fanchen.chat.listener.OnSelectButtonListener;
+import com.fanchen.chat.menu.Menu;
 import com.fanchen.chat.model.FileItem;
 import com.fanchen.chat.model.VideoItem;
 import com.fanchen.filepicker.FilePicker;
@@ -73,6 +74,7 @@ import com.fanchen.filepicker.util.UiUtils;
 import com.fanchen.location.LocationPicker;
 import com.fanchen.location.MapNavigationActivity;
 import com.fanchen.location.bean.LocationBean;
+import com.fanchen.message.commons.GlideImageLoader;
 import com.fanchen.message.commons.ImageLoader;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.messages.MsgListAdapter;
@@ -351,7 +353,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 
         UiUtils.setViewPadding(mChatView.getTitleContainer());
 
-        mChatView.customMenuBuild("6666", new DefaultFeatureAdapter(), new AdapterView.OnItemClickListener() {
+        mChatView.customLiftRightBuild("6666", Menu.TAG_VOICE,Menu.TAG_SEND, new DefaultFeatureAdapter(), new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 3) {
@@ -919,114 +921,114 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     }
 
     private void initMsgAdapter() {
-        final float density = getResources().getDisplayMetrics().density;
-        final float MIN_WIDTH = 60 * density;
-        final float MAX_WIDTH = 200 * density;
-        final float MIN_HEIGHT = 60 * density;
-        final float MAX_HEIGHT = 200 * density;
-        ImageLoader imageLoader = new ImageLoader() {
-            @Override
-            public void loadAvatarImage(ImageView avatarImageView, String string) {
-                // You can use other image load libraries.
-                if (string.contains("R.drawable")) {
-                    Integer resId = getResources().getIdentifier(string.replace("R.drawable.", ""),
-                            "drawable", getPackageName());
-
-                    avatarImageView.setImageResource(resId);
-                } else {
-                    Glide.with(MessageListActivity.this)
-                            .load(string).asBitmap()
-                            .into(avatarImageView);
-                }
-            }
-
-            /**
-             * Load image message
-             * @param imageView Image message's ImageView.
-             * @param string A file path, or a uri or url.
-             */
-            @Override
-            public void loadImage(final ImageView imageView, String string) {
-                // You can use other image load libraries.
-                Glide.with(getApplicationContext())
-                        .load(string).asBitmap()
-                        .placeholder(R.drawable.aurora_picture_not_found)
-                        .into(new SimpleTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                int imageWidth = resource.getWidth();
-                                int imageHeight = resource.getHeight();
-                                Log.d(TAG, "Image width " + imageWidth + " height: " + imageHeight);
-
-                                // 裁剪 bitmap
-                                float width, height;
-                                if (imageWidth > imageHeight) {
-                                    if (imageWidth > MAX_WIDTH) {
-                                        float temp = MAX_WIDTH / imageWidth * imageHeight;
-                                        height = temp > MIN_HEIGHT ? temp : MIN_HEIGHT;
-                                        width = MAX_WIDTH;
-                                    } else if (imageWidth < MIN_WIDTH) {
-                                        float temp = MIN_WIDTH / imageWidth * imageHeight;
-                                        height = temp < MAX_HEIGHT ? temp : MAX_HEIGHT;
-                                        width = MIN_WIDTH;
-                                    } else {
-                                        float ratio = imageWidth / imageHeight;
-                                        if (ratio > 3) {
-                                            ratio = 3;
-                                        }
-                                        height = imageHeight * ratio;
-                                        width = imageWidth;
-                                    }
-                                } else {
-                                    if (imageHeight > MAX_HEIGHT) {
-                                        float temp = MAX_HEIGHT / imageHeight * imageWidth;
-                                        width = temp > MIN_WIDTH ? temp : MIN_WIDTH;
-                                        height = MAX_HEIGHT;
-                                    } else if (imageHeight < MIN_HEIGHT) {
-                                        float temp = MIN_HEIGHT / imageHeight * imageWidth;
-                                        width = temp < MAX_WIDTH ? temp : MAX_WIDTH;
-                                        height = MIN_HEIGHT;
-                                    } else {
-                                        float ratio = imageHeight / imageWidth;
-                                        if (ratio > 3) {
-                                            ratio = 3;
-                                        }
-                                        width = imageWidth * ratio;
-                                        height = imageHeight;
-                                    }
-                                }
-                                ViewGroup.LayoutParams params = imageView.getLayoutParams();
-                                params.width = (int) width;
-                                params.height = (int) height;
-                                imageView.setLayoutParams(params);
-                                Matrix matrix = new Matrix();
-                                float scaleWidth = width / imageWidth;
-                                float scaleHeight = height / imageHeight;
-                                matrix.postScale(scaleWidth, scaleHeight);
-                                imageView.setImageBitmap(Bitmap.createBitmap(resource, 0, 0, imageWidth, imageHeight, matrix, true));
-                            }
-                        });
-            }
-
-            /**
-             * Load video message
-             * @param imageCover Video message's image cover
-             * @param uri Local path or url.
-             */
-            @Override
-            public void loadVideo(ImageView imageCover, String uri) {
-                long interval = 5000 * 1000;
-                Glide.with(MessageListActivity.this)
-                        .load(uri).asBitmap()
-                        .override(200, 400)
-                        // Resize image view by change override size.
-                        .into(imageCover);
-            }
-        };
+//        final float density = getResources().getDisplayMetrics().density;
+//        final float MIN_WIDTH = 60 * density;
+//        final float MAX_WIDTH = 200 * density;
+//        final float MIN_HEIGHT = 60 * density;
+//        final float MAX_HEIGHT = 200 * density;
+//        ImageLoader imageLoader = new ImageLoader() {
+//            @Override
+//            public void loadAvatarImage(ImageView avatarImageView, String string) {
+//                // You can use other image load libraries.
+//                if (string.contains("R.drawable")) {
+//                    Integer resId = getResources().getIdentifier(string.replace("R.drawable.", ""),
+//                            "drawable", getPackageName());
+//
+//                    avatarImageView.setImageResource(resId);
+//                } else {
+//                    Glide.with(MessageListActivity.this)
+//                            .load(string).asBitmap()
+//                            .into(avatarImageView);
+//                }
+//            }
+//
+//            /**
+//             * Load image message
+//             * @param imageView Image message's ImageView.
+//             * @param string A file path, or a uri or url.
+//             */
+//            @Override
+//            public void loadImage(final ImageView imageView, String string) {
+//                // You can use other image load libraries.
+//                Glide.with(getApplicationContext())
+//                        .load(string).asBitmap()
+//                        .placeholder(R.drawable.aurora_picture_not_found)
+//                        .into(new SimpleTarget<Bitmap>() {
+//                            @Override
+//                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+//                                int imageWidth = resource.getWidth();
+//                                int imageHeight = resource.getHeight();
+//                                Log.d(TAG, "Image width " + imageWidth + " height: " + imageHeight);
+//
+//                                // 裁剪 bitmap
+//                                float width, height;
+//                                if (imageWidth > imageHeight) {
+//                                    if (imageWidth > MAX_WIDTH) {
+//                                        float temp = MAX_WIDTH / imageWidth * imageHeight;
+//                                        height = temp > MIN_HEIGHT ? temp : MIN_HEIGHT;
+//                                        width = MAX_WIDTH;
+//                                    } else if (imageWidth < MIN_WIDTH) {
+//                                        float temp = MIN_WIDTH / imageWidth * imageHeight;
+//                                        height = temp < MAX_HEIGHT ? temp : MAX_HEIGHT;
+//                                        width = MIN_WIDTH;
+//                                    } else {
+//                                        float ratio = imageWidth / imageHeight;
+//                                        if (ratio > 3) {
+//                                            ratio = 3;
+//                                        }
+//                                        height = imageHeight * ratio;
+//                                        width = imageWidth;
+//                                    }
+//                                } else {
+//                                    if (imageHeight > MAX_HEIGHT) {
+//                                        float temp = MAX_HEIGHT / imageHeight * imageWidth;
+//                                        width = temp > MIN_WIDTH ? temp : MIN_WIDTH;
+//                                        height = MAX_HEIGHT;
+//                                    } else if (imageHeight < MIN_HEIGHT) {
+//                                        float temp = MIN_HEIGHT / imageHeight * imageWidth;
+//                                        width = temp < MAX_WIDTH ? temp : MAX_WIDTH;
+//                                        height = MIN_HEIGHT;
+//                                    } else {
+//                                        float ratio = imageHeight / imageWidth;
+//                                        if (ratio > 3) {
+//                                            ratio = 3;
+//                                        }
+//                                        width = imageWidth * ratio;
+//                                        height = imageHeight;
+//                                    }
+//                                }
+//                                ViewGroup.LayoutParams params = imageView.getLayoutParams();
+//                                params.width = (int) width;
+//                                params.height = (int) height;
+//                                imageView.setLayoutParams(params);
+//                                Matrix matrix = new Matrix();
+//                                float scaleWidth = width / imageWidth;
+//                                float scaleHeight = height / imageHeight;
+//                                matrix.postScale(scaleWidth, scaleHeight);
+//                                imageView.setImageBitmap(Bitmap.createBitmap(resource, 0, 0, imageWidth, imageHeight, matrix, true));
+//                            }
+//                        });
+//            }
+//
+//            /**
+//             * Load video message
+//             * @param imageCover Video message's image cover
+//             * @param uri Local path or url.
+//             */
+//            @Override
+//            public void loadVideo(ImageView imageCover, String uri) {
+//                long interval = 5000 * 1000;
+//                Glide.with(MessageListActivity.this)
+//                        .load(uri).asBitmap()
+//                        .override(200, 400)
+//                        // Resize image view by change override size.
+//                        .into(imageCover);
+//            }
+//        };
 
         // Use default layout
         MsgListAdapter.HoldersConfig holdersConfig = new MsgListAdapter.HoldersConfig();
-        mAdapter = new MsgListAdapter<>("0", holdersConfig, imageLoader);
+        mAdapter = new MsgListAdapter<>("0", holdersConfig, new GlideImageLoader(this));
         // If you want to customise your layout, try to create custom ViewHolder:
         // holdersConfig.setSenderTxtMsg(CustomViewHolder.class, layoutRes);
         // holdersConfig.setReceiverTxtMsg(CustomViewHolder.class, layoutRes);

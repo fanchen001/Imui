@@ -62,7 +62,7 @@ public class IdCardViewHolder<Message extends IMessage> extends BaseMessageViewH
             mNameTv.setText(extras.get("idCardTitle"));
             mNumberTv.setText(extras.get("idCardNumber"));
             if(extras.get("path") != null && mImageLoader!= null){
-                mImageLoader.loadImage(mNumberIv,extras.get("path"));
+                mImageLoader.loadImage(mNumberIv,extras.get("path"),mLayoutManager);
             }else{
                 mNumberIv.setImageResource(R.mipmap.attachment);
             }

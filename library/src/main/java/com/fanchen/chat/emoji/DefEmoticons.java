@@ -88,6 +88,9 @@ public class DefEmoticons {
                 new EmojiBean(mipmap.emoji_0x1f382, EmojiParse.fromCodePoint(127874)),
                 new EmojiBean(mipmap.emoji_0x1f3e0, EmojiParse.fromCodePoint(127968)),
                 new EmojiBean(mipmap.emoji_0x1f697, EmojiParse.fromCodePoint(128663)),
-                new EmojiBean(mipmap.emoji_0x1f559, EmojiParse.fromCodePoint(128345))};
+                new EmojiBean(mipmap.emoji_0x1f559, EmojiParse.fromCodePoint(128345)),
+                /*new EmojiBean(mipmap.emoji_0x14429, EmojiParse.fromCodePoint(82985)),
+                new EmojiBean(mipmap.emoji_0x1442a, EmojiParse.fromCodePoint(82986)),
+                new EmojiBean(mipmap.emoji_0x1442b, EmojiParse.fromCodePoint(82987))*/};
     }
 }

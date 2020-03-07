@@ -1,6 +1,7 @@
 package com.fanchen.chat.emoji;
 
 import android.text.Spannable;
+import android.util.Log;
 import android.widget.EditText;
 
 
@@ -15,7 +16,7 @@ public class EmojiFilter extends EmoticonFilter {
     public void filter(EditText editText, CharSequence text, int start, int lengthBefore, int lengthAfter) {
         emojiSize = emojiSize == -1 ? EmoticonsKeyboardUtils.getFontHeight(editText) : emojiSize;
         clearSpan(editText.getText(), start, text.toString().length());
-        Matcher m = EmojiDisplay.getMatcher(text.toString().substring(start, text.toString().length()));
+        Matcher m = EmojiDisplay.getMatcher(text.toString().substring(start));
         if (m != null) {
             while (m.find()) {
                 String emojiHex = Integer.toHexString(Character.codePointAt(m.group(), 0));

@@ -1,6 +1,7 @@
 package com.fanchen.message.commons;
 
 
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 
 public interface ImageLoader {
@@ -17,7 +18,7 @@ public interface ImageLoader {
      * @param imageView Image message's ImageView.
      * @param string A file path, or a uri or url.
      */
-    void loadImage(ImageView imageView, String string);
+    void loadImage(ImageView imageView, String string, RecyclerView.LayoutManager layoutManager);
 
     /**
      * Load video to video message's image cover.

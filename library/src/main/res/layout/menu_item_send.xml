@@ -9,13 +9,13 @@
 
     <FrameLayout
         android:id="@+id/aurora_framelayout_menuitem_send"
-        android:layout_width="48dp"
+        android:layout_width="45dp"
         android:layout_height="match_parent">
 
         <ImageButton
             android:id="@+id/aurora_menuitem_ib_send"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:background="@drawable/aurora_menuitem_send"

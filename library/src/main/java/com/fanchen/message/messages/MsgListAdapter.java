@@ -312,6 +312,7 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
             ((BaseMessageViewHolder) holder).mMediaPlayer = this.mMediaPlayer;
             ((BaseMessageViewHolder) holder).mScroll = this.mScroll;
             ((BaseMessageViewHolder) holder).mData = this.mItems;
+            ((BaseMessageViewHolder) holder).mLayoutManager = this.getLayoutManager();
         }
         holder.onBind(wrapper.item);
     }

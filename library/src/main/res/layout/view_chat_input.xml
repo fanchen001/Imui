@@ -29,14 +29,11 @@
             android:gravity="center_vertical"
             android:inputType="textMultiLine"
             android:maxLines="4"
-            android:minHeight="42dp"
-            android:paddingLeft="4dp"
-            android:paddingTop="5dp"
-            android:paddingRight="4dp"
-            android:paddingBottom="5dp"
+            android:minHeight="40dp"
+            android:padding="4dp"
             android:textColor="@android:color/black"
             android:textCursorDrawable="@drawable/aurora_edittext_cursor_bg"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <android.support.v4.widget.Space
             android:id="@+id/aurora_input_margin_right"

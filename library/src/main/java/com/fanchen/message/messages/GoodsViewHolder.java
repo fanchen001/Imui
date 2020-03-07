@@ -65,7 +65,7 @@ public class GoodsViewHolder<Message extends IMessage> extends BaseMessageViewHo
             mNumTv.setText(extras.get("goodsStock"));
             mPriceTv.setText(extras.get("goodsPrice"));
             if(extras.get("path") != null && mImageLoader!= null){
-                mImageLoader.loadImage(mImgIv,extras.get("path"));
+                mImageLoader.loadImage(mImgIv,extras.get("path"),mLayoutManager);
             }else{
                 mImgIv.setImageResource(R.mipmap.attachment);
             }

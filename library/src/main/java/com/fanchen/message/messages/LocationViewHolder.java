@@ -70,7 +70,7 @@ public class LocationViewHolder<Message extends IMessage>  extends BaseMessageVi
             mLocTv.setText(extras.get("locationTitle"));
             mLosTv.setText(extras.get("locationDetails"));
             if(extras.get("path") != null && mImageLoader!= null){
-                mImageLoader.loadImage(mLocationIv,extras.get("path"));
+                mImageLoader.loadImage(mLocationIv,extras.get("path"),mLayoutManager);
             }else{
                 mLocationIv.setImageResource(R.drawable.aurora_picture_not_found);
             }

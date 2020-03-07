@@ -150,29 +150,33 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         mPtrLayout.setPinContent(true);
 //        mMsgList.setShowReceiverDisplayName(true);
 //        mMsgList.setShowSenderDisplayName(false);
-//        MenuManager menuManager = mChatInput.getMenuManager();
-//        menuManager.addCustomMenu("MY_CUSTOM", R.layout.menu_text_item, R.layout.menu_text_feature);
-//        menuManager.setMenu(Menu.newBuilder().
-//                customize(true).
-//                setRight(Menu.TAG_SEND).
-//                setBottom(Menu.TAG_VOICE, Menu.TAG_EMOJI, Menu.TAG_GALLERY, Menu.TAG_CAMERA, "MY_CUSTOM").
-//                build());
-//        menuManager.setCustomMenuClickListener(new CustomMenuEventListener() {
-//            @Override
-//            public boolean onMenuItemClick(String tag, MenuItem menuItem) {
-//                return true;
-//            }
-//
-//            @Override
-//            public void onMenuFeatureVisibilityChanged(int visibility, String tag, MenuFeature menuFeature) {
-//                if (visibility == View.VISIBLE) {
-//                } else {
-//                }
-//            }
-//        });
     }
 
-    public void customMenuBuild(String tag, BaseAdapter adapter, AdapterView.OnItemClickListener l) {
+    public void customLiftRightBuild(String tag,String lift,String right, BaseAdapter adapter, AdapterView.OnItemClickListener l) {
+        MenuFeature inflate = (MenuFeature) View.inflate(getContext(), R.layout.menu_more_feature, null);
+        GridView v = inflate.findViewById(R.id.menu_feature_grid);
+        v.setOnItemClickListener(l);
+        v.setAdapter(adapter);
+        MenuManager menuManager = mChatInput.getMenuManager();
+        menuManager.addCustomMenu(tag, (MenuItem) View.inflate(getContext(), R.layout.menu_item_more, null), inflate);
+        menuManager.setMenu(Menu.newBuilder().customize(true).setRight(right).setLeft(lift).
+                setBottom(Menu.TAG_EMOJI, Menu.TAG_VIDEO, Menu.TAG_GALLERY, Menu.TAG_CAMERA, tag).build());
+        menuManager.setCustomMenuClickListener(this);
+    }
+
+    public void customRightBuild(String tag,String right, BaseAdapter adapter, AdapterView.OnItemClickListener l) {
+        MenuFeature inflate = (MenuFeature) View.inflate(getContext(), R.layout.menu_more_feature, null);
+        GridView v = inflate.findViewById(R.id.menu_feature_grid);
+        v.setOnItemClickListener(l);
+        v.setAdapter(adapter);
+        MenuManager menuManager = mChatInput.getMenuManager();
+        menuManager.addCustomMenu(tag, (MenuItem) View.inflate(getContext(), R.layout.menu_item_more, null), inflate);
+        menuManager.setMenu(Menu.newBuilder().customize(true).setRight(right).
+                setBottom(Menu.TAG_VOICE,Menu.TAG_EMOJI, Menu.TAG_VIDEO, Menu.TAG_GALLERY, Menu.TAG_CAMERA, tag).build());
+        menuManager.setCustomMenuClickListener(this);
+    }
+
+    public void customBuild(String tag, BaseAdapter adapter, AdapterView.OnItemClickListener l) {
         MenuFeature inflate = (MenuFeature) View.inflate(getContext(), R.layout.menu_more_feature, null);
         GridView v = inflate.findViewById(R.id.menu_feature_grid);
         v.setOnItemClickListener(l);
@@ -180,7 +184,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         MenuManager menuManager = mChatInput.getMenuManager();
         menuManager.addCustomMenu(tag, (MenuItem) View.inflate(getContext(), R.layout.menu_item_more, null), inflate);
         menuManager.setMenu(Menu.newBuilder().customize(true).setRight(Menu.TAG_SEND).
-                setBottom(Menu.TAG_VOICE, Menu.TAG_EMOJI, Menu.TAG_VIDEO, Menu.TAG_GALLERY, Menu.TAG_CAMERA, tag).build());
+                setBottom(Menu.TAG_VOICE,Menu.TAG_EMOJI, Menu.TAG_VIDEO, Menu.TAG_GALLERY, Menu.TAG_CAMERA, tag).build());
         menuManager.setCustomMenuClickListener(this);
     }
 
@@ -212,12 +216,12 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     }
 
     public void setAdapter(MsgListAdapter adapter) {
-        setAdapter(adapter,false);
+        setAdapter(adapter, false);
     }
 
-    public void setAdapter(MsgListAdapter adapter,boolean supportAnimations) {
+    public void setAdapter(MsgListAdapter adapter, boolean supportAnimations) {
         RecyclerView.ItemAnimator itemAnimator = mMsgList.getItemAnimator();
-        if(itemAnimator instanceof SimpleItemAnimator){
+        if (itemAnimator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) itemAnimator).setSupportsChangeAnimations(supportAnimations);
         }
         mMsgList.setAdapter(adapter);
@@ -264,6 +268,17 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         return true;
     }
 
+    public void registerDefaultListener(){
+        defaultOnTouchListener();
+        registerDefaultWakeLock();
+        unregistertDetectReceiver();
+    }
+
+    public void unregisterDefaultListener(){
+        unregistertDetectReceiver();
+        unregisterDefaultWakeLock();
+    }
+
     public ChatInputView getChatInputView() {
         return mChatInput;
     }
@@ -287,7 +302,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     }
 
     public void scrollToBottom() {
-        scrollToBottom(200);
+        scrollToBottom(300);
     }
 
     @Override
@@ -343,7 +358,6 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
 
     }
 
-
     public boolean onBackPressed() {
         return Jzvd.backPress();
     }
@@ -370,12 +384,12 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
 
         @Override
         public void run() {
-            MessageListView messageListView = getMessageListView();
+            final MessageListView messageListView = getMessageListView();
             if (messageListView == null) return;
             RecyclerView.Adapter adapter = messageListView.getAdapter();
             if (adapter == null) return;
             if (adapter.getItemCount() > firstVisibleItemPosition && firstVisibleItemPosition >= 0) {
-                getMessageListView().smoothScrollToPosition(firstVisibleItemPosition);
+                messageListView.smoothScrollToPosition(firstVisibleItemPosition);
             }
         }
 
