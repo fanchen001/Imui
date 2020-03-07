@@ -340,30 +340,34 @@ public class ImagePreview {
     }
 
     public void reset() {
-        imageInfoList = null;
-        index = 0;
-        minScale = 1.0f;
-        mediumScale = 3.0f;
-        maxScale = 5.0f;
-        zoomTransitionDuration = 200;
-        isShowDownButton = true;
-        isShowCloseButton = false;
-        isEnableDragClose = false;
-        isEnableClickClose = true;
-        isShowIndicator = true;
+        try{
+            imageInfoList = null;
+            index = 0;
+            minScale = 1.0f;
+            mediumScale = 3.0f;
+            maxScale = 5.0f;
+            zoomTransitionDuration = 200;
+            isShowDownButton = true;
+            isShowCloseButton = false;
+            isEnableDragClose = false;
+            isEnableClickClose = true;
+            isShowIndicator = true;
 
-        closeIconResId = R.drawable.ic_pic_action_close;
-        downIconResId = R.drawable.ic_pic_download_new;
-        errorPlaceHolder = R.drawable.ic_pic_load_failed;
+            closeIconResId = R.drawable.ic_pic_action_close;
+            downIconResId = R.drawable.ic_pic_download_new;
+            errorPlaceHolder = R.drawable.ic_pic_load_failed;
 
-        loadStrategy = LoadStrategy.Default;
-        folderName = "Download";
-        contextWeakReference.clear();
-        contextWeakReference = null;
+            loadStrategy = LoadStrategy.Default;
+            folderName = "Download";
+            contextWeakReference.clear();
+            contextWeakReference = null;
 
-        bigImageClickListener = null;
-        bigImageLongClickListener = null;
-        bigImagePageChangeListener = null;
+            bigImageClickListener = null;
+            bigImageLongClickListener = null;
+            bigImagePageChangeListener = null;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void start() {

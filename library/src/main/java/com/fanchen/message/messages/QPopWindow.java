@@ -28,6 +28,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.fanchen.message.commons.models.IMessage;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,11 +37,8 @@ import java.util.List;
 /**
  * 仿qq消息长按弹窗，复制，粘贴，转发，，，，，，
  *
- * @author andy
- * <http>https://blog.csdn.net/andy_l1
  */
- public class QPopuWindow extends PopupWindow {
-
+ public class QPopWindow extends PopupWindow {
     private static final int DEFAULT_NORMAL_TEXT_COLOR = Color.WHITE;
     private static final int DEFAULT_PRESSED_TEXT_COLOR = Color.WHITE;
     private static final int DEFAULT_TEXT_SIZE = 13;
@@ -60,20 +59,20 @@ import java.util.List;
     private StateListDrawable mRightItemBackground;
     private StateListDrawable mCornerItemBackground;
     public Builder builder;
-    private static QPopuWindow popupList = null;
+    private static QPopWindow popupList = null;
     private ColorStateList mTextColorStateList;
     private int mRawX;
     private int mRawY;
 
-    private QPopuWindow(Context context) {
+    private QPopWindow(Context context) {
         super(context);
         this.mContext = context;
         builder = new Builder();
     }
 
-    public static synchronized QPopuWindow getInstance(Context context) {
+    public static synchronized QPopWindow getInstance(Context context) {
         if (popupList == null) {
-            popupList = new QPopuWindow(context);
+            popupList = new QPopWindow(context);
         }
         return popupList;
     }
@@ -99,8 +98,9 @@ import java.util.List;
         private float indicatorViewHeight = dp2px(9);
         private PopupWindow mPopupWindow = null;
         private List<String> mPopupItemList;
-        private OnPopuListItemClickListener mListener;
+        private OnPopListItemClickListener mListener;
         private View mAnchorView;
+        private IMessage mMessage;
         private int mPopupWindowWidth;
         private int mPopupWindowHeight;
 
@@ -128,7 +128,8 @@ import java.util.List;
          *
          * @param anchorView anchorView
          */
-        public Builder bindView(View anchorView) {
+        public Builder bindView(View anchorView,IMessage message) {
+            config.mMessage = message;
             config.mAnchorView = anchorView;
             return builder;
         }
@@ -253,7 +254,7 @@ import java.util.List;
         /**
          * item 单元点击回调
          */
-        public Builder setOnPopuListItemClickListener(OnPopuListItemClickListener listener) {
+        public Builder setOnPopListItemClickListener(OnPopListItemClickListener listener) {
             config.mListener = listener;
             return builder;
         }
@@ -404,7 +405,7 @@ import java.util.List;
                     @Override
                     public void onClick(View v) {
                         if (config.mListener != null) {
-                            config.mListener.onPopuListItemClick(config.mAnchorView, finalI);
+                            config.mListener.onPopListItemClick(config.mAnchorView,config.mMessage, finalI);
                         }
                         hidePopupListWindow(config);
                     }
@@ -457,7 +458,6 @@ import java.util.List;
         /**
          * 不绑定anchorView 主动抛异常
          *
-         * @see #bindView(View, int)
          */
         private void checkAnchorView() {
 
@@ -677,12 +677,12 @@ import java.util.List;
                 value, mContext.getResources().getDisplayMetrics());
     }
 
-    public interface OnPopuListItemClickListener {
+    public interface OnPopListItemClickListener {
 
         /**
-         * @param anchorView         pop绑定的view
-         * @param anchorViewPosition 绑定view的position
+         * @param view         pop绑定的view
+         * @param position 绑定view的position
          */
-        void onPopuListItemClick(View anchorView, int anchorViewPosition);
+        void onPopListItemClick(View view, IMessage message, int position);
     }
 }

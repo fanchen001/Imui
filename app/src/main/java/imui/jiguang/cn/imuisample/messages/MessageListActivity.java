@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -75,7 +76,7 @@ import com.fanchen.location.bean.LocationBean;
 import com.fanchen.message.commons.ImageLoader;
 import com.fanchen.message.commons.models.IMessage;
 import com.fanchen.message.messages.MsgListAdapter;
-import com.fanchen.message.messages.QPopuWindow;
+import com.fanchen.message.messages.QPopWindow;
 import com.fanchen.message.messages.ptr.PtrHandler;
 import com.fanchen.message.messages.ptr.PullToRefreshLayout;
 import com.fanchen.message.messages.ViewHolderController;
@@ -1032,6 +1033,8 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         // CustomViewHolder must extends ViewHolders defined in MsgListAdapter.
         // Current ViewHolders are TxtViewHolder, VoiceViewHolder.
 
+        mChatView.setBackgroundColor(Color.TRANSPARENT);
+
         mAdapter.setOnMsgClickListener(new MsgListAdapter.OnMsgClickListener<MyMessage>() {
             @Override
             public void onMessageClick(MyMessage message) {
@@ -1124,13 +1127,13 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 }else{
                     ccc = (aa[0] + view.getWidth())/2;
                 }
-                QPopuWindow.getInstance(MessageListActivity.this).builder
-                        .bindView(view)
+                QPopWindow.getInstance(MessageListActivity.this).builder
+                        .bindView(view,message)
                         .setPopupItemList(new String[]{"复制", "转发", "撤回"})
                         .setPointers((int) xxxx, (int) yyyy - 50)
-                        .setOnPopuListItemClickListener(new QPopuWindow.OnPopuListItemClickListener() {
+                        .setOnPopListItemClickListener(new QPopWindow.OnPopListItemClickListener() {
                             @Override
-                            public void onPopuListItemClick(View anchorView, int anchorViewPosition) {
+                            public void onPopListItemClick(View anchorView,IMessage iMessage, int anchorViewPosition) {
                             }
                         }).show();
 

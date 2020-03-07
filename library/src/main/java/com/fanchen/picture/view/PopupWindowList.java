@@ -39,6 +39,7 @@ public class PopupWindowList {
     private int mPopupWindowHeight;
     private AdapterView.OnItemClickListener mItemClickListener;
     private boolean mModal;
+    public static final int ID = View.generateViewId();
 
     public PopupWindowList(Context mContext) {
         if (mContext == null) {
@@ -115,6 +116,7 @@ public class PopupWindowList {
             throw new IllegalArgumentException("please fill ListView Data");
         }
         mPopView = new ListView(mContext);
+        mPopView.setId(ID);
         mPopView.setBackgroundColor(ContextCompat.getColor(mContext, android.R.color.white));
         mPopView.setVerticalScrollBarEnabled(false);
         mPopView.setDivider(null);

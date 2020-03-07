@@ -84,8 +84,6 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         super(context, attrs, defStyleAttr);
         View.inflate(context, R.layout.view_chat_wrap, this);
         Activity activity = JZUtils.scanForActivity(context);
-        Log.e("ChatView", "context -> " + context);
-        Log.e("ChatView", "Activity -> " + activity);
         if (activity != null) {
             mActivity = activity;
             mWindow = mActivity.getWindow();
