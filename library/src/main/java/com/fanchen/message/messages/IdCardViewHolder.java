@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.fanchen.message.utils.DateUtil;
 import com.fanchen.ui.BuildConfig;
 import com.fanchen.ui.R;
@@ -62,11 +61,9 @@ public class IdCardViewHolder<Message extends IMessage> extends BaseMessageViewH
         if (extras != null && !extras.isEmpty()) {
             mNameTv.setText(extras.get("idCardTitle"));
             mNumberTv.setText(extras.get("idCardNumber"));
-            if (extras.get("path") != null) {
-                Glide.with(mNumberIv.getContext()).load(extras.get("path"))
-                        .asBitmap().placeholder(R.mipmap.attachment)
-                        .into(mNumberIv);
-            } else {
+            if(extras.get("path") != null && mImageLoader!= null){
+                mImageLoader.loadImage(mNumberIv,extras.get("path"));
+            }else{
                 mNumberIv.setImageResource(R.mipmap.attachment);
             }
         }

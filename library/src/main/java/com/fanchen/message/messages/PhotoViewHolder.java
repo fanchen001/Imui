@@ -1,7 +1,6 @@
 package com.fanchen.message.messages;
 
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,7 +16,6 @@ import com.fanchen.message.view.RoundTextView;
 import com.fanchen.message.view.ShapeImageView;
 
 import java.util.Date;
-import java.util.Random;
 
 public class PhotoViewHolder<MESSAGE extends IMessage> extends BaseMessageViewHolder<MESSAGE>
         implements MsgListAdapter.DefaultMessageViewHolder {

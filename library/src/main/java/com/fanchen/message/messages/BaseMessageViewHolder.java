@@ -30,5 +30,6 @@ public abstract class BaseMessageViewHolder<MESSAGE extends IMessage>
 
     public BaseMessageViewHolder(View itemView) {
         super(itemView);
+        mContext = itemView.getContext();
     }
 }

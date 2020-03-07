@@ -1,6 +1,5 @@
 package com.fanchen.message.messages;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -8,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.fanchen.message.utils.DateUtil;
 import com.fanchen.ui.BuildConfig;
 import com.fanchen.ui.R;
@@ -18,7 +16,6 @@ import com.fanchen.message.view.RoundTextView;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Random;
 
 public class GoodsViewHolder<Message extends IMessage> extends BaseMessageViewHolder<Message>
         implements MsgListAdapter.DefaultMessageViewHolder, View.OnClickListener, View.OnLongClickListener {
@@ -67,11 +64,9 @@ public class GoodsViewHolder<Message extends IMessage> extends BaseMessageViewHo
             mNameTv.setText(extras.get("goodsTitle"));
             mNumTv.setText(extras.get("goodsStock"));
             mPriceTv.setText(extras.get("goodsPrice"));
-            if (extras.get("path") != null) {
-                Glide.with(mImgIv.getContext()).load(extras.get("path"))
-                        .asBitmap().placeholder(R.mipmap.attachment)
-                        .into(mImgIv);
-            } else {
+            if(extras.get("path") != null && mImageLoader!= null){
+                mImageLoader.loadImage(mImgIv,extras.get("path"));
+            }else{
                 mImgIv.setImageResource(R.mipmap.attachment);
             }
         }
