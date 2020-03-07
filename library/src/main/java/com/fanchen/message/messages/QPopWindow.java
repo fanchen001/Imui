@@ -405,7 +405,7 @@ import java.util.List;
                     @Override
                     public void onClick(View v) {
                         if (config.mListener != null) {
-                            config.mListener.onPopListItemClick(config.mAnchorView,config.mMessage, finalI);
+                            config.mListener.onPopListItemClick(v,config.mMessage, finalI);
                         }
                         hidePopupListWindow(config);
                     }
