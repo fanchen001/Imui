@@ -307,7 +307,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (mMsgList == getMessageListView()) {
+        if (v == getMessageListView()) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     if (mChatInput.getMenuState() == View.VISIBLE) {

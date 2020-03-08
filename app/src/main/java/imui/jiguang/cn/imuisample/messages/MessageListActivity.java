@@ -351,7 +351,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 //        CommonUtils.mChatView
 
         mChatView.getTitleTextView().setText("与[" + stringExtra + "]聊天");
-
+        mChatView.defaultOnTouchListener();
         UiUtils.setViewPadding(mChatView.getTitleContainer());
 
         mChatView.customLiftRightBuild("6666", Menu.TAG_VOICE,Menu.TAG_SEND, new DefaultFeatureAdapter(), new AdapterView.OnItemClickListener() {
@@ -448,7 +448,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_HEADSET_PLUG);
         registerReceiver(mReceiver, intentFilter);
-        mChatView.setOnTouchListener(this);
+//        mChatView.setOnTouchListener(this);
         mChatView.setMenuClickListener(new OnMenuClickListener() {
             @Override
             public boolean onSendTextMessage(CharSequence input) {
@@ -760,14 +760,14 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
             }
 
         });
-
-        mChatView.getChatInputView().getInputView().setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                scrollToBottom();
-                return false;
-            }
-        });
+//
+//        mChatView.getChatInputView().getInputView().setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                scrollToBottom();
+//                return false;
+//            }
+//        });
 
         mChatView.getChatInputView().setOnSelectButtonListener(new OnSelectButtonListener() {
 
@@ -1323,29 +1323,6 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        xxxx = motionEvent.getRawX();
-        yyyy = motionEvent.getRawY();
-        switch (motionEvent.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                ChatInputView chatInputView = mChatView.getChatInputView();
-                if (chatInputView.getMenuState() == View.VISIBLE) {
-                    chatInputView.dismissMenuLayout();
-                }
-                try {
-                    View v = getCurrentFocus();
-                    if (mImm != null && v != null) {
-                        mImm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                        mWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                        view.clearFocus();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                view.performClick();
-                break;
-        }
         return false;
     }
 
