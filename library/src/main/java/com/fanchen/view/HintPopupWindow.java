@@ -47,20 +47,20 @@ public class HintPopupWindow {
     private boolean isAniming;//动画是否在执行
 
     /**
-     *                    文字和click事件的list是对应绑定的
+     * 文字和click事件的list是对应绑定的
      */
     public HintPopupWindow(Activity activity) {
         this.activity = activity;
         windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
     }
 
-    public HintPopupWindow build(List<Item> contentList, View.OnClickListener clickList){
-        initLayout(false,contentList, clickList);
+    public HintPopupWindow build(List<Item> contentList, View.OnClickListener clickList) {
+        initLayout(false, contentList, clickList);
         return this;
     }
 
-    public HintPopupWindow build(boolean status,List<Item> contentList, View.OnClickListener clickList){
-        initLayout(status,contentList, clickList);
+    public HintPopupWindow build(boolean status, List<Item> contentList, View.OnClickListener clickList) {
+        initLayout(status, contentList, clickList);
         return this;
     }
 
@@ -78,7 +78,7 @@ public class HintPopupWindow {
      * @param contentList 点击item内容的文字
      * @param clickList   点击item的事件
      */
-    public void initLayout(boolean status,List<Item> contentList, View.OnClickListener clickList) {
+    public void initLayout(boolean status, List<Item> contentList, View.OnClickListener clickList) {
         //这是根布局
         rootView = (ViewGroup) View.inflate(activity, R.layout.item_hint_popupwindow, null);
         linearLayout = (ViewGroup) rootView.findViewById(R.id.linearLayout);
@@ -90,7 +90,6 @@ public class HintPopupWindow {
             View v_line = view.findViewById(R.id.v_line);
 
             textView.setText(contentList.get(x).title);
-            textView.setTag(contentList.get(x));
             Drawable drawable = textView.getContext().getResources().getDrawable(contentList.get(x).drawable);
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());  //此为必须写的
             textView.setCompoundDrawables(drawable, null, null, null);
@@ -105,6 +104,7 @@ public class HintPopupWindow {
             }
         }
         for (int x = 0; x < list.size(); x++) {
+            list.get(x).setTag(contentList.get(x));
             list.get(x).setOnClickListener(clickList);
         }
 
@@ -112,7 +112,7 @@ public class HintPopupWindow {
         params = new WindowManager.LayoutParams();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        if(status)params.flags = FLAG_TRANSLUCENT_STATUS;
+        if (status) params.flags = FLAG_TRANSLUCENT_STATUS;
         params.format = PixelFormat.RGBA_8888;//背景透明
         params.gravity = Gravity.LEFT | Gravity.TOP;
 
