@@ -1139,12 +1139,11 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 //                            public void onPopListItemClick(View anchorView,IMessage iMessage, int anchorViewPosition) {
 //                            }
 //                        }).show();
-//                new HintPopupWindow(MessageListActivity.this, Arrays.asList("1111", "2222"), new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                    }
-//                }).showPopupWindow(view);
+//                ArrayList<HintPopupWindow.Item> items = new ArrayList<>();
+//                items.add(new HintPopupWindow.Item(R.drawable.ic_gif,"11"));
+//                items.add(new HintPopupWindow.Item(R.drawable.ic_gif,"22"));
+//                items.add(new HintPopupWindow.Item(R.drawable.ic_gif,"33"));
+//                new HintPopupWindow(MessageListActivity.this).build().showPopupWindow(view);
 
 
                 // do something

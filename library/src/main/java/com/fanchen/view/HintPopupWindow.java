@@ -24,11 +24,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-
 import com.fanchen.ui.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 
 /**
  * 弹出动画的popupwindow
@@ -46,17 +47,24 @@ public class HintPopupWindow {
     private boolean isAniming;//动画是否在执行
 
     /**
-     * @param contentList 点击item的内容文字
-     * @param clickList 点击item的事件
-     * 文字和click事件的list是对应绑定的
+     *                    文字和click事件的list是对应绑定的
      */
-    public HintPopupWindow(Activity activity, List<Item> contentList, View.OnClickListener clickList){
+    public HintPopupWindow(Activity activity) {
         this.activity = activity;
         windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-        initLayout(contentList, clickList);
     }
 
-    public static class Item{
+    public HintPopupWindow build(List<Item> contentList, View.OnClickListener clickList){
+        initLayout(false,contentList, clickList);
+        return this;
+    }
+
+    public HintPopupWindow build(boolean status,List<Item> contentList, View.OnClickListener clickList){
+        initLayout(status,contentList, clickList);
+        return this;
+    }
+
+    public static class Item {
         public int drawable;
         public String title;
 
@@ -68,15 +76,15 @@ public class HintPopupWindow {
 
     /**
      * @param contentList 点击item内容的文字
-     * @param clickList 点击item的事件
+     * @param clickList   点击item的事件
      */
-    public void initLayout(List<Item> contentList, View.OnClickListener clickList){
+    public void initLayout(boolean status,List<Item> contentList, View.OnClickListener clickList) {
         //这是根布局
         rootView = (ViewGroup) View.inflate(activity, R.layout.item_hint_popupwindow, null);
         linearLayout = (ViewGroup) rootView.findViewById(R.id.linearLayout);
         //格式化点击item, 将文字和click事件一一绑定上去
         List<View> list = new ArrayList<>();
-        for(int x=0; x<contentList.size(); x++){
+        for (int x = 0; x < contentList.size(); x++) {
             View view = View.inflate(activity, R.layout.popupwindow_hint_menu, null);
             TextView textView = (TextView) view.findViewById(R.id.tv_content);
             View v_line = view.findViewById(R.id.v_line);
@@ -90,13 +98,13 @@ public class HintPopupWindow {
 
             linearLayout.addView(view);
             list.add(view);
-            if(x == 0){
+            if (x == 0) {
                 v_line.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 v_line.setVisibility(View.VISIBLE);
             }
         }
-        for (int x=0; x<list.size(); x++){
+        for (int x = 0; x < list.size(); x++) {
             list.get(x).setOnClickListener(clickList);
         }
 
@@ -104,6 +112,7 @@ public class HintPopupWindow {
         params = new WindowManager.LayoutParams();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        if(status)params.flags = FLAG_TRANSLUCENT_STATUS;
         params.format = PixelFormat.RGBA_8888;//背景透明
         params.gravity = Gravity.LEFT | Gravity.TOP;
 
@@ -119,7 +128,7 @@ public class HintPopupWindow {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 //如果是显示状态那么隐藏视图
-                if(keyCode == KeyEvent.KEYCODE_BACK && isShow) dismissPopupWindow();
+                if (keyCode == KeyEvent.KEYCODE_BACK && isShow) dismissPopupWindow();
                 return isShow;
             }
         });
@@ -127,11 +136,12 @@ public class HintPopupWindow {
 
     /**
      * 弹出选项弹窗
+     *
      * @param locationView 默认在该view的下方弹出, 和popupWindow类似
      */
-    public void showPopupWindow(View locationView){
-        Log.i("Log.i", "showPopupWindow: "+isAniming);
-        if(!isAniming) {
+    public void showPopupWindow(View locationView) {
+        Log.i("Log.i", "showPopupWindow: " + isAniming);
+        if (!isAniming) {
             isAniming = true;
             try {
                 //这个步骤是得到该view相对于屏幕的坐标, 注意不是相对于父布局哦!
@@ -199,12 +209,13 @@ public class HintPopupWindow {
 
     /**
      * android系统的模糊方法
+     *
      * @param bitmap 要模糊的图片
      * @param radius 模糊等级 >=0 && <=25
      */
     public static Bitmap blurBitmap(Context context, Bitmap bitmap, int radius) {
 
-        if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             //Let's create an empty bitmap with the same size of the bitmap we want to blur
             Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
             //Instantiate a new Renderscript
@@ -226,36 +237,36 @@ public class HintPopupWindow {
             //After finishing everything, we destroy the Renderscript.
             rs.destroy();
             return outBitmap;
-        }else{
+        } else {
             return bitmap;
         }
     }
 
-    public void dismissPopupWindow(){
-        Log.i("Log.i", "dismissPopupWindow: "+isAniming);
-        if(!isAniming) {
+    public void dismissPopupWindow() {
+        Log.i("Log.i", "dismissPopupWindow: " + isAniming);
+        if (!isAniming) {
             isAniming = true;
             isShow = false;
             goneAnim(linearLayout, 0.95f, 1, animDuration / 3, true);
         }
     }
 
-    public WindowManager.LayoutParams getLayoutParams(){
+    public WindowManager.LayoutParams getLayoutParams() {
         return params;
     }
 
-    public ViewGroup getLayout(){
+    public ViewGroup getLayout() {
         return linearLayout;
     }
 
     /**
      * popupwindow是否是显示状态
      */
-    public boolean isShow(){
+    public boolean isShow() {
         return isShow;
     }
 
-    private void alphaAnim(final View view, int start, int end, int duration){
+    private void alphaAnim(final View view, int start, int end, int duration) {
 
         ValueAnimator va = ValueAnimator.ofFloat(start, end).setDuration(duration);
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -286,7 +297,7 @@ public class HintPopupWindow {
             public void onAnimationEnd(Animator animation) {
                 if (isWhile) {
                     showAnim(view, end, 0.95f, animDuration / 3, false);
-                }else{
+                } else {
                     isAniming = false;
                 }
             }
@@ -294,7 +305,7 @@ public class HintPopupWindow {
         va.start();
     }
 
-    public void goneAnim(final View view, float start, final float end, int duration, final boolean isWhile){
+    public void goneAnim(final View view, float start, final float end, int duration, final boolean isWhile) {
 
         ValueAnimator va = ValueAnimator.ofFloat(start, end).setDuration(duration);
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -310,13 +321,13 @@ public class HintPopupWindow {
         va.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                if(isWhile){
+                if (isWhile) {
                     alphaAnim(rootView, 1, 0, animDuration);
                     goneAnim(view, end, 0f, animDuration, false);
-                }else{
+                } else {
                     try {
                         windowManager.removeViewImmediate(rootView);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     isAniming = false;
