@@ -22,13 +22,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.fanchen.filepicker.util.UiUtils;
 import com.fanchen.ui.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 
 /**
@@ -37,9 +40,8 @@ import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 public class HintPopupWindow {
 
     private Activity activity;
-    private WindowManager.LayoutParams params;
+    private FrameLayout.LayoutParams params;
     private boolean isShow;
-    private WindowManager windowManager;
     private ViewGroup rootView;
     private ViewGroup linearLayout;
 
@@ -51,16 +53,10 @@ public class HintPopupWindow {
      */
     public HintPopupWindow(Activity activity) {
         this.activity = activity;
-        windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
     }
 
     public HintPopupWindow build(List<Item> contentList, View.OnClickListener clickList) {
-        initLayout(false, contentList, clickList);
-        return this;
-    }
-
-    public HintPopupWindow build(boolean status, List<Item> contentList, View.OnClickListener clickList) {
-        initLayout(status, contentList, clickList);
+        initLayout(contentList, clickList);
         return this;
     }
 
@@ -78,7 +74,7 @@ public class HintPopupWindow {
      * @param contentList 点击item内容的文字
      * @param clickList   点击item的事件
      */
-    public void initLayout(boolean status, List<Item> contentList, View.OnClickListener clickList) {
+    public void initLayout(List<Item> contentList, View.OnClickListener clickList) {
         //这是根布局
         rootView = (ViewGroup) View.inflate(activity, R.layout.item_hint_popupwindow, null);
         linearLayout = (ViewGroup) rootView.findViewById(R.id.linearLayout);
@@ -109,11 +105,12 @@ public class HintPopupWindow {
         }
 
         //这里给你根布局设置背景透明, 为的是让他看起来和activity的布局一样
-        params = new WindowManager.LayoutParams();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        if (status) params.flags = FLAG_TRANSLUCENT_STATUS;
-        params.format = PixelFormat.RGBA_8888;//背景透明
+        params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
+//        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+//        params.height = UiUtils.getScreenHeight(activity);
+//       params.flags = FLAG_TRANSLUCENT_STATUS;
+
+//        params.format = PixelFormat.RGBA_8888;//背景透明
         params.gravity = Gravity.LEFT | Gravity.TOP;
 
         //当点击根布局时, 隐藏
@@ -139,7 +136,7 @@ public class HintPopupWindow {
      *
      * @param locationView 默认在该view的下方弹出, 和popupWindow类似
      */
-    public void showPopupWindow(View locationView) {
+    public void showPopupWindow(View locationView,boolean status) {
         Log.i("Log.i", "showPopupWindow: " + isAniming);
         if (!isAniming) {
             isAniming = true;
@@ -153,7 +150,11 @@ public class HintPopupWindow {
                 float x = arr[0] + locationView.getWidth() - linearLayout.getMeasuredWidth();
                 float y = arr[1] - frame.top + locationView.getHeight();
                 linearLayout.setX(x);
-                linearLayout.setY(y);
+                if(status){
+                    linearLayout.setY(y + UiUtils.getStatusBarHeight(activity));
+                }else{
+                    linearLayout.setY(y);
+                }
 
                 /*捕获当前activity的布局视图, 因为我们要动态模糊, 所以这个布局一定要是最新的,
                  *这样我们把模糊后的布局盖到屏幕上时, 才能让用户感觉不出来变化*/
@@ -162,8 +163,11 @@ public class HintPopupWindow {
                 setBlurBackground(bitmap);//这里是模糊图片, 这个是重点我会单独讲的, 因为效率很重要啊!!!
 
                 //这里就是使用WindowManager直接将我们处理好的view添加到屏幕最前端
-                windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
-                windowManager.addView(rootView, params);
+//                windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+
+                ViewGroup decorView1 = (ViewGroup) activity.getWindow().getDecorView();
+                decorView1.addView(rootView, params);
+//                windowManager.addView(rootView, params);
 
                 //这一步就是有回弹效果的弹出动画, 我用属性动画写的, 很简单
                 showAnim(linearLayout, 0, 1, animDuration, true);
@@ -251,9 +255,9 @@ public class HintPopupWindow {
         }
     }
 
-    public WindowManager.LayoutParams getLayoutParams() {
-        return params;
-    }
+//    public WindowManager.LayoutParams getLayoutParams() {
+//        return params;
+//    }
 
     public ViewGroup getLayout() {
         return linearLayout;
@@ -326,7 +330,8 @@ public class HintPopupWindow {
                     goneAnim(view, end, 0f, animDuration, false);
                 } else {
                     try {
-                        windowManager.removeViewImmediate(rootView);
+                        ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
+                        decorView.removeViewInLayout(rootView);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
