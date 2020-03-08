@@ -22,6 +22,7 @@ import com.fanchen.guide.bean.Message;
 import com.fanchen.guide.bean.TipsView;
 import com.fanchen.guide.constant.Constants;
 import com.fanchen.guide.support.HShape;
+import com.fanchen.guide.support.OnConfirmListener;
 import com.fanchen.guide.support.OnStateChangedListener;
 import com.fanchen.guide.view.EasyGuideView;
 import com.fanchen.ui.R;
@@ -153,11 +154,14 @@ public class EasyGuide {
             int lr = dip2px(mActivity, 8);
             int tb = dip2px(mActivity, 5);
             tvConfirm.setPadding(lr, tb, lr, tb);
-            tvConfirm.setOnClickListener(mConfirm.listener != null ?
-                    mConfirm.listener : new View.OnClickListener() {
+            tvConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dismiss();
+                    if(mConfirm.listener != null){
+                        mConfirm.listener.onConfirmClick(v,EasyGuide.this);
+                    }else{
+                        dismiss();
+                    }
                 }
             });
 
@@ -187,7 +191,7 @@ public class EasyGuide {
                                         dismiss();
 
                                         if (listener != null) {
-                                            listener.onHeightlightViewClick(view);
+                                            listener.onHeightLightViewClick(view);
                                         }
 
                                         if (performViewClick) {
@@ -222,7 +226,6 @@ public class EasyGuide {
         mGuideView.recyclerBitmap();
         if (mParentView.indexOfChild(mGuideView) > 0) {
             mParentView.removeView(mGuideView);
-
             if (listener != null) {
                 listener.onDismiss();
             }
@@ -287,7 +290,7 @@ public class EasyGuide {
 
         Confirm confirm;
 
-        boolean dismissAnyWhere = true;
+        boolean dismissAnyWhere = false;
         boolean performViewClick;
 
         int count = 1;
@@ -384,13 +387,13 @@ public class EasyGuide {
             return this;
         }
 
-        public Builder setPositiveButton(String btnText, int textSize, View.OnClickListener listener) {
+        public Builder setPositiveButton(String btnText, int textSize, OnConfirmListener listener) {
             this.confirm = new Confirm(btnText, textSize, listener);
             return this;
         }
 
         /**
-         * 是否点击任意区域消失。默认true
+         * 是否点击任意区域消失。默认false
          *
          * @param dismissAnyWhere
          * @return

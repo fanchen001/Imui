@@ -10,5 +10,5 @@ public interface OnStateChangedListener {
 
     void onDismiss();
 
-    void onHeightlightViewClick(View view);
+    void onHeightLightViewClick(View view);
 }

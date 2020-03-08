@@ -2,6 +2,8 @@ package com.fanchen.guide.bean;
 
 import android.view.View;
 
+import com.fanchen.guide.support.OnConfirmListener;
+
 /**
  */
 public class Confirm {
@@ -10,7 +12,7 @@ public class Confirm {
 
     public int textSize = -1;
 
-    public View.OnClickListener listener;
+    public OnConfirmListener listener;
 
     public Confirm(String text) {
         this.text = text;
@@ -21,7 +23,7 @@ public class Confirm {
         this.textSize = textSize;
     }
 
-    public Confirm(String text, int textSize, View.OnClickListener listener) {
+    public Confirm(String text, int textSize, OnConfirmListener listener) {
         this.text = text;
         this.textSize = textSize;
         this.listener = listener;
