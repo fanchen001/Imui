@@ -31,8 +31,6 @@ import com.fanchen.ui.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
-import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 
 /**
  * 弹出动画的popupwindow
@@ -74,7 +72,7 @@ public class HintPopupWindow {
      * @param contentList 点击item内容的文字
      * @param clickList   点击item的事件
      */
-    public void initLayout(List<Item> contentList, View.OnClickListener clickList) {
+    public void initLayout(List<Item> contentList, final View.OnClickListener clickList) {
         //这是根布局
         rootView = (ViewGroup) View.inflate(activity, R.layout.item_hint_popupwindow, null);
         linearLayout = (ViewGroup) rootView.findViewById(R.id.linearLayout);
@@ -101,7 +99,18 @@ public class HintPopupWindow {
         }
         for (int x = 0; x < list.size(); x++) {
             list.get(x).setTag(contentList.get(x));
-            list.get(x).setOnClickListener(clickList);
+            list.get(x).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    dismissPopupWindow();
+                    v.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            clickList.onClick(v);
+                        }
+                    },animDuration);
+                }
+            });
         }
 
         //这里给你根布局设置背景透明, 为的是让他看起来和activity的布局一样

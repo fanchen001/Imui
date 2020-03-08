@@ -344,7 +344,11 @@ public class MapSendActivity extends BaseIActivity implements OnGetGeoCoderResul
                 currentLocation.setLat(result.getLocation().latitude);
                 currentLocation.setLng(result.getLocation().longitude);
                 currentLocation.setCity(city);
-                currentLocation.setScale(mMapView.getMapLevel());
+                try{
+                    currentLocation.setScale(mMapView.getMapLevel());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 currentLocation.setName(getString(R.string.now_address));
                 lastLocation = currentLocation;
             }
@@ -369,7 +373,11 @@ public class MapSendActivity extends BaseIActivity implements OnGetGeoCoderResul
                 location.setAddress(info.address);
                 location.setLat(info.location.latitude);
                 location.setLng(info.location.longitude);
-                location.setScale(mMapView.getMapLevel());
+                try{
+                    location.setScale(mMapView.getMapLevel());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 location.setCity(info.city);
                 location.setName(info.name);
                 if (!datas.contains(location)) {
