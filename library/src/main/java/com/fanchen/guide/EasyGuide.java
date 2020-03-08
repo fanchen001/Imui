@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -87,6 +88,8 @@ public class EasyGuide {
         if (mActivity != null) {
             SharedPreferences config = mActivity.getSharedPreferences("easy_guide_config", Context.MODE_PRIVATE);
             StringBuilder keyBuilder = new StringBuilder();
+            keyBuilder.append(mActivity.getClass().getSimpleName());
+            keyBuilder.append("_");
             if (mAreas != null) {
                 for (HighlightArea a : mAreas) {
                     if (a.mHightlightView != null) {
@@ -99,12 +102,14 @@ public class EasyGuide {
                 }
             }
             String key = keyBuilder.toString();
+            int anInt = config.getInt(key, 0);
             Log.e("EasyGuide","easy guide count key = " + key);
             Log.e("EasyGuide","easy guide showCount = " + showCount);
-            Log.e("EasyGuide","easy guide count = " + config.getInt(key, 0));
-            if (config.getInt(key, 0) >= showCount) {
+            Log.e("EasyGuide","easy guide count = " + anInt);
+            if (anInt >= showCount) {
                 return;
             }
+            config.edit().putInt(key,++anInt ).apply();
         }
         mGuideView = new EasyGuideView(mActivity);
         mGuideView.setHightLightAreas(mAreas);
@@ -291,8 +296,9 @@ public class EasyGuide {
             this.activity = activity;
         }
 
-        public void showCount(int count) {
+        public Builder showCount(int count) {
             this.count = count;
+            return this;
         }
 
         /**
@@ -324,6 +330,13 @@ public class EasyGuide {
         public Builder addIndicator(int resId, int offX, int offY) {
             ImageView ivIndicator = new ImageView(activity);
             ivIndicator.setImageResource(resId);
+            views.add(new TipsView(ivIndicator, offX, offY));
+            return this;
+        }
+
+        public Builder addIndicator(Drawable resId, int offX, int offY) {
+            ImageView ivIndicator = new ImageView(activity);
+            ivIndicator.setImageDrawable(resId);
             views.add(new TipsView(ivIndicator, offX, offY));
             return this;
         }
