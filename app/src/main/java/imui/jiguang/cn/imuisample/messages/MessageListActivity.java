@@ -91,6 +91,7 @@ import com.fanchen.video.Jzvd;
 import com.fanchen.video.SimpleVideoActivity;
 import com.fanchen.view.ChatView;
 import com.fanchen.view.DefaultFeatureAdapter;
+import com.fanchen.view.HintPopupWindow;
 import com.jude.swipbackhelper.SwipeBackHelper;
 
 import cn.jpush.im.android.api.JMessageClient;
@@ -1120,26 +1121,30 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         mAdapter.setMsgLongClickListener(new MsgListAdapter.OnMsgLongClickListener<MyMessage>() {
             @Override
             public void onMessageLongClick(View view, MyMessage message) {
-                int[] aa = new int[2];
-                view.getLocationOnScreen(aa);
-                int width = getWindowManager().getDefaultDisplay().getWidth();
-                int ccc = 0;
-                if(aa[0] > width / 2 ){
-                    ccc =(aa[0] + view.getWidth())/2;
-                }else{
-                    ccc = (aa[0] + view.getWidth())/2;
-                }
-                QPopWindow.getInstance(MessageListActivity.this).builder
-                        .bindView(view,message)
-                        .setPopupItemList(new String[]{"复制", "转发", "撤回"})
-                        .setPointers((int) xxxx, (int) yyyy - 50)
-                        .setOnPopListItemClickListener(new QPopWindow.OnPopListItemClickListener() {
-                            @Override
-                            public void onPopListItemClick(View anchorView,IMessage iMessage, int anchorViewPosition) {
-                            }
-                        }).show();
-
-
+//                int[] aa = new int[2];
+//                view.getLocationOnScreen(aa);
+//                int width = getWindowManager().getDefaultDisplay().getWidth();
+//                int ccc = 0;
+//                if(aa[0] > width / 2 ){
+//                    ccc =(aa[0] + view.getWidth())/2;
+//                }else{
+//                    ccc = (aa[0] + view.getWidth())/2;
+//                }
+//                QPopWindow.getInstance(MessageListActivity.this).builder
+//                        .bindView(view,message)
+//                        .setPopupItemList(new String[]{"复制", "转发", "撤回"})
+//                        .setPointers((int) xxxx, (int) yyyy - 50)
+//                        .setOnPopListItemClickListener(new QPopWindow.OnPopListItemClickListener() {
+//                            @Override
+//                            public void onPopListItemClick(View anchorView,IMessage iMessage, int anchorViewPosition) {
+//                            }
+//                        }).show();
+//                new HintPopupWindow(MessageListActivity.this, Arrays.asList("1111", "2222"), new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                    }
+//                }).showPopupWindow(view);
 
 
                 // do something
@@ -1149,10 +1154,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
         mAdapter.setOnAvatarClickListener(new MsgListAdapter.OnAvatarClickListener<MyMessage>() {
             @Override
             public void onAvatarClick(MyMessage message) {
-                DefaultUser userInfo = (DefaultUser) message.getFromUser();
-                Toast.makeText(getApplicationContext(),
-                        getApplicationContext().getString(R.string.avatar_click_hint),
-                        Toast.LENGTH_SHORT).show();
+
                 // do something
             }
         });
