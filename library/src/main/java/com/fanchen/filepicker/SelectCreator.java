@@ -99,6 +99,13 @@ public final class SelectCreator {
         return this;
     }
 
+    public SelectCreator uCropMedia(UCropConfig cropConfig){
+        selectOptions.onlyShowImages = true;
+        selectOptions.cropConfig = cropConfig;
+        isSingle();
+        return this;
+    }
+
     public void start() {
         final Activity activity = filePicker.getActivity();
         if (activity == null) {

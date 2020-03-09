@@ -41,8 +41,6 @@
                 android:layout_height="?attr/actionBarSize"
                 android:paddingRight="10dp" />
         </LinearLayout>
-
-
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 
+import com.fanchen.filepicker.model.UCropConfig;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -52,6 +53,9 @@ public final class FilePicker {
         return new SelectCreator(this, SelectOptions.CHOOSE_TYPE_MEDIA);
     }
 
+    public SelectCreator chooseUCrop(UCropConfig cropConfig,int code) {
+        return new SelectCreator(this, SelectOptions.CHOOSE_TYPE_MEDIA).uCropMedia(cropConfig).requestCode(code);
+    }
 
     public Activity getActivity() {
         return mContext.get();
