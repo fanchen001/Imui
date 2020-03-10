@@ -169,4 +169,10 @@
         <attr name="bmpNomal" format="reference" />
         <attr name="bmpSelect" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="MSwipeMenuLayout">
+        <attr name="swipeEnable" format="boolean" />
+        <attr name="ios" format="boolean" />
+        <attr name="leftSwipe" format="boolean" />
+    </declare-styleable>
 </resources>

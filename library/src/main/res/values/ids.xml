@@ -4,4 +4,9 @@
     <item name="id_tag_pageset" type="id"/>
     <item name="id_toolbar_left" type="id"/>
     <item name="id_toolbar_right" type="id"/>
+    <item name="z_decode" type="id" />
+    <item name="z_decode_failed" type="id" />
+    <item name="z_decode_succeeded" type="id" />
+    <item name="z_quit" type="id" />
+    <item name="z_restart_preview" type="id" />
 </resources>

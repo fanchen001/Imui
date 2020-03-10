@@ -57,4 +57,7 @@
     <color name="pic_colorPrimaryAlpha">#44000000</color>
     <color name="pic_black1">#1b1b1b</color>
     <color name="pic_black">#000000</color>
+
+    <color name="z_scan_viewfinder_laser">#FFff3535</color>
+    <color name="z_scan_viewfinder_mask">#80000000</color>
 </resources>
