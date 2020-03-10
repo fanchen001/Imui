@@ -68,15 +68,6 @@ public class BaseIActivity extends AppCompatActivity {
     }
 
     /**
-     * 是否使用eventbus
-     *
-     * @return
-     */
-    protected boolean isRegisterEventBus() {
-        return false;
-    }
-
-    /**
      * 默认是否可滑动返回
      *
      * @return

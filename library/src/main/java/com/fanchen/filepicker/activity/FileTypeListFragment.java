@@ -1,8 +1,13 @@
 package com.fanchen.filepicker.activity;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,8 +23,8 @@ import com.fanchen.filepicker.model.FileScanActEvent;
 import com.fanchen.filepicker.model.FileScanFragEvent;
 import com.fanchen.filepicker.model.FileScanSortChangedEvent;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+//import org.greenrobot.eventbus.EventBus;
+//import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +95,8 @@ public class FileTypeListFragment extends BaseFileFragment implements BaseQuickA
     @Override
     protected void initUI(View view) {
         mMimeTypeCollection.onCreate(getActivity(), this);
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
+        registerReceiver(mReceiver,S_FileScanSortChangedEvent,S_FileScanActEvent);
         mRecyclerView = view.findViewById(R.id.rcv_file_list_scan);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new FileListAdapter(new ArrayList<EssFile>());
@@ -101,28 +107,28 @@ public class FileTypeListFragment extends BaseFileFragment implements BaseQuickA
         super.initUI(view);
     }
 
-    /**
-     * 接收到Activity刷新最大数量后
-     *
-     * @param event event
-     */
-    @Subscribe
-    public void onFreshCount(FileScanActEvent event) {
-        mMaxCount = event.getCanSelectMaxCount();
-    }
-
-    /**
-     * 接收到Activity改变排序方式后
-     */
-    @Subscribe
-    public void onFreshSortType(FileScanSortChangedEvent event) {
-        mSortType = event.getSortType();
-        if (mLoaderId == event.getCurrentItem() + EssMimeTypeCollection.LOADER_ID) {
-            mMimeTypeCollection.load(mFileType, mSortType, mLoaderId);
-        } else {
-            mSortTypeHasChanged = true;
-        }
-    }
+//    /**
+//     * 接收到Activity刷新最大数量后
+//     *
+//     * @param event event
+//     */
+//    @Subscribe
+//    public void onFreshCount(FileScanActEvent event) {
+//        mMaxCount = event.getCanSelectMaxCount();
+//    }
+//
+//    /**
+//     * 接收到Activity改变排序方式后
+//     */
+//    @Subscribe
+//    public void onFreshSortType(FileScanSortChangedEvent event) {
+//            mSortType = event.getSortType();
+//            if (mLoaderId == event.getCurrentItem() + EssMimeTypeCollection.LOADER_ID) {
+//               mMimeTypeCollection.load(mFileType, mSortType, mLoaderId);
+//           } else {
+//               mSortTypeHasChanged = true;
+//           }
+//    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -143,14 +149,16 @@ public class FileTypeListFragment extends BaseFileFragment implements BaseQuickA
         //选中某文件后，判断是否单选
         if (mIsSingle) {
             mSelectedFileList.add(item);
-            EventBus.getDefault().post(new FileScanFragEvent(item, true));
+            sendBroadcast(S_FileScanFragEvent,new FileScanFragEvent(item, true));
+//            EventBus.getDefault().post(new FileScanFragEvent(item, true));
             return;
         }
         if (mAdapter.getData().get(position).isChecked()) {
             int index = findFileIndex(item);
             if (index != -1) {
                 mSelectedFileList.remove(index);
-                EventBus.getDefault().post(new FileScanFragEvent(item, false));
+                sendBroadcast(S_FileScanFragEvent,new FileScanFragEvent(item, false));
+//                EventBus.getDefault().post(new FileScanFragEvent(item, false));
                 mAdapter.getData().get(position).setChecked(!mAdapter.getData().get(position).isChecked());
                 mAdapter.notifyItemChanged(position, "");
             }
@@ -161,7 +169,8 @@ public class FileTypeListFragment extends BaseFileFragment implements BaseQuickA
                 return;
             }
             mSelectedFileList.add(item);
-            EventBus.getDefault().post(new FileScanFragEvent(item, true));
+            sendBroadcast(S_FileScanFragEvent,new FileScanFragEvent(item, true));
+//            EventBus.getDefault().post(new FileScanFragEvent(item, true));
             mAdapter.getData().get(position).setChecked(!mAdapter.getData().get(position).isChecked());
             mAdapter.notifyItemChanged(position, "");
         }
@@ -183,7 +192,8 @@ public class FileTypeListFragment extends BaseFileFragment implements BaseQuickA
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        unregisterReceiver(mReceiver);
+//        EventBus.getDefault().unregister(this);
         mMimeTypeCollection.onDestroy();
     }
 
@@ -200,4 +210,25 @@ public class FileTypeListFragment extends BaseFileFragment implements BaseQuickA
     public void onFileReset() {
 
     }
+
+    public BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(S_FileScanActEvent.equals(intent.getAction())){
+                FileScanActEvent event = intent.getParcelableExtra("data");
+                mMaxCount = event.getCanSelectMaxCount();
+            }else if(S_FileScanSortChangedEvent.equals(intent.getAction())){
+                FileScanSortChangedEvent event = intent.getParcelableExtra("data");
+                mSortType = event.getSortType();
+                if (mLoaderId == event.getCurrentItem() + EssMimeTypeCollection.LOADER_ID) {
+                    mMimeTypeCollection.load(mFileType, mSortType, mLoaderId);
+                } else {
+                    mSortTypeHasChanged = true;
+                }
+            }
+        }
+
+    };
+
 }

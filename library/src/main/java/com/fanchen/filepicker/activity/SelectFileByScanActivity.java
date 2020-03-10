@@ -1,7 +1,10 @@
 package com.fanchen.filepicker.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -12,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.fanchen.filepicker.BaseFileFragment;
 import com.fanchen.ui.R;
 import com.fanchen.base.BaseIActivity;
 import com.fanchen.filepicker.SelectOptions;
@@ -25,8 +29,8 @@ import com.fanchen.filepicker.util.Const;
 import com.fanchen.filepicker.util.FileUtils;
 import com.fanchen.filepicker.util.UiUtils;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+//import org.greenrobot.eventbus.EventBus;
+//import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +59,10 @@ public class SelectFileByScanActivity extends BaseIActivity implements ViewPager
         setTheme(SelectOptions.getInstance().themeId);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_file_by_scan);
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BaseFileFragment.S_FileScanFragEvent);
+        registerReceiver(mReceiver, intentFilter);
         initUi();
         UiUtils.setViewPadding(findViewById(R.id.abl_title));
     }
@@ -80,7 +87,7 @@ public class SelectFileByScanActivity extends BaseIActivity implements ViewPager
 
         List<Fragment> fragmentList = new ArrayList<>();
         for (int i = 0; i < SelectOptions.getInstance().getFileTypes().length; i++) {
-            fragmentList.add(FileTypeListFragment.newInstance(SelectOptions.getInstance().getFileTypes()[i],SelectOptions.getInstance().isSingle,SelectOptions.getInstance().maxCount,SelectOptions.getInstance().getSortType(),EssMimeTypeCollection.LOADER_ID+i));
+            fragmentList.add(FileTypeListFragment.newInstance(SelectOptions.getInstance().getFileTypes()[i], SelectOptions.getInstance().isSingle, SelectOptions.getInstance().maxCount, SelectOptions.getInstance().getSortType(), EssMimeTypeCollection.LOADER_ID + i));
         }
         FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager(), fragmentList, Arrays.asList(SelectOptions.getInstance().getFileTypes()));
         mViewPager.setAdapter(adapter);
@@ -91,34 +98,35 @@ public class SelectFileByScanActivity extends BaseIActivity implements ViewPager
     }
 
 
-    /**
-     * Fragment中选择文件后
-     *
-     * @param event event
-     */
-    @Subscribe
-    public void onFragSelectFile(FileScanFragEvent event) {
-        if (event.isAdd()) {
-            if (SelectOptions.getInstance().isSingle) {
-                mSelectedFileList.add(event.getSelectedFile());
-                Intent result = new Intent();
-                result.putParcelableArrayListExtra(Const.EXTRA_RESULT_SELECTION, mSelectedFileList);
-                setResult(RESULT_OK, result);
-                super.onBackPressed();
-                return;
-            }
-            mSelectedFileList.add(event.getSelectedFile());
-        } else {
-            mSelectedFileList.remove(event.getSelectedFile());
-        }
-        mCountMenuItem.setTitle(String.format(getString(R.string.selected_file_count), String.valueOf(mSelectedFileList.size()), String.valueOf(SelectOptions.getInstance().maxCount)));
-        EventBus.getDefault().post(new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
-    }
+//    /**
+////     * Fragment中选择文件后
+////     *
+////     * @param event event
+////     */
+////    @Subscribe
+////    public void onFragSelectFile(FileScanFragEvent event) {
+////        if (event.isAdd()) {
+////            if (SelectOptions.getInstance().isSingle) {
+////                mSelectedFileList.add(event.getSelectedFile());
+////                Intent result = new Intent();
+////                result.putParcelableArrayListExtra(Const.EXTRA_RESULT_SELECTION, mSelectedFileList);
+////                setResult(RESULT_OK, result);
+////                super.onBackPressed();
+////                return;
+////            }
+////            mSelectedFileList.add(event.getSelectedFile());
+////        } else {
+////            mSelectedFileList.remove(event.getSelectedFile());
+////        }
+////        mCountMenuItem.setTitle(String.format(getString(R.string.selected_file_count), String.valueOf(mSelectedFileList.size()), String.valueOf(SelectOptions.getInstance().maxCount)));
+////        EventBus.getDefault().post(new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
+////    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+        unregisterReceiver(mReceiver);
+//        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -166,7 +174,10 @@ public class SelectFileByScanActivity extends BaseIActivity implements ViewPager
                                     SelectOptions.getInstance().setSortType(FileUtils.BY_SIZE_DESC);
                                     break;
                             }
-                            EventBus.getDefault().post(new FileScanSortChangedEvent(SelectOptions.getInstance().getSortType(),mViewPager.getCurrentItem()));
+                            Intent intent = new Intent(BaseFileFragment.S_FileScanSortChangedEvent);
+                            intent.putExtra("data", new FileScanSortChangedEvent(SelectOptions.getInstance().getSortType(), mViewPager.getCurrentItem()));
+                            sendBroadcast(intent);
+//                            EventBus.getDefault().post(new FileScanSortChangedEvent(SelectOptions.getInstance().getSortType(),mViewPager.getCurrentItem()));
                         }
                     })
                     .setPositiveButton("升序", new DialogInterface.OnClickListener() {
@@ -183,7 +194,10 @@ public class SelectFileByScanActivity extends BaseIActivity implements ViewPager
                                     SelectOptions.getInstance().setSortType(FileUtils.BY_SIZE_ASC);
                                     break;
                             }
-                            EventBus.getDefault().post(new FileScanSortChangedEvent(SelectOptions.getInstance().getSortType(),mViewPager.getCurrentItem()));
+                            Intent intent = new Intent(BaseFileFragment.S_FileScanSortChangedEvent);
+                            intent.putExtra("data", new FileScanSortChangedEvent(SelectOptions.getInstance().getSortType(), mViewPager.getCurrentItem()));
+                            sendBroadcast(intent);
+//                            EventBus.getDefault().post(new FileScanSortChangedEvent(SelectOptions.getInstance().getSortType(),mViewPager.getCurrentItem()));
                         }
                     })
                     .setTitle("请选择")
@@ -200,11 +214,43 @@ public class SelectFileByScanActivity extends BaseIActivity implements ViewPager
 
     @Override
     public void onPageSelected(int position) {
-        EventBus.getDefault().post(new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
+        Intent intent = new Intent(BaseFileFragment.S_FileScanActEvent);
+        intent.putExtra("data", new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
+        sendBroadcast(intent);
+//        EventBus.getDefault().post(new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
 
     }
+
+    public BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (BaseFileFragment.S_FileScanFragEvent.equals(intent.getAction())) {
+                FileScanFragEvent event = intent.getParcelableExtra("data");
+                if (event.isAdd()) {
+                    if (SelectOptions.getInstance().isSingle) {
+                        mSelectedFileList.add(event.getSelectedFile());
+                        Intent result = new Intent();
+                        result.putParcelableArrayListExtra(Const.EXTRA_RESULT_SELECTION, mSelectedFileList);
+                        SelectFileByScanActivity.this.setResult(RESULT_OK, result);
+                        SelectFileByScanActivity.this.onBackPressed();
+                        return;
+                    }
+                    mSelectedFileList.add(event.getSelectedFile());
+                } else {
+                    mSelectedFileList.remove(event.getSelectedFile());
+                }
+                mCountMenuItem.setTitle(String.format(getString(R.string.selected_file_count), String.valueOf(mSelectedFileList.size()), String.valueOf(SelectOptions.getInstance().maxCount)));
+                Intent sendIntent = new Intent(BaseFileFragment.S_FileScanActEvent);
+                sendIntent.putExtra("data", new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
+                sendBroadcast(sendIntent);
+//                EventBus.getDefault().post(new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
+            }
+        }
+
+    };
 }

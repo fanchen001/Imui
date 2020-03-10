@@ -1,21 +1,31 @@
 package com.fanchen.filepicker;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.fanchen.filepicker.model.FileScanFragEvent;
 
 import java.lang.reflect.Field;
 
 /**
  * BaseFileFragment
  */
-public abstract class BaseFileFragment extends Fragment{
+public abstract class BaseFileFragment extends Fragment {
+
+    public static final String S_FileScanSortChangedEvent = "com.fanchen.FileScanSortChangedEvent";
+    public static final String S_FileScanActEvent = "com.fanchen.FileScanActEvent";
+    public static final String S_FileScanFragEvent = "com.fanchen.FileScanFragEvent";
 
     protected Activity mActivity = null;
     protected Bundle bundle = null;
@@ -107,6 +117,7 @@ public abstract class BaseFileFragment extends Fragment{
 
     /**
      * 初始化控件
+     *
      * @param view
      */
     protected void initUI(View view) {
@@ -144,4 +155,28 @@ public abstract class BaseFileFragment extends Fragment{
         }
     }
 
+    public void sendBroadcast(String action, FileScanFragEvent file) {
+        Intent intent = new Intent(action);
+        intent.putExtra("file", file);
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            getActivity().sendBroadcast(intent);
+        }
+    }
+
+    public void registerReceiver(BroadcastReceiver receiver, String... action) {
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            IntentFilter intentFilter = new IntentFilter();
+            for (String s : action)  intentFilter.addAction(s);
+            activity.registerReceiver(receiver, intentFilter);
+        }
+    }
+
+    public void unregisterReceiver(BroadcastReceiver receiver) {
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            activity.unregisterReceiver(receiver);
+        }
+    }
 }

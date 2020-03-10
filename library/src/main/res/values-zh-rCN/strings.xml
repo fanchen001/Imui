@@ -108,4 +108,9 @@
 
     <string name="recalled_send_message">您已成功撤回一条消息~</string>
     <string name="recalled_receive_message">对方已撤回一条消息~</string>
+
+    <string name="zxing_sys">扫一扫</string>
+    <string name="zxing_open_light">打开手电筒</string>
+    <string name="zxing_card">我的名片</string>
+    <string name="zxing_list">扫码记录</string>
 </resources>
