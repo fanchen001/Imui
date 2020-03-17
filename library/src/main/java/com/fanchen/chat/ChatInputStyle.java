@@ -51,7 +51,6 @@ public class ChatInputStyle extends Style {
 
     public static ChatInputStyle parse(Context context, AttributeSet attrs) {
         ChatInputStyle style = new ChatInputStyle(context, attrs);
-
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ChatInputView);
         style.inputEditTextBg = typedArray.getResourceId(R.styleable.ChatInputView_inputEditTextBg,
                 R.drawable.aurora_edittext_bg);

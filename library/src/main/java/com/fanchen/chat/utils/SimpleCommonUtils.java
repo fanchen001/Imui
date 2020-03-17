@@ -1,8 +1,10 @@
 package com.fanchen.chat.utils;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,28 +95,25 @@ public class SimpleCommonUtils {
     public static void addEmojiPageSetEntity(PageSetAdapter pageSetAdapter, Context context, final EmoticonClickListener emoticonClickListener) {
         ArrayList<EmojiBean> emojiArray = new ArrayList<>();
         Collections.addAll(emojiArray, DefEmoticons.sEmojiArray);
-        EmoticonPageSetEntity emojiPageSetEntity
+        EmoticonPageSetEntity<?> emojiPageSetEntity
                 = new EmoticonPageSetEntity.Builder()
                 .setLine(3)
                 .setRow(7)
                 .setEmoticonList(emojiArray)
                 .setIPageViewInstantiateItem(getDefaultEmoticonPageViewInstantiateItem(new EmoticonDisplayListener<Object>() {
                     @Override
-                    public void onBindView(int position, ViewGroup parent, EmoticonsAdapter.ViewHolder viewHolder, Object object, final boolean isDelBtn) {
+                    public void onBindView(final int position, ViewGroup parent, final EmoticonsAdapter.ViewHolder viewHolder, Object object, final boolean isDelBtn) {
                         final EmojiBean emojiBean = (EmojiBean) object;
                         if (emojiBean == null && !isDelBtn) {
                             return;
                         }
-
-                        viewHolder.ly_root.setBackgroundResource(R.drawable.bg_emoticon);
-
+                        viewHolder.iv_emoticon.setBackgroundResource(R.drawable.bg_emoticon);
                         if (isDelBtn) {
                             viewHolder.iv_emoticon.setImageResource(R.drawable.icon_del);
                         } else {
                             viewHolder.iv_emoticon.setImageResource(emojiBean.icon);
                         }
-
-                        viewHolder.rootView.setOnClickListener(new View.OnClickListener() {
+                        ((View)viewHolder.iv_emoticon.getParent()).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 if (emoticonClickListener != null) {
@@ -183,7 +182,7 @@ public class SimpleCommonUtils {
                 if (emoticonEntity == null && !isDelBtn) {
                     return;
                 }
-                viewHolder.ly_root.setBackgroundResource(R.drawable.bg_emoticon);
+                viewHolder.iv_emoticon.setBackgroundResource(R.drawable.bg_emoticon);
 
                 if (isDelBtn) {
                     viewHolder.iv_emoticon.setImageResource(R.drawable.icon_del);
@@ -194,8 +193,7 @@ public class SimpleCommonUtils {
                         e.printStackTrace();
                     }
                 }
-
-                viewHolder.rootView.setOnClickListener(new View.OnClickListener() {
+                viewHolder.iv_emoticon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (onEmoticonClickListener != null) {

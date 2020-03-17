@@ -1,13 +1,11 @@
 package com.fanchen.chat.menu.collection;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 
 import com.fanchen.ui.R;
 import com.fanchen.chat.menu.Menu;
-import com.fanchen.chat.menu.view.MenuItem;
 import com.fanchen.chat.utils.ViewUtil;
 
 
@@ -42,13 +40,13 @@ public class MenuItemCollection extends MenuCollection {
 
 
     public void addCustomMenuItem(String tag, View menu) {
-        if (menu instanceof MenuItem) {
+//        if (menu instanceof MenuItem) {
             menu.setClickable(true);
             menu = ViewUtil.formatViewWeight(menu, 1);
             addMenu(tag, menu);
-        } else {
-            Log.e(TAG, "Collection menu item failed !");
-        }
+//        } else {
+//            Log.e(TAG, "Collection menu item failed !");
+//        }
     }
 
 

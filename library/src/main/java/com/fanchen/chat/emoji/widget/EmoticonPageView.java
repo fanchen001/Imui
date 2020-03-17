@@ -43,4 +43,5 @@ public class EmoticonPageView extends RelativeLayout {
     public void setNumColumns(int row) {
         mGvEmotion.setNumColumns(row);
     }
+
 }

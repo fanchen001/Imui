@@ -157,7 +157,7 @@ public abstract class BaseFileFragment extends Fragment {
 
     public void sendBroadcast(String action, FileScanFragEvent file) {
         Intent intent = new Intent(action);
-        intent.putExtra("file", file);
+        intent.putExtra("data", file);
         FragmentActivity activity = getActivity();
         if (activity != null) {
             getActivity().sendBroadcast(intent);

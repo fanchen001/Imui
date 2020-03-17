@@ -1,6 +1,9 @@
 package com.fanchen.chat.emoji.adapter;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +32,7 @@ public class EmoticonsAdapter<T> extends BaseAdapter {
     protected int mItemHeightMin;
     protected int mItemHeight;
     protected int mDelbtnPosition;
-    protected EmoticonDisplayListener mOnDisPlayListener;
+    protected EmoticonDisplayListener<T> mOnDisPlayListener;
     protected EmoticonClickListener mOnEmoticonClickListener;
 
     public EmoticonsAdapter(Context context, EmoticonPageEntity emoticonPageEntity, EmoticonClickListener onEmoticonClickListener) {
@@ -81,15 +84,18 @@ public class EmoticonsAdapter<T> extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.item_msg_emoticon, null);
-            viewHolder.rootView = convertView;
-            viewHolder.ly_root = (LinearLayout) convertView.findViewById(R.id.ly_root);
-            viewHolder.iv_emoticon = (ImageView) convertView.findViewById(R.id.iv_emoticon);
+            LinearLayout linearLayout = new LinearLayout(parent.getContext());
+            linearLayout.setGravity(Gravity.CENTER);
+            ImageView imageView = new ImageView(parent.getContext());
+            int padding = dpToPx(parent.getContext(), 7);
+            imageView.setPadding(padding,0,padding,0);
+            linearLayout.addView(imageView);
+            convertView = linearLayout;
+            viewHolder.iv_emoticon = imageView;
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
         bindView(position, parent, viewHolder);
         updateUI(viewHolder, parent);
         return convertView;
@@ -105,16 +111,18 @@ public class EmoticonsAdapter<T> extends BaseAdapter {
         return position == mDelbtnPosition;
     }
 
-    protected void updateUI(ViewHolder viewHolder, ViewGroup parent) {
-        if(mDefalutItemHeight != mItemHeight){
+    protected void updateUI(final ViewHolder viewHolder, final ViewGroup parent) {
+        final View newParent = (View) parent.getParent();
+        int measuredHeight = newParent.getMeasuredHeight();
+        if (mDefalutItemHeight != mItemHeight) {
             viewHolder.iv_emoticon.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mItemHeight));
         }
         mItemHeightMax = this.mItemHeightMax != 0 ? this.mItemHeightMax : (int) (mItemHeight * mItemHeightMaxRatio);
         mItemHeightMin = this.mItemHeightMin != 0 ? this.mItemHeightMin : mItemHeight;
-        int realItemHeight = ((View) parent.getParent()).getMeasuredHeight() / mEmoticonPageEntity.getLine();
+        int realItemHeight = measuredHeight / mEmoticonPageEntity.getLine();
         realItemHeight = Math.min(realItemHeight, mItemHeightMax);
         realItemHeight = Math.max(realItemHeight, mItemHeightMin);
-        viewHolder.ly_root.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, realItemHeight));
+        viewHolder.iv_emoticon.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, realItemHeight));
     }
 
     public void setOnDisPlayListener(EmoticonDisplayListener mOnDisPlayListener) {
@@ -142,8 +150,17 @@ public class EmoticonsAdapter<T> extends BaseAdapter {
     }
 
     public static class ViewHolder {
-        public View rootView;
-        public LinearLayout ly_root;
         public ImageView iv_emoticon;
+    }
+
+    /***
+     * DP 转 PX
+     * @param c
+     * @param dipValue
+     * @return
+     */
+    public int dpToPx(Context c, float dipValue) {
+        DisplayMetrics metrics = c.getResources().getDisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
     }
 }

@@ -40,8 +40,7 @@ public class EmoticonsFuncView extends ViewPager {
             }
         });
 
-        if (mOnEmoticonsPageViewListener == null
-                || mPageSetAdapter.getPageSetEntityList().isEmpty()) {
+        if (mOnEmoticonsPageViewListener == null|| mPageSetAdapter.getPageSetEntityList().isEmpty()) {
             return;
         }
         PageSetEntity pageSetEntity = mPageSetAdapter.getPageSetEntityList().get(0);

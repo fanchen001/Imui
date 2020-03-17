@@ -17,7 +17,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -35,13 +34,10 @@ import com.fanchen.ui.R;
 import com.fanchen.chat.ChatInputView;
 import com.fanchen.chat.listener.CustomMenuEventListener;
 import com.fanchen.chat.listener.OnCameraCallbackListener;
-import com.fanchen.chat.listener.OnClickEditTextListener;
 import com.fanchen.chat.listener.OnMenuClickListener;
 import com.fanchen.chat.listener.OnRecordVoiceListener;
 import com.fanchen.chat.menu.Menu;
 import com.fanchen.chat.menu.MenuManager;
-import com.fanchen.chat.menu.view.MenuFeature;
-import com.fanchen.chat.menu.view.MenuItem;
 import com.fanchen.chat.record.RecordVoiceButton;
 import com.fanchen.message.MessageListView;
 import com.fanchen.message.messages.MsgListAdapter;
@@ -57,7 +53,6 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     private RelativeLayout mTitleContainer;
     private MessageListView mMsgList;
     private ChatInputView mChatInput;
-    private RecordVoiceButton mRecordVoiceBtn;
     private PullToRefreshLayout mPtrLayout;
 
     private BroadcastReceiver mReceiver;
@@ -129,7 +124,6 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         WindowManager systemService = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         int defaultHeight = systemService.getDefaultDisplay().getHeight() / 3;
         mChatInput.setMenuContainerHeight(defaultHeight);
-        mRecordVoiceBtn = mChatInput.getRecordVoiceButton();
         PtrDefaultHeader header = new PtrDefaultHeader(getContext());
         int[] colors = getResources().getIntArray(R.array.google_colors);
         header.setColorSchemeColors(colors);
@@ -153,36 +147,33 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     }
 
     public void customLiftRightBuild(String tag,String lift,String right, BaseAdapter adapter, AdapterView.OnItemClickListener l) {
-        MenuFeature inflate = (MenuFeature) View.inflate(getContext(), R.layout.menu_more_feature, null);
-        GridView v = inflate.findViewById(R.id.menu_feature_grid);
+        GridView v = (GridView)View.inflate(getContext(), R.layout.menu_more_feature, null);
         v.setOnItemClickListener(l);
         v.setAdapter(adapter);
         MenuManager menuManager = mChatInput.getMenuManager();
-        menuManager.addCustomMenu(tag, (MenuItem) View.inflate(getContext(), R.layout.menu_item_more, null), inflate);
+        menuManager.addCustomMenu(tag,  View.inflate(getContext(), R.layout.menu_item_more, null), v);
         menuManager.setMenu(Menu.newBuilder().customize(true).setRight(right).setLeft(lift).
                 setBottom(Menu.TAG_EMOJI, Menu.TAG_VIDEO, Menu.TAG_GALLERY, Menu.TAG_CAMERA, tag).build());
         menuManager.setCustomMenuClickListener(this);
     }
 
     public void customRightBuild(String tag,String right, BaseAdapter adapter, AdapterView.OnItemClickListener l) {
-        MenuFeature inflate = (MenuFeature) View.inflate(getContext(), R.layout.menu_more_feature, null);
-        GridView v = inflate.findViewById(R.id.menu_feature_grid);
+        GridView v = (GridView)View.inflate(getContext(), R.layout.menu_more_feature, null);
         v.setOnItemClickListener(l);
         v.setAdapter(adapter);
         MenuManager menuManager = mChatInput.getMenuManager();
-        menuManager.addCustomMenu(tag, (MenuItem) View.inflate(getContext(), R.layout.menu_item_more, null), inflate);
+        menuManager.addCustomMenu(tag, View.inflate(getContext(), R.layout.menu_item_more, null), v);
         menuManager.setMenu(Menu.newBuilder().customize(true).setRight(right).
                 setBottom(Menu.TAG_VOICE,Menu.TAG_EMOJI, Menu.TAG_VIDEO, Menu.TAG_GALLERY, Menu.TAG_CAMERA, tag).build());
         menuManager.setCustomMenuClickListener(this);
     }
 
     public void customBuild(String tag, BaseAdapter adapter, AdapterView.OnItemClickListener l) {
-        MenuFeature inflate = (MenuFeature) View.inflate(getContext(), R.layout.menu_more_feature, null);
-        GridView v = inflate.findViewById(R.id.menu_feature_grid);
+        GridView v = (GridView)View.inflate(getContext(), R.layout.menu_more_feature, null);
         v.setOnItemClickListener(l);
         v.setAdapter(adapter);
         MenuManager menuManager = mChatInput.getMenuManager();
-        menuManager.addCustomMenu(tag, (MenuItem) View.inflate(getContext(), R.layout.menu_item_more, null), inflate);
+        menuManager.addCustomMenu(tag, View.inflate(getContext(), R.layout.menu_item_more, null), v);
         menuManager.setMenu(Menu.newBuilder().customize(true).setRight(Menu.TAG_SEND).
                 setBottom(Menu.TAG_VOICE,Menu.TAG_EMOJI, Menu.TAG_VIDEO, Menu.TAG_GALLERY, Menu.TAG_CAMERA, tag).build());
         menuManager.setCustomMenuClickListener(this);
@@ -232,7 +223,10 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     }
 
     public void setRecordVoiceFile(String path, String fileName) {
-        mRecordVoiceBtn.setVoiceFilePath(path, fileName);
+        RecordVoiceButton recordVoiceButton = mChatInput.getRecordVoiceButton();
+        if(recordVoiceButton != null){
+            recordVoiceButton.setVoiceFilePath(path, fileName);
+        }
     }
 
     public void setCameraCaptureFile(String path, String fileName) {
@@ -256,10 +250,6 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     public void defaultOnTouchListener() {
         mMsgList.setOnTouchListener(this);
         mChatInput.getInputView().setOnTouchListener(this);
-    }
-
-    public void setOnTouchEditTextListener(OnClickEditTextListener listener) {
-        mChatInput.setOnClickEditTextListener(listener);
     }
 
     @Override
@@ -288,13 +278,13 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     }
 
     @Override
-    public boolean onMenuItemClick(String tag, MenuItem menuItem) {
+    public boolean onMenuItemClick(String tag, View menuItem) {
         scrollToVisibleItem();
         return true;
     }
 
     @Override
-    public void onMenuFeatureVisibilityChanged(int visibility, String tag, MenuFeature menuFeature) {
+    public void onMenuFeatureVisibilityChanged(int visibility, String tag, View menuFeature) {
     }
 
     public void scrollToBottom(int delayed) {

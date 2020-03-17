@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.fanchen.sticky.StickyListHeadersListView
+            android:id="@+id/lv_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:divider="@drawable/divider_im_list_line"
+            android:dividerHeight="0.1dp" />
+
+        <TextView
+            android:id="@+id/tv_contacts"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_im_contacts_toast"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:textSize="18sp"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <com.fanchen.sticky.SideBarView
+        android:id="@+id/sb_contacts"
+        android:layout_width="11.33dip"
+        android:layout_height="fill_parent"
+        android:layout_gravity="right|center"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="33dp"
+        android:visibility="visible" />
+</merge>

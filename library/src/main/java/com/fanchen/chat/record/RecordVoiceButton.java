@@ -260,7 +260,7 @@ public class RecordVoiceButton extends AppCompatImageButton {
         if (myRecAudioFile != null) {
             myRecAudioFile.delete();
         }
-        if (mListener != null) {
+        if (mListener instanceof OnRecordVoiceUIListener) {
             ((OnRecordVoiceUIListener)mListener).onCancelRecord();
         }
     }
@@ -305,11 +305,9 @@ public class RecordVoiceButton extends AppCompatImageButton {
             recorder = null;
         } catch (NullPointerException e) {
             e.printStackTrace();
-            Toast.makeText(mContext, mContext.getString(R.string.aurora_record_voice_file_not_exist),
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.aurora_record_voice_file_not_exist), Toast.LENGTH_SHORT).show();
         } catch (RuntimeException e) {
-            Toast.makeText(mContext, mContext.getString(R.string.record_voice_permission_denied),
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.record_voice_permission_denied), Toast.LENGTH_SHORT).show();
             cancelTimer();
             dismissDialog();
             if (mThread != null) {

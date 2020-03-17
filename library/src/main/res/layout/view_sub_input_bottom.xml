@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:id="@+id/aurora_rl_recordvoice_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Chronometer
+            android:id="@+id/aurora_chronometer_recordvoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/aurora_chronometer_text_color"
+            android:textSize="@dimen/aurora_textsize_chronometer"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/aurora_tv_recordvoice_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/record_voice_hint" />
+
+        <com.fanchen.chat.record.ProgressButton
+            android:id="@+id/aurora_pb_recordvoice_play_audio"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            app:roundColor="#E1E1E3"
+            app:roundProgressColor="#29B5EA" />
+
+        <LinearLayout
+            android:id="@+id/aurora_ll_recordvoice_btn_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/aurora_pb_recordvoice_play_audio"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/aurora_btn_recordvoice_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/aurora_recordvoice_left_btn_bg"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="#29B5EA"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/aurora_btn_recordvoice_send"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/aurora_recordvoice_right_btn_bg"
+                android:gravity="center"
+                android:text="@string/send"
+                android:textColor="#29B5EA"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <com.fanchen.chat.record.RecordControllerView
+            android:id="@+id/aurora_rcv_recordvoice_controller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone" />
+
+        <com.fanchen.chat.record.RecordVoiceButton
+            android:id="@+id/aurora_rvb_recordvoice_record"
+            android:layout_width="@dimen/aurora_size_record_button"
+            android:layout_height="@dimen/aurora_size_record_button"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@drawable/aurora_recordvoice_record_mic_pres"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <com.fanchen.chat.photo.SelectView
+        android:id="@+id/aurora_view_select_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <com.fanchen.chat.photo.SelectView
+        android:id="@+id/aurora_view_selectphoto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/aurora_fl_camera_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="280dp"
+        android:visibility="gone">
+
+        <TextureView
+            android:id="@+id/aurora_txtv_camera_texture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null" />
+
+        <ImageButton
+            android:id="@+id/aurora_ib_camera_close"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="top|start"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/aurora_preview_close_camera"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/aurora_ib_camera_full_screen"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/aurora_preview_full_screen" />
+
+        <ImageButton
+            android:id="@+id/aurora_ib_camera_record_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/aurora_preview_record_video" />
+
+        <ImageButton
+            android:id="@+id/aurora_ib_camera_capture"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/aurora_menuitem_send_pres" />
+
+        <ImageButton
+            android:id="@+id/aurora_ib_camera_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/aurora_preview_switch_camera" />
+    </FrameLayout>
+
+    <com.fanchen.chat.emoji.EmojiView
+        android:id="@+id/aurora_rl_emoji_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+</FrameLayout>

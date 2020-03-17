@@ -328,8 +328,10 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 
         JMessageClient.registerEventReceiver(this);
         SwipeBackHelper.onCreate(this);
-
+        long l = System.currentTimeMillis();
         setContentView(R.layout.activity_chat_);
+
+        Log.e("MessageListActivity","onCreate => " + (System.currentTimeMillis()-l));
 //        SoftHideKeyBoardUtil.assistActivity(this);
         String stringExtra = getIntent().getStringExtra("to");
 

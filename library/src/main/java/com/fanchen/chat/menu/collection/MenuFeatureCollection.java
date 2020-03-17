@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
-import com.fanchen.chat.menu.view.MenuFeature;
-
 
 public class MenuFeatureCollection extends MenuCollection{
 
@@ -30,12 +28,12 @@ public class MenuFeatureCollection extends MenuCollection{
             return;
         }
 
-        if(menuFeature instanceof MenuFeature){
+//        if(menuFeature instanceof MenuFeature){
             menuFeature.setVisibility(View.GONE);
             addMenu(tag,menuFeature);
-        }else {
-            Log.e(TAG,"Collection menu feature failed exception!");
-        }
+//        }else {
+//            Log.e(TAG,"Collection menu feature failed exception!");
+//        }
     }
 
 }

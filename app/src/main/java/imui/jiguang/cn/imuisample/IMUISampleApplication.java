@@ -1,10 +1,14 @@
 package imui.jiguang.cn.imuisample;
 
 import android.app.Application;
+import android.graphics.drawable.Drawable;
 import android.os.StrictMode;
 import android.util.Log;
 
 import com.fanchen.BuildConfig;
+import com.wanjian.sak.SAK;
+import com.wanjian.sak.config.Config;
+import com.wanjian.sak.layer.AbsLayer;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.content.MessageContent;
@@ -26,7 +30,6 @@ public class IMUISampleApplication extends Application {
 //        LeakCanary.install(this);
         JMessageClient.setDebugMode(true);
         JMessageClient.init(this,true);
-
 //        JMessageClient.register("fanchen1", "123321", new BasicCallback() {
 //
 //            @Override

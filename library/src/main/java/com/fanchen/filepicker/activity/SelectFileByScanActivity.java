@@ -229,27 +229,27 @@ public class SelectFileByScanActivity extends BaseIActivity implements ViewPager
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (BaseFileFragment.S_FileScanFragEvent.equals(intent.getAction())) {
-                FileScanFragEvent event = intent.getParcelableExtra("data");
-                if (event.isAdd()) {
-                    if (SelectOptions.getInstance().isSingle) {
-                        mSelectedFileList.add(event.getSelectedFile());
-                        Intent result = new Intent();
-                        result.putParcelableArrayListExtra(Const.EXTRA_RESULT_SELECTION, mSelectedFileList);
-                        SelectFileByScanActivity.this.setResult(RESULT_OK, result);
-                        SelectFileByScanActivity.this.onBackPressed();
-                        return;
-                    }
+            if (!BaseFileFragment.S_FileScanFragEvent.equals(intent.getAction())) return;
+            if (!intent.hasExtra("data")) return;
+            FileScanFragEvent event = intent.getParcelableExtra("data");
+            if (event.isAdd()) {
+                if (SelectOptions.getInstance().isSingle) {
                     mSelectedFileList.add(event.getSelectedFile());
-                } else {
-                    mSelectedFileList.remove(event.getSelectedFile());
+                    Intent result = new Intent();
+                    result.putParcelableArrayListExtra(Const.EXTRA_RESULT_SELECTION, mSelectedFileList);
+                    SelectFileByScanActivity.this.setResult(RESULT_OK, result);
+                    SelectFileByScanActivity.this.onBackPressed();
+                    return;
                 }
-                mCountMenuItem.setTitle(String.format(getString(R.string.selected_file_count), String.valueOf(mSelectedFileList.size()), String.valueOf(SelectOptions.getInstance().maxCount)));
-                Intent sendIntent = new Intent(BaseFileFragment.S_FileScanActEvent);
-                sendIntent.putExtra("data", new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
-                sendBroadcast(sendIntent);
-//                EventBus.getDefault().post(new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
+                mSelectedFileList.add(event.getSelectedFile());
+            } else {
+                mSelectedFileList.remove(event.getSelectedFile());
             }
+            mCountMenuItem.setTitle(String.format(getString(R.string.selected_file_count), String.valueOf(mSelectedFileList.size()), String.valueOf(SelectOptions.getInstance().maxCount)));
+            Intent sendIntent = new Intent(BaseFileFragment.S_FileScanActEvent);
+            sendIntent.putExtra("data", new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
+            sendBroadcast(sendIntent);
+//                EventBus.getDefault().post(new FileScanActEvent(SelectOptions.getInstance().maxCount - mSelectedFileList.size()));
         }
 
     };

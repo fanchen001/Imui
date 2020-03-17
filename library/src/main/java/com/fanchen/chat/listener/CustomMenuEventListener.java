@@ -1,15 +1,14 @@
 package com.fanchen.chat.listener;
 
-import com.fanchen.chat.menu.view.MenuFeature;
-import com.fanchen.chat.menu.view.MenuItem;
+import android.view.View;
 
 /**
  * Custom Menu' callbacks
  */
 public interface CustomMenuEventListener {
 
-    boolean onMenuItemClick(String tag, MenuItem menuItem);
+    boolean onMenuItemClick(String tag, View menuItem);
 
-    void onMenuFeatureVisibilityChanged(int visibility, String tag, MenuFeature menuFeature);
+    void onMenuFeatureVisibilityChanged(int visibility, String tag, View menuFeature);
 
 }

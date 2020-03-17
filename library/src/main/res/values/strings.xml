@@ -107,4 +107,6 @@
     <string name="zxing_open_light">Open Light</string>
     <string name="zxing_card">My Card</string>
     <string name="zxing_list">Scan History</string>
+    <string name="im_group">group</string>
+    <string name="im_ver_msg">verification msg</string>
 </resources>

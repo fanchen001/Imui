@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.AsyncLayoutInflater;
 import android.util.AttributeSet;
 
 import java.util.ArrayList;
@@ -14,16 +15,15 @@ import com.fanchen.chat.emoji.data.PageSetEntity;
 import com.fanchen.chat.emoji.widget.AutoHeightLayout;
 import com.fanchen.chat.emoji.widget.EmoticonsFuncView;
 import com.fanchen.chat.emoji.widget.EmoticonsIndicatorView;
-import com.fanchen.chat.emoji.widget.EmoticonsToolBarView;
+//import com.fanchen.chat.emoji.widget.EmoticonsToolBarView;
 
 
-public class EmojiView extends AutoHeightLayout implements EmoticonsFuncView.OnEmoticonsPageViewListener,
-        EmoticonsToolBarView.OnToolBarItemClickListener {
+public class EmojiView extends AutoHeightLayout implements EmoticonsFuncView.OnEmoticonsPageViewListener/*,
+        EmoticonsToolBarView.OnToolBarItemClickListener*/ {
 
-    private Context mContext;
     private EmoticonsFuncView mEmoticonsFuncView;
     private EmoticonsIndicatorView mEmoticonsIndicatorView;
-    private EmoticonsToolBarView mEmoticonsToolBarView;
+//    private EmoticonsToolBarView mEmoticonsToolBarView;
 
     public EmojiView(Context context) {
         super(context, null);
@@ -40,21 +40,19 @@ public class EmojiView extends AutoHeightLayout implements EmoticonsFuncView.OnE
 
     }
 
-    public EmojiView(@NonNull Context context, @Nullable AttributeSet attrs,
-                           @AttrRes int defStyleAttr) {
+    public EmojiView(@NonNull Context context, @Nullable AttributeSet attrs,@AttrRes int defStyleAttr) {
         super(context, attrs);
         init(context, attrs);
     }
 
     private void init(Context context, AttributeSet attrs) {
         inflate(context, R.layout.layout_chatinput_emoji, this);
-        mContext = context;
 
         mEmoticonsFuncView = ((EmoticonsFuncView) findViewById(R.id.view_epv));
         mEmoticonsIndicatorView = ((EmoticonsIndicatorView) findViewById(R.id.view_eiv));
-        mEmoticonsToolBarView = ((EmoticonsToolBarView) findViewById(R.id.view_etv));
+//        mEmoticonsToolBarView = ((EmoticonsToolBarView) findViewById(R.id.view_etv));
         mEmoticonsFuncView.setOnIndicatorListener(this);
-        mEmoticonsToolBarView.setOnToolBarItemClickListener(this);
+//        mEmoticonsToolBarView.setOnToolBarItemClickListener(this);
     }
 
     public void setAdapter(PageSetAdapter pageSetAdapter) {
@@ -62,7 +60,7 @@ public class EmojiView extends AutoHeightLayout implements EmoticonsFuncView.OnE
             ArrayList<PageSetEntity> pageSetEntities = pageSetAdapter.getPageSetEntityList();
             if (pageSetEntities != null) {
                 for (PageSetEntity pageSetEntity : pageSetEntities) {
-                    mEmoticonsToolBarView.addToolItemView(pageSetEntity);
+//                    mEmoticonsToolBarView.addToolItemView(pageSetEntity);
                 }
             }
         }
@@ -71,7 +69,7 @@ public class EmojiView extends AutoHeightLayout implements EmoticonsFuncView.OnE
 
     @Override
     public void emoticonSetChanged(PageSetEntity pageSetEntity) {
-        mEmoticonsToolBarView.setToolBtnSelect(pageSetEntity.getUuid());
+//        mEmoticonsToolBarView.setToolBtnSelect(pageSetEntity.getUuid());
     }
 
     @Override
@@ -84,10 +82,10 @@ public class EmojiView extends AutoHeightLayout implements EmoticonsFuncView.OnE
         mEmoticonsIndicatorView.playBy(oldPosition, newPosition, pageSetEntity);
     }
 
-    @Override
-    public void onToolBarItemClick(PageSetEntity pageSetEntity) {
-        mEmoticonsFuncView.setCurrentPageSet(pageSetEntity);
-    }
+//    @Override
+//    public void onToolBarItemClick(PageSetEntity pageSetEntity) {
+//        mEmoticonsFuncView.setCurrentPageSet(pageSetEntity);
+//    }
 
     public EmoticonsFuncView getEmoticonsFuncView() {
         return this.mEmoticonsFuncView;

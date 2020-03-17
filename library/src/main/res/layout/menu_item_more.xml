@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fanchen.chat.menu.view.MenuItem xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/aurora_ll_menuitem_video_container"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
     android:gravity="center"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:tag="gallery">
 
     <ImageButton
         style="@style/ChatInputIcon"
         android:layout_gravity="center"
         android:background="@android:color/transparent"
         android:clickable="false"
-        android:src="@drawable/aurora_menuitem_more"/>
-</com.fanchen.chat.menu.view.MenuItem>
+        android:src="@drawable/aurora_menuitem_more" />
+</LinearLayout>

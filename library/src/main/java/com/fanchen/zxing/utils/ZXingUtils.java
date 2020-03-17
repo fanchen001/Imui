@@ -219,7 +219,7 @@ public class ZXingUtils {
             } else {
                 return null;
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             return null;
         }
     }

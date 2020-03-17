@@ -37,12 +37,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
     private List<Integer> mSelectedItems = new ArrayList<>();
 
     private OnFileSelectedListener mListener;
+    private LayoutInflater mLayoutInflater;
 
     public PhotoAdapter(SelectView mView,List<FileItem> list) {
         this.mView = mView;
-        if (list != null) {
-            mMedias = list;
-        }
+        if (list != null) mMedias = list;
+        mLayoutInflater = LayoutInflater.from(mView.getContext());
     }
 
     public List<FileItem> getSelectedFiles() {
@@ -61,8 +61,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_msg_photo_select, parent, false);
-        return new PhotoViewHolder(layout);
+        if(viewType == FileItem.Type.Image.getCode()){
+            View layout = mLayoutInflater.inflate(R.layout.item_msg_photo_select, parent, false);
+            return new PhotoViewHolder(layout);
+        }else{
+            View layout = mLayoutInflater.inflate(R.layout.item_msg_video_select, parent, false);
+            return new PhotoViewHolder(layout);
+        }
     }
 
     @Override
@@ -81,26 +86,19 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
         if (mSelectedItems.contains(position)) {    // Current photo is selected
             holder.ivTick.setVisibility(VISIBLE);
-            holder.ivShadow.setVisibility(VISIBLE);
             addSelectedAnimation(holder.container);
-
         } else if (holder.ivTick.getVisibility() == View.VISIBLE) { // Selected before, now have not been selected
             holder.ivTick.setVisibility(View.GONE);
-            holder.ivShadow.setVisibility(View.GONE);
             addDeselectedAnimation(holder.container);
         }
-
         final FileItem.Type fileItem = item.getType();
 
-        if (fileItem == FileItem.Type.Video) {
+        if (fileItem == FileItem.Type.Video && holder.tvDuration != null) {
             holder.tvDuration.setVisibility(View.VISIBLE);
-
             long duration = ((VideoItem) item).getDuration();
-//            String durationStr = String.format(Locale.CHINA, "%02d:%02d",
-//                    TimeUnit.SECONDS.toMinutes(duration),
-//                    TimeUnit.SECONDS.toSeconds(duration));
-
             holder.tvDuration.setText(formatSeconds(duration));
+        }else if( holder.tvDuration != null){
+            holder.tvDuration.setVisibility(View.GONE);
         }
 
         holder.ivPhoto.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +113,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                     mSendFiles.add(mMedias.get(p));
 
                     holder.ivTick.setVisibility(VISIBLE);
-                    holder.ivShadow.setVisibility(VISIBLE);
-
                     addSelectedAnimation(holder.container);
 
                     if (mListener != null) {
@@ -129,8 +125,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
                     mSendFiles.remove(mMedias.get(p));
 
                     holder.ivTick.setVisibility(GONE);
-                    holder.ivShadow.setVisibility(GONE);
-
                     addDeselectedAnimation(holder.container);
 
                     if (mListener != null) {
@@ -201,16 +195,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
         View container;
         TextView tvDuration;
         ImageView ivPhoto;
-        ImageView ivShadow;
         ImageView ivTick;
 
         PhotoViewHolder(View itemView) {
             super(itemView);
             container = itemView;
-            tvDuration = (TextView) itemView.findViewById(R.id.text_photoselect_duration);
-            ivPhoto = (ImageView) itemView.findViewById(R.id.image_photoselect_photo);
-            ivShadow = (ImageView) itemView.findViewById(R.id.image_photoselect_shadow);
-            ivTick = (ImageView) itemView.findViewById(R.id.image_photoselect_tick);
+            tvDuration =  itemView.findViewById(R.id.text_photoselect_duration);
+            ivPhoto = itemView.findViewById(R.id.image_photoselect_photo);
+            ivTick =  itemView.findViewById(R.id.image_photoselect_tick);
         }
     }
 }

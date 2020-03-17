@@ -21,7 +21,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="imui.jiguang.cn.imuisample.messages.LoginActivity"
+            android:name="imui.jiguang.cn.imuisample.messages.AAA"
             android:theme="@style/AppTheme1"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -34,7 +34,7 @@
         <activity
             android:name="imui.jiguang.cn.imuisample.messages.MessageListActivity"
             android:theme="@style/AppTheme1"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
 
         <meta-data

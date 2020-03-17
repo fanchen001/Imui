@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fanchen.chat.menu.view.MenuFeature xmlns:android="http://schemas.android.com/apk/res/android"
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_feature_grid"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <GridView
-        android:id="@+id/menu_feature_grid"
-        android:layout_width="wrap_content"
-        android:layout_gravity="start"
-        android:gravity="start"
-        android:layout_height="wrap_content"
-        android:numColumns="4" />
-
-</com.fanchen.chat.menu.view.MenuFeature>
+    android:layout_gravity="start"
+    android:gravity="start"
+    android:numColumns="4" />
