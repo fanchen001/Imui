@@ -20,9 +20,9 @@ public class ContactsView extends FrameLayout {
 
     private View mVerify;
     private View mGroup;
+    private View mView;
     private LayoutInflater mInflater;
     private LinearLayout mLoadingTv;
-    private View mView_line;
 
     public ContactsView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -37,9 +37,9 @@ public class ContactsView extends FrameLayout {
         mSideBar.bringToFront();
 
         View header = mInflater.inflate(R.layout.layout_im_contacts_header, null);
-        mVerify = header.findViewById(R.id.tv_verification);
-        mGroup = header.findViewById(R.id.tv_group);
-        mView_line = header.findViewById(R.id.view_line);
+        mVerify = header.findViewById(R.id.ll_verification);
+        mGroup = header.findViewById(R.id.ll_group);
+        mView = header.findViewById(R.id.view_verification_group);
 
         mLoadingTv = (LinearLayout) mInflater.inflate(R.layout.layout_im_contacts_loading, null);
 
@@ -80,23 +80,15 @@ public class ContactsView extends FrameLayout {
         }
     }
 
-    /**
-     * desc:当没有好友时候在群组下面画一条线.以区分和好友列表
-     * 当有好友时候,字母索充当分割线
-     * <p>
-     * 如果不这样设置的话,当有好友时候还会显示view线,这样ui界面不太好看
-     */
-
-    public void showLine() {
-        mView_line.setVisibility(View.VISIBLE);
-    }
-
-    public void dismissLine() {
-        mView_line.setVisibility(View.GONE);
-    }
-
     public void showContact() {
         mSideBar.setVisibility(VISIBLE);
         mListView.setVisibility(VISIBLE);
     }
+
+    private void setGroupVerifyVisibility(int visibility){
+        mView.setVisibility(visibility);
+        mGroup.setVisibility(visibility);
+        mVerify.setVisibility(visibility);
+    }
+
 }

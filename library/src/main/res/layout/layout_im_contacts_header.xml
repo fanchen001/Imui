@@ -7,8 +7,8 @@
     <LinearLayout
         android:id="@+id/search_title"
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="40dp"
+        android:background="@color/white"
         android:gravity="center">
 
         <ImageView
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingRight="10.17dp"
-            android:src="@drawable/ic_im_contacts_search"/>
+            android:src="@drawable/ic_im_contacts_search" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -24,57 +24,79 @@
             android:background="@null"
             android:text="@string/im_contacts_search"
             android:textColor="#868989"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:background="#E8EDF3"/>
+        android:background="#E8EDF3" />
 
-    <TextView
-        android:id="@+id/tv_verification"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/ll_verification"
+        android:layout_width="fill_parent"
         android:layout_height="52dp"
-        android:drawableLeft="@drawable/ic_im_contacts_verification"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
         android:background="@drawable/btn_im_list_item"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp"
-        android:text="@string/im_ver_msg"
-        android:textColor="#2C2C2C"
-        android:textSize="16sp" />
+        android:orientation="horizontal"
+        android:paddingRight="12dp">
+
+        <com.fanchen.message.view.RoundImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14.67dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_im_contacts_verification" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLength="32"
+            android:text="@string/im_ver_msg"
+            android:textColor="#2C2C2C"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
     <View
+        android:id="@+id/view_verification_group"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         android:background="#FFE8EDF3" />
 
-    <TextView
-        android:id="@+id/tv_group"
-        android:layout_width="match_parent"
-        android:background="@drawable/btn_im_list_item"
+    <LinearLayout
+        android:id="@+id/ll_group"
+        android:layout_width="fill_parent"
         android:layout_height="52dp"
-        android:drawableLeft="@drawable/ic_im_contacts_group"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
+        android:background="@drawable/btn_im_list_item"
         android:orientation="horizontal"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp"
-        android:text="@string/im_group"
-        android:textColor="#2C2C2C"
-        android:textSize="16sp"/>
+        android:paddingRight="12dp">
 
-    <View
-        android:id="@+id/view_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:background="#FFE8EDF3"
-        android:visibility="invisible" />
+        <com.fanchen.message.view.RoundImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14.67dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_im_contacts_group" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLength="32"
+            android:text="@string/im_group"
+            android:textColor="#2C2C2C"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 </LinearLayout>
