@@ -11,6 +11,7 @@
         android:drawableLeft="@drawable/ic_im_contacts_verification"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
+        android:background="@drawable/btn_im_list_item"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
         android:text="@string/im_ver_msg"
@@ -27,6 +28,7 @@
     <TextView
         android:id="@+id/tv_group"
         android:layout_width="match_parent"
+        android:background="@drawable/btn_im_list_item"
         android:layout_height="52dp"
         android:drawableLeft="@drawable/ic_im_contacts_group"
         android:drawablePadding="8dp"
