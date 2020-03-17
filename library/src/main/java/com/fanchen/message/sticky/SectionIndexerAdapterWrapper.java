@@ -1,4 +1,4 @@
-package com.fanchen.sticky;
+package com.fanchen.message.sticky;
 
 import android.content.Context;
 import android.widget.SectionIndexer;

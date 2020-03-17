@@ -1,4 +1,4 @@
-package com.fanchen.sticky;
+package com.fanchen.message.sticky;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

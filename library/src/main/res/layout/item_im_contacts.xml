@@ -33,11 +33,4 @@
         android:textColor="#2C2C2C"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="14dp"
-        android:visibility="gone" />
 </LinearLayout>

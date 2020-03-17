@@ -1,4 +1,4 @@
-package com.fanchen.sticky;
+package com.fanchen.message.sticky;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -12,6 +12,8 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import com.fanchen.ui.R;
 
 /**
  * 右侧的字母索引View
@@ -67,7 +69,7 @@ public class SideBarView extends View {
         int width = getWidth();//获取对应的宽度
         int singleHeight = height / b.length; //获取每一个字母的高度
         for (int i = 0; i < b.length; i++) {
-            paint.setColor(Color.parseColor("#2DD0CF"));  // 所有字母的默认颜色 (右侧字体颜色)
+            paint.setColor(getColorPrimary());  // 所有字母的默认颜色 (右侧字体颜色)
             paint.setTypeface(Typeface.DEFAULT);//(右侧字体样式)
             paint.setAntiAlias(true);
             paint.setTextSize(dpToPx(getContext(),13)); //(右侧字体大小)
@@ -159,4 +161,9 @@ public class SideBarView extends View {
         void onTouchingLetterChanged(String s);
     }
 
+    public int getColorPrimary(){
+        TypedValue typedValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        return typedValue.data;
+    }
 }

@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.fanchen.sticky.StickyListHeadersListView
+        <com.fanchen.message.sticky.StickyListHeadersListView
             android:id="@+id/lv_contacts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,7 +27,7 @@
             android:visibility="invisible" />
     </RelativeLayout>
 
-    <com.fanchen.sticky.SideBarView
+    <com.fanchen.message.sticky.SideBarView
         android:id="@+id/sb_contacts"
         android:layout_width="11.33dip"
         android:layout_height="fill_parent"

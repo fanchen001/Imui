@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fanchen.chat.ChatInputView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/chat_input"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/bg_chat_input_shadow"
+    app:cameraQuality="0.6"
+    app:inputMarginLeft="3dp"
+    app:inputMarginRight="3dp"
+    app:inputPaddingBottom="5dp"
+    app:inputPaddingLeft="10dp"
+    app:inputPaddingRight="10dp"
+    app:inputPaddingTop="5dp"
+    app:showSelectAlbum="true" />

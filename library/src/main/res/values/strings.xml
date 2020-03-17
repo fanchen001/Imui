@@ -109,4 +109,5 @@
     <string name="zxing_list">Scan History</string>
     <string name="im_group">group</string>
     <string name="im_ver_msg">verification msg</string>
+    <string name="im_contacts_search">search</string>
 </resources>

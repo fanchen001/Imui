@@ -7,17 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.fanchen.sticky.SideBarView;
-import com.fanchen.sticky.StickyListHeadersAdapter;
-import com.fanchen.sticky.StickyListHeadersListView;
+import com.fanchen.message.sticky.SideBarView;
+import com.fanchen.message.sticky.StickyListHeadersAdapter;
+import com.fanchen.message.sticky.StickyListHeadersListView;
 import com.fanchen.ui.R;
 
-/**
- * Created by ${chenyn} on 2017/3/13.
- */
 public class ContactsView extends FrameLayout {
     private StickyListHeadersListView mListView;
     private SideBarView mSideBar;
@@ -25,7 +21,6 @@ public class ContactsView extends FrameLayout {
     private View mVerify;
     private View mGroup;
     private LayoutInflater mInflater;
-    private ProgressBar mLoadingIv;
     private LinearLayout mLoadingTv;
     private View mView_line;
 
@@ -46,12 +41,11 @@ public class ContactsView extends FrameLayout {
         mGroup = header.findViewById(R.id.tv_group);
         mView_line = header.findViewById(R.id.view_line);
 
-        LinearLayout loadingHeader = (LinearLayout) mInflater.inflate(R.layout.layout_im_contacts_loading, null);
-        mLoadingIv = loadingHeader.findViewById(R.id.jmui_loading_img);
-        mLoadingTv = loadingHeader.findViewById(R.id.loading_view);
+        mLoadingTv = (LinearLayout) mInflater.inflate(R.layout.layout_im_contacts_loading, null);
 
         mListView.addHeaderView(header, null, false);
-        mListView.addHeaderView(loadingHeader);
+        mListView.addHeaderView(mLoadingTv);
+
         mListView.setDrawingListUnderStickyHeader(true);
         mListView.setAreHeadersSticky(true);
         mListView.setStickyHeaderTopOffset(0);
@@ -75,13 +69,15 @@ public class ContactsView extends FrameLayout {
     }
 
     public void showLoading() {
-        mLoadingIv.setVisibility(View.VISIBLE);
-        mLoadingTv.setVisibility(View.VISIBLE);
+        if(mLoadingTv.getParent() == null){
+            mListView.addHeaderView(mLoadingTv);
+        }
     }
 
     public void dismissLoading() {
-        mLoadingIv.setVisibility(View.GONE);
-        mLoadingTv.setVisibility(View.GONE);
+        if(mLoadingTv.getParent() != null){
+            mListView.removeHeaderView(mLoadingTv);
+        }
     }
 
     /**

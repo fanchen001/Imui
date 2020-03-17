@@ -10,7 +10,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.fanchen.R;
-import com.fanchen.sticky.StickyListHeadersAdapter;
+import com.fanchen.message.sticky.StickyListHeadersAdapter;
 
 import java.util.ArrayList;
 

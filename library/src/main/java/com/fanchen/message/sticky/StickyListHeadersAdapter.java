@@ -1,4 +1,4 @@
-package com.fanchen.sticky;
+package com.fanchen.message.sticky;
 
 import android.view.View;
 import android.view.ViewGroup;

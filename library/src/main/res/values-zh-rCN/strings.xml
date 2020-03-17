@@ -13,6 +13,7 @@
     <string name="aurora_avatar_desc">用户头像</string>
     <string name="im_group">群组</string>
     <string name="im_ver_msg">验证消息</string>
+    <string name="im_contacts_search">搜索</string>
     <!-- chat input start -->
     <string name="send">发送</string>
     <string name="record_voice_hint">按住说话</string>

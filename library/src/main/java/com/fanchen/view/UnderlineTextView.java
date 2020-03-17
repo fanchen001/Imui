@@ -33,7 +33,7 @@ public class UnderlineTextView extends AppCompatTextView {
 
     private void init() {
         Resources r = getResources();
-        mUnderlineHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0.5f, r.getDisplayMetrics());
+        mUnderlineHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
     }
 
     @Override
