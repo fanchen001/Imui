@@ -248,13 +248,13 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
         return -1;
     }
 
-    interface OnLoadAvatarListener {
+    public interface OnLoadAvatarListener {
 
         void onLoadAvatar(ImageView avatarView, ISticky friend);
 
     }
 
-    interface OnItemClickListener {
+   public interface OnItemClickListener {
 
         void onItemClick(int position, View convertView, ISticky friend);
 

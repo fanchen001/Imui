@@ -1,42 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.fanchen.view.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
-    android:background="@drawable/btn_im_list_item">
+    android:background="@drawable/btn_im_list_item"
+    android:layout_height="52dp">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="52dp"
-        android:orientation="horizontal"
-        android:paddingRight="12dp">
-
-
-        <CheckBox
-            android:id="@+id/cb_selected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            android:visibility="gone" />
+        android:layout_width="match_parent"
+        android:layout_height="52dp">
 
         <com.fanchen.message.view.RoundImageView
-            android:id="@+id/iv_photo"
+            android:id="@+id/iv_group"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="14.67dp"
-            android:scaleType="centerCrop"
+            android:layout_marginLeft="14dp"
             android:src="@drawable/ic_im_akari" />
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="14dp"
+            android:layout_marginLeft="11.67dp"
             android:ellipsize="end"
-            android:lines="1"
-            android:maxLength="32"
+            android:maxLines="2"
             android:textColor="#2C2C2C"
             android:textSize="16sp" />
     </LinearLayout>
