@@ -24,7 +24,7 @@ import java.util.List;
 public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeadersAdapter, SectionIndexer, View.OnClickListener,
         SideBarView.OnTouchingLetterChangedListener {
 
-    private List<ISticky> mData;
+    private List<ISticky> mData = new ArrayList<>();
     private boolean mCheck;
     private int[] mSectionIndices;
     private String[] mSectionLetters;
@@ -36,7 +36,9 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
     private OnItemCheckListener mOnItemCheckListener;
 
     public DefaultStickyAdapter(ContactsView view, List<ISticky> mData, boolean check) {
-        this.mData = mData;
+        if (mData != null) {
+            this.mData.addAll(mData);
+        }
         this.mCheck = check;
         this.mView = view;
         mView.setSideBarTouchListener(this);
@@ -85,7 +87,10 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
     }
 
     public void setDate(List<ISticky> friend) {
-        mData = friend;
+        mData.clear();
+        if (friend != null) {
+            mData.addAll(friend);
+        }
         Collections.sort(mData, new PinyinComparator());
         mSectionIndices = getSectionIndices();
         mSectionLetters = getSectionLetters();
