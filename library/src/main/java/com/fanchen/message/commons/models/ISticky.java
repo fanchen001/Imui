@@ -11,7 +11,5 @@ public interface ISticky {
 
     boolean isSelect();
 
-    boolean isShow();
-
     void setSelect(boolean select);
 }

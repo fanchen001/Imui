@@ -25,7 +25,7 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
         SideBarView.OnTouchingLetterChangedListener {
 
     private List<ISticky> mData;
-
+    private boolean mCheck;
     private int[] mSectionIndices;
     private String[] mSectionLetters;
     private LayoutInflater mInflater;
@@ -33,15 +33,21 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
 
     private OnLoadAvatarListener mOnLoadAvatarListener;
     private OnItemClickListener mOnItemClickListener;
+    private OnItemCheckListener mOnItemCheckListener;
 
-    public DefaultStickyAdapter(ContactsView view, List<ISticky> mData) {
+    public DefaultStickyAdapter(ContactsView view, List<ISticky> mData, boolean check) {
         this.mData = mData;
+        this.mCheck = check;
         this.mView = view;
         mView.setSideBarTouchListener(this);
         Collections.sort(mData, new PinyinComparator());
         mInflater = LayoutInflater.from(view.getContext());
         mSectionIndices = getSectionIndices();
         mSectionLetters = getSectionLetters();
+    }
+
+    public DefaultStickyAdapter(ContactsView view, List<ISticky> mData) {
+        this(view, mData, false);
     }
 
     public List<ISticky> getData() {
@@ -112,9 +118,10 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
         CheckBox checkBox = convertView.findViewById(R.id.cb_selected);
         ImageView avatar = convertView.findViewById(R.id.iv_photo);
         TextView displayName = convertView.findViewById(R.id.tv_name);
+        View viewById = convertView.findViewById(R.id.bt_delete);
         //所有好友列表
         ISticky friend = mData.get(position);
-        checkBox.setVisibility(friend.isShow() ? View.VISIBLE : View.GONE);
+        checkBox.setVisibility(mCheck ? View.VISIBLE : View.GONE);
         if (friend.getAvatar() != null) {
             if (new File(friend.getAvatar()).exists()) {
                 avatar.setImageBitmap(BitmapFactory.decodeFile(friend.getAvatar()));
@@ -124,7 +131,9 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
         }
         displayName.setText(friend.getDisplayName());
         checkBox.setChecked(friend.isSelect());
-        convertView.setTag(new Object[]{friend, position});
+        viewById.setTag(new Object[]{friend, position, checkBox});
+        viewById.setOnClickListener(this);
+        convertView.setTag(new Object[]{friend, position, checkBox});
         convertView.setOnClickListener(this);
         return convertView;
     }
@@ -216,8 +225,17 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
         Object[] tag = (Object[]) v.getTag();
         ISticky friend = (ISticky) tag[0];
         int position = (int) tag[1];
-        if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemClick(position, v, friend);
+        if (mCheck) {
+            if (mOnItemCheckListener != null) {
+                mOnItemCheckListener.onItemCheck((CheckBox) tag[2], friend);
+            } else {
+                friend.setSelect(true);
+                ((CheckBox) tag[2]).setChecked(((CheckBox) tag[2]).isChecked());
+            }
+        } else {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(position, v, friend);
+            }
         }
     }
 
@@ -227,6 +245,20 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
 
     public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    public void setOnItemCheckListener(OnItemCheckListener mOnItemCheckListener) {
+        this.mOnItemCheckListener = mOnItemCheckListener;
+    }
+
+    public List<ISticky> getSelectList() {
+        ArrayList<ISticky> iStickies = new ArrayList<>();
+        for (ISticky sticky : mData) {
+            if (sticky.isSelect()) {
+                iStickies.add(sticky);
+            }
+        }
+        return iStickies;
     }
 
     @Override
@@ -254,9 +286,15 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
 
     }
 
-   public interface OnItemClickListener {
+    public interface OnItemClickListener {
 
         void onItemClick(int position, View convertView, ISticky friend);
+
+    }
+
+    public interface OnItemCheckListener {
+
+        void onItemCheck(CheckBox checkBox, ISticky friend);
 
     }
 }
