@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fanchen.message.commons.models.ISticky;
 import com.fanchen.message.pinyin.PinyinComparator;
 import com.fanchen.ui.R;
@@ -124,22 +125,28 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
         ImageView avatar = convertView.findViewById(R.id.iv_photo);
         TextView displayName = convertView.findViewById(R.id.tv_name);
         View viewById = convertView.findViewById(R.id.bt_delete);
+        View view = convertView.findViewById(R.id.ll_contacts_content);
         //所有好友列表
         ISticky friend = mData.get(position);
         checkBox.setVisibility(mCheck ? View.VISIBLE : View.GONE);
         if (friend.getAvatar() != null) {
             if (new File(friend.getAvatar()).exists()) {
                 avatar.setImageBitmap(BitmapFactory.decodeFile(friend.getAvatar()));
-            } else if (mOnLoadAvatarListener != null) {
+            } else if (friend.getAvatar().startsWith("http")) {
+                Glide.with(parent.getContext()).load(friend.getAvatar()).asBitmap().into(avatar);
+            }else if(mOnLoadAvatarListener != null){
                 mOnLoadAvatarListener.onLoadAvatar(avatar, friend);
             }
         }
         displayName.setText(friend.getDisplayName());
         checkBox.setChecked(friend.isSelect());
+
         viewById.setTag(new Object[]{friend, position, checkBox});
         viewById.setOnClickListener(this);
-        convertView.setTag(new Object[]{friend, position, checkBox});
-        convertView.setOnClickListener(this);
+
+        view.setTag(new Object[]{friend, position, checkBox});
+        view.setOnClickListener(this);
+
         return convertView;
     }
 

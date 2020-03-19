@@ -5,6 +5,7 @@
     android:background="@drawable/btn_im_list_item">
 
     <LinearLayout
+        android:id="@+id/ll_contacts_content"
         android:layout_width="fill_parent"
         android:layout_height="52dp"
         android:orientation="horizontal"
