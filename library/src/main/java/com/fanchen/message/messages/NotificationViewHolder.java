@@ -14,12 +14,13 @@ public class NotificationViewHolder<MESSAGE extends IMessage>  extends BaseMessa
 
     public NotificationViewHolder(View itemView, boolean isSender) {
         super(itemView);
-        mTextView =  itemView.findViewById(R.id.aurora_tv_msgitem_recall);
+        mTextView =  itemView.findViewById(R.id.aurora_tv_msgitem_event);
     }
 
     @Override
     public void onBind(final MESSAGE message) {
-        mTextView.setText(message.getText());
+        if(mTextView != null)
+            mTextView.setText(message.getText());
     }
 
     @Override
