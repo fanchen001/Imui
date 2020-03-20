@@ -67,7 +67,9 @@ public interface IMessage {
         RECEIVE_CUSTOM,
 
         SEND_RECALL, // 撤回
-        RECEIVE_RECALL; // 撤回
+        RECEIVE_RECALL, // 撤回
+
+        NOTIFICATION;
 
         MessageType() {
         }

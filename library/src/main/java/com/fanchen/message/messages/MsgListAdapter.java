@@ -68,6 +68,8 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
     private final int TYPE_SEND_RECALL = 21;
     private final int TYPE_RECEIVE_RECALL = 22;
 
+    private final int TYPE_EVENT_NOTIFICATION = 23;
+
     private SparseArray<CustomMsgConfig> mCustomMsgList;
 
     private Context mContext;
@@ -183,6 +185,8 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
                 return getHolder(parent, R.layout.item_send_msg_recall, DefaultReCallViewHolder.class, true);
             case TYPE_RECEIVE_RECALL:
                 return getHolder(parent, R.layout.item_send_msg_recall, DefaultReCallViewHolder.class, false);
+            case TYPE_EVENT_NOTIFICATION:
+                return getHolder(parent, R.layout.item_msg_event_notification, DefaultNotificationViewHolder.class, false);
             default:
                 if (mCustomMsgList != null && mCustomMsgList.size() > 0) {
                     return getHolder(parent, mCustomMsgList.get(viewType).getResourceId(),
@@ -258,7 +262,9 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
                 return TYPE_RECEIVER_ORDER;
             } else if (message.getType() == IMessage.MessageType.SEND_ORDER.ordinal()) {
                 return TYPE_SEND_ORDER;
-            }else {
+            }else if (message.getType() == IMessage.MessageType.NOTIFICATION.ordinal()) {
+                return TYPE_EVENT_NOTIFICATION;
+            }  else {
                 return getCustomType(message);
             }
         }
@@ -1129,6 +1135,14 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
     private static class DefaultReCallViewHolder extends ReCallViewHolder<IMessage> {
 
         public DefaultReCallViewHolder(View itemView, boolean isSender) {
+            super(itemView, isSender);
+        }
+
+    }
+
+    private static class DefaultNotificationViewHolder extends NotificationViewHolder<IMessage> {
+
+        public DefaultNotificationViewHolder(View itemView, boolean isSender) {
             super(itemView, isSender);
         }
 

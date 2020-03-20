@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+
+    <com.fanchen.message.view.RoundTextView
+        android:id="@+id/aurora_tv_msgitem_event"
+        style="@style/aurora_msgitem_date_style"
+        android:layout_centerInParent="true"
+        android:text="好友xxx加入群聊~"
+        android:textColor="@color/white"
+        android:textSize="13sp" />
+</RelativeLayout>
