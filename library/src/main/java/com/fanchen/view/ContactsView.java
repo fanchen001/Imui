@@ -21,6 +21,7 @@ public class ContactsView extends FrameLayout {
     private View mVerify;
     private View mGroup;
     private View mView;
+    private View mSearchView;
     private LayoutInflater mInflater;
     private LinearLayout mLoadingTv;
 
@@ -41,6 +42,8 @@ public class ContactsView extends FrameLayout {
         mGroup = header.findViewById(R.id.ll_group);
         mView = header.findViewById(R.id.view_verification_group);
 
+        mSearchView = header.findViewById(R.id.search_title);
+
         mLoadingTv = (LinearLayout) mInflater.inflate(R.layout.layout_im_contacts_loading, null);
 
         mListView.addHeaderView(header, null, false);
@@ -54,6 +57,7 @@ public class ContactsView extends FrameLayout {
     public void setListener(OnClickListener contactsController) {
         mVerify.setOnClickListener(contactsController);
         mGroup.setOnClickListener(contactsController);
+        mSearchView.setOnClickListener(contactsController);
     }
 
     public void setSelection(int position) {
