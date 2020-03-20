@@ -22,7 +22,7 @@ public class AAA extends BaseIActivity {
         final ContactsView viewById = findViewById(R.id.contactsview);
         ArrayList<ISticky> iFriends1 = new ArrayList<>();
 
-        final DefaultStickyAdapter defaultStickyAdapter = new DefaultStickyAdapter(viewById, iFriends1);
+        final DefaultStickyAdapter defaultStickyAdapter = new DefaultStickyAdapter(viewById, iFriends1,true);
 
         viewById.setAdapter(defaultStickyAdapter);
 

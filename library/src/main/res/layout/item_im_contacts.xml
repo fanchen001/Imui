@@ -18,6 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
+            android:clickable="false"
+            android:focusable="false"
             android:visibility="gone" />
 
         <com.fanchen.message.view.RoundImageView

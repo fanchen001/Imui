@@ -205,7 +205,11 @@ public class MenuManager implements MenuCollection.MenuCollectionChangedListener
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mSendBtn.setBackground(mStyle.getSendBtnBg());
         }
-        mSendBtn.setImageResource(mStyle.getSendBtnIcon());
+        if(mChatInputView.mInput != null && mChatInputView.mInput.length() > 0){
+            mSendBtn.setImageResource(mStyle.getSendBtnPressedIcon());
+        }else{
+            mSendBtn.setImageResource(mStyle.getSendBtnIcon());
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mSendCountTv.setBackground(mStyle.getSendCountBg());
         }

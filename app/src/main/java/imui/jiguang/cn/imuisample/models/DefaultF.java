@@ -9,6 +9,8 @@ public class DefaultF implements ISticky {
     private String displayName;
     private String username;
 
+    private boolean is;
+
     public DefaultF(String avatar, String displayName, String username) {
         this.avatar = avatar;
         this.displayName = displayName;
@@ -37,17 +39,13 @@ public class DefaultF implements ISticky {
 
     @Override
     public boolean isSelect() {
-        return false;
+        return is;
     }
 
-    @Override
-    public boolean isShow() {
-        return false;
-    }
 
     @Override
     public void setSelect(boolean select) {
-
+    this.is = select;
     }
 
 }

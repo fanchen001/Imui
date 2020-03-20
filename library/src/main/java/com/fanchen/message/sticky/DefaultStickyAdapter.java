@@ -2,6 +2,7 @@ package com.fanchen.message.sticky;
 
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -241,8 +242,8 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
             if (mOnItemCheckListener != null) {
                 mOnItemCheckListener.onItemCheck((CheckBox) tag[2], friend);
             } else {
-                friend.setSelect(true);
-                ((CheckBox) tag[2]).setChecked(((CheckBox) tag[2]).isChecked());
+                friend.setSelect(!friend.isSelect());
+                ((CheckBox) tag[2]).setChecked(friend.isSelect());
             }
         } else {
             if (mOnItemClickListener != null) {

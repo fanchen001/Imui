@@ -93,7 +93,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         MediaPlayer.OnErrorListener, Runnable {
 
     private static final String TAG = "ChatInputView";
-    private CharSequence mInput;
+    public CharSequence mInput;
 
     private EmoticonsEditText mChatInput;
 //    private TextView mSendCountTv;
@@ -438,6 +438,15 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         }
     }
 
+    private void triggerSelectView(CharSequence s, int start, int before){
+        ImageButton sendButton = mMenuManager.getSendButton();
+        if (s.length() >= 1 && start == 0 && before == 0) { // Starting input
+            triggerSendButtonAnimation(null, sendButton, true, false);
+        } else if (s.length() == 0 && before >= 1) { // Clear content
+            triggerSendButtonAnimation(null, sendButton, false, false);
+        }
+    }
+
     @Override
     public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
     }
@@ -445,9 +454,11 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         mInput = s;
-        if (mSelectPhotoView != null)
+        if(mSelectPhotoView == null && mSelectVideoView == null){
+            triggerSelectView(s,start,before);
+        }else if (mSelectPhotoView != null)
             triggerSelectView(mSelectPhotoView, s, start, before);
-        if (mSelectVideoView != null)
+        else
             triggerSelectView(mSelectVideoView, s, start, before);
     }
 
@@ -630,7 +641,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
             if (onSubmit()) mChatInput.setText("");
             ImageButton sendButton = mMenuManager.getSendButton();
             TextView sendCountTextView = mMenuManager.getSendCountTextView();
-            if (mSelectPhotoView.getSelectFiles() != null && mSelectPhotoView.getSelectFiles().size() > 0) {
+            if (mSelectPhotoView != null && mSelectPhotoView.getSelectFiles() != null && mSelectPhotoView.getSelectFiles().size() > 0) {
                 mListener.onSendFiles(mSelectPhotoView.getSelectFiles());
                 sendButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.aurora_menuitem_send));
                 sendCountTextView.setVisibility(View.INVISIBLE);
@@ -638,7 +649,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
                 dismissMenuLayout();
                 mImm.hideSoftInputFromWindow(getWindowToken(), 0);
                 mWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            } else if (mSelectVideoView.getSelectFiles() != null && mSelectVideoView.getSelectFiles().size() > 0) {
+            } else if (mSelectVideoView != null && mSelectVideoView.getSelectFiles() != null && mSelectVideoView.getSelectFiles().size() > 0) {
                 mListener.onSendFiles(mSelectVideoView.getSelectFiles());
                 sendButton.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.aurora_menuitem_send));
                 sendCountTextView.setVisibility(View.INVISIBLE);
@@ -1059,7 +1070,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         }
     }
 
-    private void triggerSendButtonAnimation(SelectView v, ImageButton sendBtn, boolean hasContent, boolean isSelectPhoto) {
+    private void triggerSendButtonAnimation(SelectView view, ImageButton sendBtn, boolean hasContent, boolean isSelectPhoto) {
         ImageButton sendButton = mMenuManager.getSendButton();
         TextView sendCountTextView = mMenuManager.getSendCountTextView();
         float[] shrinkValues = new float[]{0.6f};
@@ -1071,7 +1082,10 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         AnimatorSet restoreAnimatorSet = new AnimatorSet();
         restoreAnimatorSet.playTogether(ObjectAnimator.ofFloat(sendBtn, "scaleX", restoreValues), ObjectAnimator.ofFloat(sendBtn, "scaleY", restoreValues));
         restoreAnimatorSet.setDuration(100);
-        restoreAnimatorSet.addListener(new RestoreAnimator(this, sendCountTextView, v));
+        restoreAnimatorSet.addListener(new RestoreAnimator(this, sendCountTextView, view));
+
+        Log.e("triggerSendButtonAnimation","hasContent -> " + hasContent);
+
         shrinkAnimatorSet.addListener(new ShrinkAnimator(hasContent, isSelectPhoto, sendCountTextView, sendButton, mStyle, restoreAnimatorSet));
         shrinkAnimatorSet.start();
     }
