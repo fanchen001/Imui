@@ -89,7 +89,7 @@ public class ContactsView extends FrameLayout {
         mListView.setVisibility(VISIBLE);
     }
 
-    private void setGroupVerifyVisibility(int visibility){
+    public void setGroupVerifyVisibility(int visibility){
         mView.setVisibility(visibility);
         mGroup.setVisibility(visibility);
         mVerify.setVisibility(visibility);

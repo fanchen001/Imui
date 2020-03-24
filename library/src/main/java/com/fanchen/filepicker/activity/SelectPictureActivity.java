@@ -19,6 +19,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -269,9 +270,8 @@ public class SelectPictureActivity extends BaseIActivity implements
         } else if (mCanPreview && SelectOptions.getInstance().cropConfig == null) {
             startPictureView(essFile, position);
         } else if (SelectOptions.getInstance().cropConfig != null) {
-            mMediaAdapter.mSelectedFileList.add(mMediaAdapter.getData().get(position));
-            ArrayList<EssFile> fileList = EssFile.getEssFileList(this, mMediaAdapter.mSelectedFileList);
-            String absolutePath = fileList.get(0).getAbsolutePath();
+            EssFile file = mMediaAdapter.getData().get(position);
+            String absolutePath = file.getAbsolutePath();
             Uri from = new Uri.Builder().scheme("file").appendPath(absolutePath).build();
             String format = String.format(Locale.US, "%s.png", System.currentTimeMillis());
             String cachePath = null;

@@ -92,6 +92,7 @@ public class EssFile implements Parcelable {
             isFile = file.isFile();
             mFileName = file.getName();
         }
+        uri = Uri.fromFile(file);
         mimeType = FileUtils.getMimeType(mFilePath);
     }
 
@@ -102,6 +103,7 @@ public class EssFile implements Parcelable {
             isDirectory = file.isDirectory();
             isFile = file.isFile();
         }
+        uri = Uri.fromFile(file);
         mimeType = FileUtils.getMimeType(file.getAbsolutePath());
     }
 
