@@ -3,9 +3,9 @@ package com.fanchen.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
-public class CouponView extends RelativeLayout {
+public class CouponView extends LinearLayout {
 
     private CouponViewHelper helper;
 
