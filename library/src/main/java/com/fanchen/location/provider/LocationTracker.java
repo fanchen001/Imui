@@ -1,4 +1,4 @@
-package com.fanchen.location.hoowe;
+package com.fanchen.location.provider;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,8 +14,8 @@ import com.fanchen.location.utils.BaiduUtils;
 
 /**
  */
-public class HooweLocationTracker extends BDAbstractLocationListener {
-    public static final String TAG = "HooweLocationTracker";
+public class LocationTracker extends BDAbstractLocationListener {
+    public static final String TAG = "LocationTracker";
 
     private Context mContext;
 
@@ -23,13 +23,13 @@ public class HooweLocationTracker extends BDAbstractLocationListener {
 
     private Object objLock = new Object();
 
-    private OnLocationUpdatedListener mListener;
+    private OnLocationListener mListener;
 
     /***
      *
      * @param locationContext
      */
-    public HooweLocationTracker(Context locationContext) {
+    public LocationTracker(Context locationContext) {
         synchronized (objLock) {
             mContext = locationContext;
             if (client == null) {
@@ -62,7 +62,7 @@ public class HooweLocationTracker extends BDAbstractLocationListener {
      * @param listener
      * @return
      */
-    public boolean registerListener(OnLocationUpdatedListener listener) {
+    public boolean registerListener(OnLocationListener listener) {
         boolean isSuccess = false;
         if (listener != null) {
             this.mListener = listener;
@@ -121,16 +121,16 @@ public class HooweLocationTracker extends BDAbstractLocationListener {
      */
     @Override
     public void onReceiveLocation(BDLocation bdLocation) {
-        Log.d(TAG, "HooweLocationTracker onReceiveLocation");
+        Log.d(TAG, "LocationTracker onReceiveLocation");
         if (BaiduUtils.isValidLocation(bdLocation, null)) {
             BaiduUtils.prinftBDLocation(bdLocation);
-            HooweLocation location = BaiduUtils.assemblyLocation(bdLocation);
+            Location location = BaiduUtils.assemblyLocation(bdLocation);
             // 将数据插入数据库
             LocationDBHelper.getHelper(mContext).locationInsert(location);
 
             mListener.onReceiveLocation(location);
         }
-        if (!HooweLocationProvider.getInstance().isHasTracker()) {
+        if (!LocationProvider.getInstance().isHasTracker()) {
             // 每次位置更新回调通知界面
             unregisterListener();
         }

@@ -8,7 +8,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fanchen.location.hoowe.HooweLocation;
+import com.fanchen.location.provider.Location;
 
 /**
  */
@@ -41,8 +41,8 @@ public class TableLocation {
      * @param cursor
      * @return
      */
-    private HooweLocation queryLocationItem(Cursor cursor) {
-        HooweLocation hooweLocation = new HooweLocation();
+    private Location queryLocationItem(Cursor cursor) {
+        Location hooweLocation = new Location();
 
         hooweLocation.setLocationID(cursor.getString(cursor.getColumnIndex(DBDefine.t_location.locationID)));
         hooweLocation.setLocType(cursor.getInt(cursor.getColumnIndex(DBDefine.t_location.locType)));
@@ -77,7 +77,7 @@ public class TableLocation {
      *
      * @param location
      */
-    protected void locationInsert(HooweLocation location) {
+    protected void locationInsert(Location location) {
         Log.i(TAG, "[DB] location insert");
         ContentValues contentValues = new ContentValues();
 
@@ -129,7 +129,7 @@ public class TableLocation {
      *
      * @param location
      */
-    protected void locationUpdate(HooweLocation location) {
+    protected void locationUpdate(Location location) {
         Log.i(TAG, "[DB] location remove");
         String command = String.format("UPDATE " +
                         DBDefine.db_location +
@@ -191,10 +191,10 @@ public class TableLocation {
      * 获取最新的位置信息
      * @return
      */
-    protected HooweLocation getLatestLocation() {
+    protected Location getLatestLocation() {
         Log.i(TAG, "[DB] load latest location");
 
-        HooweLocation location = new HooweLocation();
+        Location location = new Location();
 
         SQLiteDatabase database = dbHelper.DatabaseReadableGet();
 
@@ -228,10 +228,10 @@ public class TableLocation {
      * @param endTime   结束时间
      * @return
      */
-    protected List<HooweLocation> locDBLoadByPeriod(long startTime, long endTime) {
+    protected List<Location> locDBLoadByPeriod(long startTime, long endTime) {
         Log.i(TAG, "[DB] location load by period");
 
-        List<HooweLocation> locationList = new ArrayList<>();
+        List<Location> locationList = new ArrayList<>();
 
         SQLiteDatabase database = dbHelper.DatabaseReadableGet();
 
@@ -246,7 +246,7 @@ public class TableLocation {
                 if (cursor != null) {
                     while (cursor.moveToNext()) {
                         Log.i(TAG, "获取cursor");
-                        HooweLocation location = queryLocationItem(cursor);
+                        Location location = queryLocationItem(cursor);
                         locationList.add(location);
                     }
                     cursor.close();
@@ -270,10 +270,10 @@ public class TableLocation {
      * @param time   指定时间
      * @return 返回值可能为 null ，注意处理该返回
      */
-    protected HooweLocation locDBLoadByTime(long time, int frequency) {
+    protected Location locDBLoadByTime(long time, int frequency) {
         Log.i(TAG, "[DB] location load by time");
-        HooweLocation location = null;
-        List<HooweLocation> locations = new ArrayList<>();
+        Location location = null;
+        List<Location> locations = new ArrayList<>();
         locations.addAll(locDBLoadByPeriod((time - frequency),
                 time + frequency));
         if (locations.size() == 1) {
@@ -300,8 +300,8 @@ public class TableLocation {
      * @param locations
      * @return
      */
-    private HooweLocation getClosestLocation(long time, List<HooweLocation> locations) {
-        HooweLocation location = null;
+    private Location getClosestLocation(long time, List<Location> locations) {
+        Location location = null;
         int low = 0, high = locations.size() - 1;
         while (low <= high) {
             int mid = low + (high - low) / 2;

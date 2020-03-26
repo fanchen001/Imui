@@ -1,4 +1,4 @@
-package com.fanchen.location.hoowe;
+package com.fanchen.location.provider;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,15 +16,15 @@ import com.fanchen.location.utils.ServiceUtils;
 
 /**
  */
-public class HooweLocationProvider {
+public class LocationProvider {
 
-    public static final String TAG = "HooweLocationProvider";
+    public static final String TAG = "LocationProvider";
 
     private Context mContext;
 
     private LocationClientOption mOption;
 
-    private HooweLocationTracker mTracker;
+    private LocationTracker mTracker;
 
     private boolean hasTracker = false;
 
@@ -42,17 +42,17 @@ public class HooweLocationProvider {
         /**
          * 静态初始化器，由JVM来保证线程安全
          */
-        private static HooweLocationProvider instance = new HooweLocationProvider();
+        private static LocationProvider instance = new LocationProvider();
     }
 
     /**
      * 私有化构造方法
      */
-    private HooweLocationProvider() {
+    private LocationProvider() {
 
     }
 
-    public static HooweLocationProvider getInstance() {
+    public static LocationProvider getInstance() {
         return LocationProviderHolder.instance;
     }
 
@@ -85,7 +85,7 @@ public class HooweLocationProvider {
      *
      * @param listener
      */
-    public void getCurrentLocation(OnLocationUpdatedListener listener) {
+    public void getCurrentLocation(OnLocationListener listener) {
         this.getCurrentLocation(null, listener);
     }
 
@@ -95,13 +95,13 @@ public class HooweLocationProvider {
      * @param mOption
      * @param listener
      */
-    public void getCurrentLocation(LocationClientOption mOption, OnLocationUpdatedListener listener) {
+    public void getCurrentLocation(LocationClientOption mOption, OnLocationListener listener) {
         if (hasTracker) { // 有追踪任务在运行
             // 获取最新位置返回
-            HooweLocation location = LocationDBHelper.getHelper(mContext).getLatestLocation();
+            Location location = LocationDBHelper.getHelper(mContext).getLatestLocation();
             listener.onReceiveLocation(location);
         } else {
-            HooweLocationTracker locationTracker = new HooweLocationTracker(mContext);
+            LocationTracker locationTracker = new LocationTracker(mContext);
             if (mOption != null) {
                 locationTracker.setLocationOption(mOption);
             } else {
@@ -117,8 +117,8 @@ public class HooweLocationProvider {
      *
      * @param time
      */
-    public void getLocationByTime(long time, OnLocationUpdatedListener listener) {
-        HooweLocation location = LocationDBHelper.getHelper(mContext).locDBLoadByTime(time);
+    public void getLocationByTime(long time, OnLocationListener listener) {
+        Location location = LocationDBHelper.getHelper(mContext).locDBLoadByTime(time);
         if (location != null) {
             listener.onReceiveLocation(location);
         } else {
@@ -132,8 +132,8 @@ public class HooweLocationProvider {
      * @param startTime
      * @param endTime
      */
-    public void getLocationByPeriod(Long startTime, long endTime, OnLocationUpdatedListener listener) {
-        List<HooweLocation> locationList = new ArrayList<>();
+    public void getLocationByPeriod(Long startTime, long endTime, OnLocationListener listener) {
+        List<Location> locationList = new ArrayList<>();
         locationList.addAll(LocationDBHelper.getHelper(mContext).locDBLoadByPeriod(startTime, endTime));
         if (locationList.size() > 0) {
             listener.onReceiveLocation(locationList);
@@ -147,7 +147,7 @@ public class HooweLocationProvider {
      *
      * @param time
      */
-    public HooweLocation getLocationByTime(long time) {
+    public Location getLocationByTime(long time) {
         return LocationDBHelper.getHelper(mContext).locDBLoadByTime(time);
     }
 
@@ -157,7 +157,7 @@ public class HooweLocationProvider {
      * @param startTime
      * @param endTime
      */
-    public List<HooweLocation> getLocationByPeriod(Long startTime, long endTime) {
+    public List<Location> getLocationByPeriod(Long startTime, long endTime) {
         return LocationDBHelper.getHelper(mContext).locDBLoadByPeriod(startTime, endTime);
     }
 
@@ -174,7 +174,7 @@ public class HooweLocationProvider {
      *
      * @param listener
      */
-    public void startTracker(OnLocationUpdatedListener listener) {
+    public void startTracker(OnLocationListener listener) {
         this.startTracker(null, listener);
     }
 
@@ -184,9 +184,9 @@ public class HooweLocationProvider {
      * @param mOption   定位配置
      * @param listener
      */
-    public void startTracker(LocationClientOption mOption, OnLocationUpdatedListener listener) {
+    public void startTracker(LocationClientOption mOption, OnLocationListener listener) {
         if (!hasTracker) {
-            mTracker = new HooweLocationTracker(mContext);
+            mTracker = new LocationTracker(mContext);
             mTracker.setLocationOption(mOption);
             mTracker.registerListener(listener);
             mTracker.start();

@@ -1,8 +1,8 @@
-package com.fanchen.location.hoowe;
+package com.fanchen.location.provider;
 
 /**
  */
-public class HooweLocation {
+public class Location {
     /**
      *  定位唯一ID，v7.2版本新增，用于排查定位问题
      */
@@ -100,7 +100,7 @@ public class HooweLocation {
      */
     private int operators;
 
-    public HooweLocation() {
+    public Location() {
 
     }
 

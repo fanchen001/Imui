@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.baidu.location.BDLocation;
 
-import com.fanchen.location.hoowe.HooweLocation;
+import com.fanchen.location.provider.Location;
 
 public class BaiduUtils {
     public final static String CoorType_GCJ02 = "gcj02";
@@ -63,14 +63,14 @@ public class BaiduUtils {
     }
 
     /**
-     * 拼装 HooweLocation
+     * 拼装 Location
      *
      * @param bdLocation
      * @return
      */
-    public static HooweLocation assemblyLocation(BDLocation bdLocation) {
+    public static Location assemblyLocation(BDLocation bdLocation) {
 
-        HooweLocation location = new HooweLocation();
+        Location location = new Location();
         location.setLocationID(bdLocation.getLocationID());
         location.setLocType(bdLocation.getLocType());
         location.setLocTime(TimeUtils.string2Millis(bdLocation.getTime()));

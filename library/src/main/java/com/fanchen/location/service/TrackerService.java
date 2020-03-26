@@ -12,7 +12,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
 import com.fanchen.location.db.LocationDBHelper;
-import com.fanchen.location.hoowe.HooweLocation;
+import com.fanchen.location.provider.Location;
 import com.fanchen.location.utils.BaiduUtils;
 
 /**
@@ -114,7 +114,7 @@ public class TrackerService extends Service {
             Log.d(TAG, "TrackerService onReceiveLocation");
             if (BaiduUtils.isValidLocation(bdLocation, cashLocation)) {
                 BaiduUtils.prinftBDLocation(bdLocation);
-                HooweLocation location = BaiduUtils.assemblyLocation(bdLocation);
+                Location location = BaiduUtils.assemblyLocation(bdLocation);
                 // 将数据插入数据库
                 LocationDBHelper.getHelper(TrackerService.this).locationInsert(location);
             }

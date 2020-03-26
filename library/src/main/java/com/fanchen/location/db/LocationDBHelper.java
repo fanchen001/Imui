@@ -11,8 +11,8 @@ import android.util.Log;
 
 import java.util.List;
 
-import com.fanchen.location.hoowe.HooweLocation;
-import com.fanchen.location.hoowe.HooweLocationProvider;
+import com.fanchen.location.provider.Location;
+import com.fanchen.location.provider.LocationProvider;
 
 /**
  */
@@ -366,7 +366,7 @@ public class LocationDBHelper extends SQLiteOpenHelper {
      *
      * @param location
      */
-    public void locationInsert(HooweLocation location) {
+    public void locationInsert(Location location) {
         tableLocation.locationInsert(location);
     }
 
@@ -384,7 +384,7 @@ public class LocationDBHelper extends SQLiteOpenHelper {
      *
      * @param location
      */
-    public void locationUpdate(HooweLocation location) {
+    public void locationUpdate(Location location) {
         tableLocation.locationUpdate(location);
     }
 
@@ -392,7 +392,7 @@ public class LocationDBHelper extends SQLiteOpenHelper {
      * 获取最新的位置信息
      * @return
      */
-    public HooweLocation getLatestLocation() {
+    public Location getLatestLocation() {
         return tableLocation.getLatestLocation();
     }
 
@@ -403,7 +403,7 @@ public class LocationDBHelper extends SQLiteOpenHelper {
      * @param endTime   结束时间
      * @return
      */
-    public List<HooweLocation> locDBLoadByPeriod(long startTime, long endTime) {
+    public List<Location> locDBLoadByPeriod(long startTime, long endTime) {
         return tableLocation.locDBLoadByPeriod(startTime, endTime);
     }
 
@@ -413,8 +413,8 @@ public class LocationDBHelper extends SQLiteOpenHelper {
      * @param time   指定时间
      * @return 返回值可能为 null ，注意处理该返回
      */
-    public HooweLocation locDBLoadByTime(long time) {
-        return tableLocation.locDBLoadByTime(time, HooweLocationProvider.getInstance().getmFrequency());
+    public Location locDBLoadByTime(long time) {
+        return tableLocation.locDBLoadByTime(time, LocationProvider.getInstance().getmFrequency());
     }
 
 }
