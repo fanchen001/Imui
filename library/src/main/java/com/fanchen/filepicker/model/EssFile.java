@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import com.fanchen.filepicker.util.FileUtils;
 import com.fanchen.filepicker.util.MimeType;
 import com.fanchen.filepicker.util.PathUtils;
+import com.fanchen.picture.tool.FileUtil;
 
 import java.io.File;
 import java.util.ArrayList;

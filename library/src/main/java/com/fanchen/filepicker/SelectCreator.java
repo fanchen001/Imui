@@ -101,6 +101,7 @@ public final class SelectCreator {
 
     public SelectCreator uCropMedia(UCropConfig cropConfig){
         selectOptions.onlyShowImages = true;
+        selectOptions.enabledCapture = true;
         selectOptions.cropConfig = cropConfig;
         isSingle();
         return this;

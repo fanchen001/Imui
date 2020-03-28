@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.fanchen.filepicker.model.Album;
 import com.fanchen.filepicker.model.EssFile;
@@ -59,8 +60,7 @@ public class EssMediaCollection implements LoaderManager.LoaderCallbacks<Cursor>
 
         List<EssFile> essFileList = new ArrayList<>();
         while (data.moveToNext()){
-            EssFile essFile = new EssFile(data.getLong(data.getColumnIndexOrThrow(MediaStore.MediaColumns._ID)),
-                    data.getString(data.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE)));
+            EssFile essFile = new EssFile(data.getLong(data.getColumnIndexOrThrow(MediaStore.MediaColumns._ID)), data.getString(data.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE)));
             if(data.getLong(data.getColumnIndexOrThrow(MediaStore.MediaColumns._ID))==-1){
                 //capture
                 essFile.setItemType(EssFile.CAPTURE);

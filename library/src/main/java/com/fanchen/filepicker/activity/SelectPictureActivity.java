@@ -164,7 +164,6 @@ public class SelectPictureActivity extends BaseIActivity implements
 
     @Override
     public void onAlbumMediaReset() {
-
     }
 
     @Override
@@ -271,8 +270,12 @@ public class SelectPictureActivity extends BaseIActivity implements
             startPictureView(essFile, position);
         } else if (SelectOptions.getInstance().cropConfig != null) {
             EssFile file = mMediaAdapter.getData().get(position);
-            String absolutePath = file.getAbsolutePath();
-            Uri from = new Uri.Builder().scheme("file").appendPath(absolutePath).build();
+            Uri from;
+            if(file.getUri() != null){
+                from = file.getUri();
+            }else{
+                from =  Uri.fromFile(new File(file.getAbsolutePath()));
+            }
             String format = String.format(Locale.US, "%s.png", System.currentTimeMillis());
             String cachePath = null;
             if (getExternalCacheDir() != null) {

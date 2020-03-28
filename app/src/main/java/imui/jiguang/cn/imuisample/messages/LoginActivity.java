@@ -12,6 +12,8 @@ import com.fanchen.R;
 import com.fanchen.base.BaseIActivity;
 import com.fanchen.crash.ExceptionHandler;
 import com.fanchen.crash.HookCrash;
+import com.fanchen.filepicker.FilePicker;
+import com.fanchen.filepicker.model.UCropConfig;
 import com.fanchen.location.utils.CommonUtils;
 import com.fanchen.zxing.CaptureActivity;
 
@@ -24,7 +26,7 @@ public class LoginActivity extends BaseIActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_new);
-
+        FilePicker.from(this).chooseUCrop(new UCropConfig(), 200).start();
 //        HookCrash.install(getApplication(), new ExceptionHandler() {
 //
 //            @Override

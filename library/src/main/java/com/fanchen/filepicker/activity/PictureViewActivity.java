@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.fanchen.base.BaseIActivity;
+import com.fanchen.filepicker.util.UiUtils;
 import com.fanchen.ui.R;
 import com.fanchen.filepicker.SelectOptions;
 import com.fanchen.filepicker.model.EssFile;
@@ -64,7 +65,7 @@ public class PictureViewActivity extends BaseIActivity {
         createToolbar();
         initData(savedInstanceState);
         initView();
-
+        UiUtils.setViewPadding(findViewById(R.id.abl_title));
         startLoading();
     }
 
