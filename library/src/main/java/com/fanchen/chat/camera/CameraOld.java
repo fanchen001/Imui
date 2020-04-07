@@ -20,7 +20,6 @@ import com.fanchen.chat.listener.OnCameraCallbackListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -43,6 +42,7 @@ public class CameraOld implements CameraSupport {
     private MediaRecorder mMediaRecorder;
     private String mNextVideoAbsolutePath;
     private int mCameraId;
+    private boolean isOpen = true;
     private Size mPreviewSize;
     private static final int SENSOR_ORIENTATION_DEFAULT_DEGREES = 90;
     private static final int SENSOR_ORIENTATION_INVERSE_DEGREES = 270;
@@ -68,6 +68,9 @@ public class CameraOld implements CameraSupport {
     @Override
     public CameraSupport open(int cameraId, int width, int height, boolean isFacingBack, float cameraQuality) {
         try {
+            if(isOpen){
+                release();
+            }
             this.mCameraId = cameraId;
             this.mCamera = Camera.open(cameraId);
             mIsFacingBack = isFacingBack;
@@ -107,10 +110,10 @@ public class CameraOld implements CameraSupport {
             mCamera.setPreviewTexture(mTextureView.getSurfaceTexture());
             mCamera.setDisplayOrientation(90);
             mCamera.startPreview();
-        } catch (Exception e) {
+            isOpen = true;
+        } catch (Throwable e) {
             e.printStackTrace();
         }
-
         return this;
     }
 
@@ -122,15 +125,20 @@ public class CameraOld implements CameraSupport {
 
     @Override
     public void release() {
-        if (mCamera != null) {
-            mCamera.setPreviewCallback(null);
-            mCamera.stopPreview();
-            mCamera.lock();
-            mCamera.release();
-            mCamera = null;
+        try{
+            if (mCamera != null) {
+                mCamera.setPreviewCallback(null);
+                mCamera.stopPreview();
+                mCamera.lock();
+                mCamera.release();
+                mCamera = null;
+            }
+            releaseMediaRecorder();
+            isOpen = false;
+            mIsTakingPicture = false;
+        }catch (Throwable e){
+            e.printStackTrace();
         }
-        releaseMediaRecorder();
-        mIsTakingPicture = false;
     }
 
     private void initPhotoPath() {
@@ -187,7 +195,7 @@ public class CameraOld implements CameraSupport {
                     if (mCameraEventListener != null) {
                         mCameraEventListener.onFinishTakePicture();
                     }
-                } catch (IOException e) {
+                } catch (Throwable e) {
                     e.printStackTrace();
                 }
             }
@@ -207,7 +215,6 @@ public class CameraOld implements CameraSupport {
     public static Size getProperSize(List<Size> sizeList, float displayRatio) {
         //先对传进来的size列表进行排序
         Collections.sort(sizeList, new SizeComparator());
-
         Size result = null;
         for (Size size : sizeList) {
             float curRatio = ((float) size.width) / size.height;
@@ -229,7 +236,6 @@ public class CameraOld implements CameraSupport {
     private static class SizeComparator implements Comparator<Size> {
         @Override
         public int compare(Size lhs, Size rhs) {
-            // TODO Auto-generated method stub
             if (lhs.width < rhs.width
                     || lhs.width == rhs.width && lhs.height < rhs.height) {
                 return -1;
@@ -271,7 +277,7 @@ public class CameraOld implements CameraSupport {
         }
         try {
             mMediaRecorder.prepare();
-        } catch (IOException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }
@@ -290,7 +296,7 @@ public class CameraOld implements CameraSupport {
         try {
             setUpMediaRecorder();
             mMediaRecorder.start();
-        } catch (RuntimeException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             Log.e(TAG, "MediaRecorder start error");
             releaseMediaRecorder();
@@ -325,6 +331,11 @@ public class CameraOld implements CameraSupport {
             mCameraCallbackListener.onFinishVideoRecord(mNextVideoAbsolutePath);
         }
         return mNextVideoAbsolutePath;
+    }
+
+    @Override
+    public boolean isOpen() {
+        return isOpen;
     }
 
 }

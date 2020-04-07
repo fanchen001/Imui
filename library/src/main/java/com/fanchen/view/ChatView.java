@@ -48,7 +48,7 @@ import com.fanchen.video.JZUtils;
 import com.fanchen.video.Jzvd;
 
 public class ChatView extends RelativeLayout implements CustomMenuEventListener,
-        View.OnTouchListener, SensorEventListener, View.OnClickListener {
+        View.OnTouchListener, SensorEventListener, View.OnClickListener, ChatInputView.OnWindowChangeListener {
 
     private RelativeLayout mTitleContainer;
     private MessageListView mMsgList;
@@ -121,6 +121,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         mChatInput = findViewById(R.id.chat_input);
         mPtrLayout = findViewById(R.id.pull_to_refresh_layout);
         mChatInput.setUseKeyboardHeight(false);
+        mChatInput.setOnWindowChangeListener(this);
         WindowManager systemService = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         int defaultHeight = systemService.getDefaultDisplay().getHeight() / 3;
         mChatInput.setMenuContainerHeight(defaultHeight);
@@ -363,6 +364,20 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
                 mActivity.finish();
             }
         }
+    }
+
+    @Override
+    public void onWindowChange(boolean full) {
+        View viewById = findViewById(R.id.abl_title_container);
+        if(viewById == null || mPtrLayout == null){
+            return;
+        }
+        mPtrLayout.setVisibility(full ? View.GONE : View.VISIBLE);
+        viewById.setVisibility(full ? View.GONE : View.VISIBLE);
+    }
+
+    public boolean onBack(){
+        return mChatInput != null && mChatInput.onBack();
     }
 
     private class DelayedRunnable implements Runnable {

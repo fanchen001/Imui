@@ -28,6 +28,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -179,6 +180,12 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
 
     private MenuManager mMenuManager;
     private Activity mActivity;
+
+    private int mChangePaddingTop = 0;
+    private int mChangePaddingBottom = 0;
+    private int mChangePaddingLift = 0;
+    private int mChangePaddingRight = 0;
+    private OnWindowChangeListener mOnWindowChangeListener;
 
     public ChatInputView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -854,6 +861,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
      */
     private void fullScreen() {
         if (mFullScreenBtn == null) return;
+
         Window window = mActivity.getWindow();
         WindowManager.LayoutParams attrs = window.getAttributes();
         attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -862,6 +870,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         mFullScreenBtn.setBackgroundResource(R.drawable.aurora_preview_recover_screen);
         mFullScreenBtn.setVisibility(VISIBLE);
         mChatInputContainer.setVisibility(GONE);
+        Log.e("setVisibility","setVisibility " + mMenuItemContainer.getVisibility());
         mMenuItemContainer.setVisibility(GONE);
         int height = mHeight;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -891,6 +900,15 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         mMenuContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         mTextureView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
         mIsFullScreen = true;
+        mChangePaddingLift = getPaddingLeft();
+        mChangePaddingTop = getPaddingTop();
+        mChangePaddingRight = getPaddingRight();
+        mChangePaddingBottom = getPaddingBottom();
+        setPadding(0,0,0,0);
+        //TODO
+        if(mOnWindowChangeListener != null){
+            mOnWindowChangeListener.onWindowChange(true);
+        }
     }
 
     public int dp2px(float value) {
@@ -906,13 +924,14 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
     }
 
     public void dismissMenuLayout() {
-        if (mMenuContainer == null) return;
-        mMenuManager.hideCustomMenu();
-        mMenuContainer.setVisibility(GONE);
         if (mCameraSupport != null) {
             mCameraSupport.release();
             mCameraSupport = null;
         }
+        if (mMenuManager == null) return;
+        mMenuManager.hideCustomMenu();
+        if (mMenuContainer == null) return;
+        mMenuContainer.setVisibility(GONE);
     }
 
     public void invisibleMenuLayout() {
@@ -1343,6 +1362,17 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         }
     }
 
+    public boolean onBack(){
+        if(isFullScreen()){
+            recoverScreen();
+            return true;
+        }else if (mMenuItemContainer != null && mMenuItemContainer.getVisibility() == VISIBLE){
+            dismissMenuLayout();
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void onEmoticonClick(Object o, int actionType, boolean isDelBtn) {
         if (isDelBtn) {
@@ -1397,7 +1427,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int width, int height) {
-        if (mTextureView != null || mTextureView.getVisibility() == VISIBLE && mCameraSupport != null) {
+        if (mTextureView != null && mTextureView.getVisibility() == VISIBLE && mCameraSupport != null) {
             mCameraSupport.open(mCameraId, width, height, mIsBackCamera, mStyle.getCameraQuality());
         }
     }
@@ -1434,7 +1464,11 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         mFullScreenBtn.setBackgroundResource(R.drawable.aurora_preview_full_screen);
         mFullScreenBtn.setVisibility(VISIBLE);
         mChatInputContainer.setVisibility(VISIBLE);
+        Log.e("setVisibility","" + isShowBottomMenu());
+
+
         mMenuItemContainer.setVisibility(isShowBottomMenu() ? VISIBLE : GONE);
+        Log.e("setVisibility","" + mMenuItemContainer.getVisibility());
         int height = sMenuHeight;
         if (mSoftKeyboardHeight != 0 && useKeyboardHeight) height = mSoftKeyboardHeight;
         setMenuContainerHeight(height);
@@ -1462,6 +1496,23 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         FrameLayout.LayoutParams params3 = new FrameLayout.LayoutParams(marginParams3);
         params3.gravity = Gravity.BOTTOM | Gravity.END;
         mSwitchCameraBtn.setLayoutParams(params3);
+        setPadding(mChangePaddingLift,mChangePaddingTop,mChangePaddingRight,mChangePaddingBottom);
+        if(mOnWindowChangeListener != null){
+            mOnWindowChangeListener.onWindowChange(false);
+        }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && isFullScreen()){
+            recoverScreen();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    public void setOnWindowChangeListener(OnWindowChangeListener mOnWindowChangeListener){
+        this.mOnWindowChangeListener = mOnWindowChangeListener;
     }
 
     private final Runnable mPostRunnable = new Runnable() {
@@ -1488,4 +1539,10 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         }
 
     };
+
+    public interface OnWindowChangeListener{
+
+        void onWindowChange(boolean full);
+
+    }
 }

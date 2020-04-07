@@ -73,8 +73,7 @@ public class ProgressButton extends AppCompatButton {
         mPaint = new Paint();
         mPlayBmp = BitmapFactory.decodeResource(getResources(), R.drawable.aurora_recordvoice_play);
         mPauseBmp = BitmapFactory.decodeResource(getResources(), R.drawable.aurora_recordvoice_pause);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs,
-                R.styleable.ProgressButton);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ProgressButton);
 
         //获取自定义属性和默认值
         mRoundColor = typedArray.getColor(R.styleable.ProgressButton_roundColor, Color.RED);

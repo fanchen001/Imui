@@ -13,4 +13,5 @@ public interface CameraSupport {
     void startRecordingVideo();
     void cancelRecordingVideo();
     String finishRecordingVideo();
+    boolean isOpen();
 }

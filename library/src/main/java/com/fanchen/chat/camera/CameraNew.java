@@ -101,6 +101,7 @@ public class CameraNew implements CameraSupport {
     private CameraDevice mCamera;
     private CameraManager mManager;
     private boolean mSupportAutoFocus = false;
+    private boolean isOpen = false;
     /**
      * Output file of picture
      */
@@ -275,6 +276,11 @@ public class CameraNew implements CameraSupport {
         initPhotoDir();
     }
 
+    @Override
+    public boolean isOpen() {
+        return isOpen;
+    }
+
     private void initPhotoDir() {
         String path = mContext.getFilesDir().getAbsolutePath() + "/photo";
         mDir = new File(path);
@@ -301,7 +307,9 @@ public class CameraNew implements CameraSupport {
             Log.e("CameraNew", "Lacking privileges to access aurora_menuitem_camera service, please request permission first.");
             return null;
         }
-
+        if(isOpen){
+            release();
+        }
         mWidth = width;
         mHeight = height;
         mIsFacingBack = isFacingBack;
@@ -315,7 +323,8 @@ public class CameraNew implements CameraSupport {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
             }
             mManager.openCamera(mCameraId, mStateCallback, mBackgroundHandler);
-        } catch (Exception e) {
+            isOpen = true;
+        } catch (Throwable e) {
             e.printStackTrace();
         }
         return this;
@@ -550,6 +559,7 @@ public class CameraNew implements CameraSupport {
             e.printStackTrace();
             throw new RuntimeException("Interrupted while trying to lock camera closing.", e);
         } finally {
+            isOpen = false;
             mCameraOpenCloseLock.release();
         }
         stopBackgroundThread();

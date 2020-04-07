@@ -185,22 +185,22 @@ public class RecordControllerView extends View {
     public void onActionUp() {
         switch (mCurrentState) {
             case MOVE_ON_LEFT:
-                mRecordVoiceBtn.finishRecord(true);
                 if (mListener != null) {
                     mListener.onLeftUpTapped();
                 }
+                mRecordVoiceBtn.finishRecord(true);
                 break;
             case MOVE_ON_RIGHT:
-                mRecordVoiceBtn.cancelRecord();
                 if (mListener != null) {
                     mListener.onRightUpTapped();
                 }
+                mRecordVoiceBtn.cancelRecord();
                 break;
             default:
-                mRecordVoiceBtn.finishRecord(false);
                 if (mListener != null) {
                     mListener.onFinish();
                 }
+                mRecordVoiceBtn.finishRecord(false);
         }
         mCurrentState = INIT_STATE;
         postInvalidate();

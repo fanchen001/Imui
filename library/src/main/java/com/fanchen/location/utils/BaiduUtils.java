@@ -69,7 +69,6 @@ public class BaiduUtils {
      * @return
      */
     public static Location assemblyLocation(BDLocation bdLocation) {
-
         Location location = new Location();
         location.setLocationID(bdLocation.getLocationID());
         location.setLocType(bdLocation.getLocType());
@@ -95,7 +94,6 @@ public class BaiduUtils {
         location.setAltitude(bdLocation.getAltitude());
         location.setDirection(bdLocation.getDirection());
         location.setOperators(bdLocation.getOperators());
-
         return location;
     }
 

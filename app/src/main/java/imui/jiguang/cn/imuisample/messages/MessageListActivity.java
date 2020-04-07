@@ -672,8 +672,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 if (!destDir.exists()) {
                     destDir.mkdirs();
                 }
-                mChatView.setRecordVoiceFile(destDir.getPath(), DateFormat.format("yyyy-MM-dd-hhmmss",
-                        Calendar.getInstance(Locale.CHINA)) + "");
+                mChatView.setRecordVoiceFile(destDir.getPath(), DateFormat.format("yyyy-MM-dd-hhmmss",Calendar.getInstance(Locale.CHINA)) + "");
             }
 
             @Override
@@ -821,6 +820,8 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
             e.printStackTrace();
         }
     }
+
+
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -1274,6 +1275,11 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
     public void onBackPressed() {
         if (Jzvd.backPress()) {
             return;
+        }
+        boolean b = mChatView.onBack();
+        Log.e("onBackPressed","===>" + b);
+        if(b){
+           return;
         }
         super.onBackPressed();
     }

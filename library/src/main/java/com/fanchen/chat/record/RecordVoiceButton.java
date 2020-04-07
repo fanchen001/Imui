@@ -39,7 +39,6 @@ public class RecordVoiceButton extends AppCompatImageButton {
     //依次为开始录音时刻，按下录音时刻
     private long startTime, time1;
 
-
     private MediaRecorder recorder;
 
     private ObtainDecibelThread mThread;
@@ -119,8 +118,7 @@ public class RecordVoiceButton extends AppCompatImageButton {
                 //TODO animation
                 float[] vaules = new float[]{0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f, 1.3f, 1.25f, 1.2f, 1.15f, 1.1f, 1.0f};
                 AnimatorSet set = new AnimatorSet();
-                set.playTogether(ObjectAnimator.ofFloat(this, "scaleX", vaules),
-                        ObjectAnimator.ofFloat(this, "scaleY", vaules));
+                set.playTogether(ObjectAnimator.ofFloat(this, "scaleX", vaules), ObjectAnimator.ofFloat(this, "scaleY", vaules));
                 set.setDuration(150);
                 set.start();
                 if (mControllerView != null && !mSetController) {
@@ -156,13 +154,14 @@ public class RecordVoiceButton extends AppCompatImageButton {
                 this.setPressed(false);
                 //松开录音按钮时刻
                 long time2 = System.currentTimeMillis();
-                if (time2 - time1 < 500) {
+                Log.e("ACTION_UP","currentTimeMillis -> " + (time2 - time1));
+                if (time2 - time1 < 700) {
                     cancelTimer();
                     if (mControllerView != null) {
                         mControllerView.resetState();
                     }
                     return true;
-                } else if (time2 - time1 < 1000) {
+                } else if (time2 - time1 < 1200) {
                     if (mControllerView != null) {
                         mControllerView.resetState();
                     }
@@ -267,17 +266,14 @@ public class RecordVoiceButton extends AppCompatImageButton {
 
     private void startRecording() {
         try {
-            if (mListener != null) {
-                mListener.onStartRecord();
-            }
-            if (mControllerView != null) {
-                mControllerView.onActionDown();
-            }
             recorder = new MediaRecorder();
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             // .m4a 格式可以在 iOS 上直接播放
             recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.HE_AAC);
+            if (mListener != null) {
+                mListener.onStartRecord();
+            }
             recorder.setOutputFile(myRecAudioFile.getAbsolutePath());
             myRecAudioFile.createNewFile();
             recorder.prepare();
@@ -287,6 +283,10 @@ public class RecordVoiceButton extends AppCompatImageButton {
                     Log.i("RecordVoiceController", "recorder prepare failed!");
                 }
             });
+
+            if (mControllerView != null) {
+                mControllerView.onActionDown();
+            }
             recorder.start();
             startTime = System.currentTimeMillis();
         } catch (IOException e) {
@@ -339,6 +339,7 @@ public class RecordVoiceButton extends AppCompatImageButton {
     public void releaseRecorder() {
         if (recorder != null) {
             try {
+                recorder.setOnErrorListener(null);
                 recorder.stop();
             } catch (Exception e) {
                 Log.d("RecordVoice", "Catch exception: stop recorder failed!");

@@ -181,12 +181,19 @@ public class LocationProvider {
     /**
      * 开始位置追踪
      *
-     * @param mOption   定位配置
+     * @param mOption  定位配置
      * @param listener
      */
     public void startTracker(LocationClientOption mOption, OnLocationListener listener) {
         if (!hasTracker) {
             mTracker = new LocationTracker(mContext);
+            if (mOption == null) {
+                mOption = new LocationClientOption();
+                mOption.setOpenGps(true); // 打开gps
+                mOption.setCoorType("bd09ll"); // 设置坐标类型
+                mOption.setScanSpan(30 * 1000);
+                mOption.setIsNeedAddress(true);
+            }
             mTracker.setLocationOption(mOption);
             mTracker.registerListener(listener);
             mTracker.start();
