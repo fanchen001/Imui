@@ -1273,12 +1273,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 
     @Override
     public void onBackPressed() {
-        if (Jzvd.backPress()) {
-            return;
-        }
-        boolean b = mChatView.onBack();
-        Log.e("onBackPressed","===>" + b);
-        if(b){
+        if(mChatView.onBackPressed()){
            return;
         }
         super.onBackPressed();

@@ -262,7 +262,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     public void registerDefaultListener(){
         defaultOnTouchListener();
         registerDefaultWakeLock();
-        unregistertDetectReceiver();
+        registertDetectReceiver();
     }
 
     public void unregisterDefaultListener(){
@@ -350,7 +350,11 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     }
 
     public boolean onBackPressed() {
-        return Jzvd.backPress();
+        boolean backPress = Jzvd.backPress();
+        if(backPress){
+            return true;
+        }
+        return mChatInput != null && mChatInput.onBack();
     }
 
     public void onPause() {
@@ -376,9 +380,6 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         viewById.setVisibility(full ? View.GONE : View.VISIBLE);
     }
 
-    public boolean onBack(){
-        return mChatInput != null && mChatInput.onBack();
-    }
 
     private class DelayedRunnable implements Runnable {
         private int firstVisibleItemPosition;
