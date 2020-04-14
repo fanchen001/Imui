@@ -26,7 +26,7 @@ public class LoginActivity extends BaseIActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_new);
-        FilePicker.from(this).chooseUCrop(new UCropConfig(), 200).start();
+//        FilePicker.from(this).chooseUCrop(new UCropConfig(), 200).start();
 //        HookCrash.install(getApplication(), new ExceptionHandler() {
 //
 //            @Override

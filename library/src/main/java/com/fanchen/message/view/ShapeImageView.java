@@ -58,7 +58,7 @@ public class ShapeImageView extends android.support.v7.widget.AppCompatImageView
             a.recycle();
         }
         mPaint = new Paint();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT >= 28) {
             mPaint.setAntiAlias(true);
             mPaint.setFilterBitmap(true);
             mPaint.setColor(Color.BLACK);
@@ -84,7 +84,7 @@ public class ShapeImageView extends android.support.v7.widget.AppCompatImageView
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (Build.VERSION.SDK_INT >= 28) {
             Drawable drawable = getDrawable();
             if(drawable instanceof BitmapDrawable){
                 Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();

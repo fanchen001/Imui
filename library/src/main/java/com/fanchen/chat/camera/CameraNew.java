@@ -199,8 +199,7 @@ public class CameraNew implements CameraSupport {
     /**
      * A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
      */
-    private CameraCaptureSession.CaptureCallback mCaptureCallback
-            = new CameraCaptureSession.CaptureCallback() {
+    private CameraCaptureSession.CaptureCallback mCaptureCallback = new CameraCaptureSession.CaptureCallback() {
 
         private void process(CaptureResult result) {
             switch (mState) {
@@ -212,13 +211,10 @@ public class CameraNew implements CameraSupport {
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
                     if (afState == null) {
                         captureStillPicture();
-                    } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
-                            CaptureResult.CONTROL_AF_STATE_PASSIVE_FOCUSED == afState ||
-                            CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
+                    } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState || CaptureResult.CONTROL_AF_STATE_PASSIVE_FOCUSED == afState || CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
                         // CONTROL_AE_STATE can be null on some devices
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
-                        if (aeState == null ||
-                                aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
+                        if (aeState == null || aeState == CaptureResult.CONTROL_AE_STATE_CONVERGED) {
                             mState = STATE_PICTURE_TAKEN;
                             captureStillPicture();
                         } else {
@@ -234,9 +230,7 @@ public class CameraNew implements CameraSupport {
                 case STATE_WAITING_PRECAPTURE: {
                     // CONTROL_AE_STATE can be null on some devices
                     Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
-                    if (aeState == null ||
-                            aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE ||
-                            aeState == CaptureRequest.CONTROL_AE_STATE_FLASH_REQUIRED) {
+                    if (aeState == null || aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE || aeState == CaptureRequest.CONTROL_AE_STATE_FLASH_REQUIRED) {
                         mState = STATE_WAITING_NON_PRECAPTURE;
                     }
                     break;
@@ -254,16 +248,12 @@ public class CameraNew implements CameraSupport {
         }
 
         @Override
-        public void onCaptureProgressed(@NonNull CameraCaptureSession session,
-                                        @NonNull CaptureRequest request,
-                                        @NonNull CaptureResult partialResult) {
+        public void onCaptureProgressed(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull CaptureResult partialResult) {
             process(partialResult);
         }
 
         @Override
-        public void onCaptureCompleted(@NonNull CameraCaptureSession session,
-                                       @NonNull CaptureRequest request,
-                                       @NonNull TotalCaptureResult result) {
+        public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
             process(result);
         }
 
@@ -301,9 +291,7 @@ public class CameraNew implements CameraSupport {
 
     @Override
     public CameraSupport open(final int cameraId, int width, int height, boolean isFacingBack,float cameraQuality) {
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Log.e("CameraNew", "Lacking privileges to access aurora_menuitem_camera service, please request permission first.");
             return null;
         }
@@ -337,21 +325,26 @@ public class CameraNew implements CameraSupport {
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
             // This method is called when the camera is opened.  We start camera preview here.
-            mCameraOpenCloseLock.release();
+            if(mCameraOpenCloseLock != null)
+                mCameraOpenCloseLock.release();
             mCamera = camera;
             createCameraPreviewSession();
         }
 
         @Override
         public void onDisconnected(@NonNull CameraDevice camera) {
-            mCameraOpenCloseLock.release();
-            mCamera.close();
+            if(mCameraOpenCloseLock != null)
+                mCameraOpenCloseLock.release();
+            if(mCamera != null){
+                mCamera.close();
+            }
             mCamera = null;
         }
 
         @Override
         public void onError(@NonNull CameraDevice camera, int error) {
-            mCameraOpenCloseLock.release();
+            if(mCameraOpenCloseLock != null)
+                mCameraOpenCloseLock.release();
             if (mCamera != null) {
                 mCamera.close();
                 mCamera = null;
@@ -368,23 +361,18 @@ public class CameraNew implements CameraSupport {
         try {
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
-
             // We configure the size of default buffer to be the size of camera preview we want.
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-
             // This is the output Surface we need to start preview.
             if(mSurface != null){
                 mSurface.release();
             }
             mSurface = new Surface(texture);
-
             // We set up a CaptureRequest.Builder with the output Surface.
-            mPreviewRequestBuilder
-                    = mCamera.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            mPreviewRequestBuilder  = mCamera.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             mPreviewRequestBuilder.addTarget(mSurface);
             // Here, we create a CameraCaptureSession for camera preview.
-            mCamera.createCaptureSession(Arrays.asList(mSurface, mImageReader.getSurface()),
-                    new CameraCaptureSession.StateCallback() {
+            mCamera.createCaptureSession(Arrays.asList(mSurface, mImageReader.getSurface()), new CameraCaptureSession.StateCallback() {
 
                         @Override
                         public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
@@ -555,12 +543,13 @@ public class CameraNew implements CameraSupport {
                 mSurface.release();
                 mSurface = null ;
             }
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Interrupted while trying to lock camera closing.", e);
         } finally {
             isOpen = false;
-            mCameraOpenCloseLock.release();
+            if(mCameraOpenCloseLock != null)
+                mCameraOpenCloseLock.release();
         }
         stopBackgroundThread();
     }
@@ -577,13 +566,9 @@ public class CameraNew implements CameraSupport {
             assert map != null;
             mVideoSize = chooseVideoSize(map.getOutputSizes(MediaRecorder.class));
             // For still image captures, we use the largest available size.
-            Size largest = Collections.max(
-                    Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
-                    new CompareSizesByArea());
-            mImageReader = ImageReader.newInstance((int)(largest.getWidth()*mCameraQuality), (int)(largest.getHeight()*mCameraQuality),
-                    ImageFormat.JPEG, /*maxImages*/1);
-            mImageReader.setOnImageAvailableListener(
-                    mOnImageAvailableListener, mBackgroundHandler);
+            Size largest = Collections.max(Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)), new CompareSizesByArea());
+            mImageReader = ImageReader.newInstance((int)(largest.getWidth()*mCameraQuality), (int)(largest.getHeight()*mCameraQuality), ImageFormat.JPEG, /*maxImages*/1);
+            mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
 
             // Find out if we need to swap dimension to get the preview size relative to sensor
             // coordinate.
@@ -705,13 +690,11 @@ public class CameraNew implements CameraSupport {
     private void lockFocus() {
         try {
             // This is how to tell the camera to lock focus.
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                    CameraMetadata.CONTROL_AF_TRIGGER_START);
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_START);
             // Tell #mCaptureCallback to wait for the lock.
             mState = STATE_WAITING_LOCK;
-            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
-                    mBackgroundHandler);
-        } catch (CameraAccessException e) {
+            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback, mBackgroundHandler);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -723,12 +706,10 @@ public class CameraNew implements CameraSupport {
     private void runPrecaptureSequence() {
         try {
             // This is how to tell the camera to trigger.
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
-                    CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START);
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER, CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER_START);
             // Tell #mCaptureCallback to wait for the precapture sequence to be set.
             mState = STATE_WAITING_PRECAPTURE;
-            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
-                    mBackgroundHandler);
+            mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback, mBackgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -745,33 +726,22 @@ public class CameraNew implements CameraSupport {
                 return;
             }
             // This is the CaptureRequest.Builder that we use to take a picture.
-            final CaptureRequest.Builder captureBuilder =
-                    mCamera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+            final CaptureRequest.Builder captureBuilder = mCamera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(mImageReader.getSurface());
-
             // Use the same AE and AF modes as the preview.
-            captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
-                    CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+            captureBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
             setAutoFlash(captureBuilder);
-
-            // Orientation
-//            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION,
-//                    mCameraCharacteristic.get(CameraCharacteristics.SENSOR_ORIENTATION));
-
-            CameraCaptureSession.CaptureCallback CaptureCallback
-                    = new CameraCaptureSession.CaptureCallback() {
+            CameraCaptureSession.CaptureCallback CaptureCallback = new CameraCaptureSession.CaptureCallback() {
 
                 @Override
-                public void onCaptureCompleted(@NonNull CameraCaptureSession session,
-                                               @NonNull CaptureRequest request,
-                                               @NonNull TotalCaptureResult result) {
+                public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
                     unlockFocus();
                 }
-            };
 
+            };
             mCaptureSession.stopRepeating();
             mCaptureSession.capture(captureBuilder.build(), CaptureCallback, null);
-        } catch (CameraAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -783,8 +753,7 @@ public class CameraNew implements CameraSupport {
     private void unlockFocus() {
         try {
             // Reset the auto-focus trigger
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
-                    CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER, CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
             setAutoFlash(mPreviewRequestBuilder);
             if(mCaptureSession != null ){
                 boolean reprocessable = true;
@@ -794,23 +763,19 @@ public class CameraNew implements CameraSupport {
                 if(!reprocessable){
                     return;
                 }
-                mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
-                        mBackgroundHandler);
+                mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback, mBackgroundHandler);
                 // After this, the camera will go back to the normal state of preview.
                 mState = STATE_PREVIEW;
-                mCaptureSession.setRepeatingRequest(mPreviewRequest, mCaptureCallback,
-                        mBackgroundHandler);
+                mCaptureSession.setRepeatingRequest(mPreviewRequest, mCaptureCallback, mBackgroundHandler);
             }
-
-        } catch (CameraAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void setAutoFlash(CaptureRequest.Builder requestBuilder) {
         if (mFlashSupported) {
-            requestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
-                    CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+            requestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
         }
     }
 
@@ -839,11 +804,8 @@ public class CameraNew implements CameraSupport {
             buffer.get(bytes);
             FileOutputStream output = null;
             try {
-                mPhoto = new File(mDir,
-                        new SimpleDateFormat("yyyy-MM-dd-HHmmss", Locale.getDefault()).format(new Date())
-                                + ".jpg");
+                mPhoto = new File(mDir, new SimpleDateFormat("yyyy-MM-dd-HHmmss", Locale.getDefault()).format(new Date()) + ".jpg");
                 output = new FileOutputStream(mPhoto);
-
                 // 前置摄像头水平翻转照片
                 Matrix matrix = new Matrix();
                 Bitmap rotateBmp;
@@ -866,15 +828,15 @@ public class CameraNew implements CameraSupport {
                     Log.i(TAG,"Saved capture into "+ mPhoto.getAbsolutePath());
                     mOnCameraCallbackListener.onTakePictureCompleted(mPhoto.getAbsolutePath());
                     mLastPhoto = mPhoto;
-                    mIsTakingPicture = false;
                 }
                 if (mCameraEventListener != null) {
                     mCameraEventListener.onFinishTakePicture();
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 mImage.close();
+                mIsTakingPicture = false;
                 if (null != output) {
                     try {
                         output.close();
@@ -909,10 +871,7 @@ public class CameraNew implements CameraSupport {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
         // if the device's natural orientation is portrait:
-        if ((rotation == Surface.ROTATION_0
-                || rotation == Surface.ROTATION_180) && height > width ||
-                (rotation == Surface.ROTATION_90
-                        || rotation == Surface.ROTATION_270) && width > height) {
+        if ((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) && height > width || (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) && width > height) {
             switch (rotation) {
                 case Surface.ROTATION_0:
                     Log.e(TAG, "Rotation 0");
@@ -1003,12 +962,13 @@ public class CameraNew implements CameraSupport {
 
                 @Override
                 public void onConfigureFailed(CameraCaptureSession cameraCaptureSession) {
-                    Toast.makeText(mContext, mContext.getString(R.string.record_video_failed),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, mContext.getString(R.string.record_video_failed), Toast.LENGTH_SHORT).show();
                 }
+
             }, mBackgroundHandler);
-        } catch (CameraAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(mContext,"摄像头初始化错误",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -1049,11 +1009,7 @@ public class CameraNew implements CameraSupport {
                 mMediaRecorder.stop();
                 mMediaRecorder.reset();
             }
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (RuntimeException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
             Toast.makeText(mContext, mContext.getString(R.string.record_video_failed), Toast.LENGTH_SHORT).show();
         }
@@ -1062,9 +1018,7 @@ public class CameraNew implements CameraSupport {
     private String getVideoFilePath(Context context) {
         String fileDir = context.getFilesDir().getAbsolutePath() + "/video";
         File destDir = new File(fileDir);
-        if (!destDir.exists()) {
-            destDir.mkdirs();
-        }
+        if (!destDir.exists())   destDir.mkdirs();
         return destDir.getAbsolutePath() + "/" + System.currentTimeMillis() + ".mp4";
     }
 
@@ -1084,10 +1038,8 @@ public class CameraNew implements CameraSupport {
             assert texture != null;
             texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             mPreviewRequestBuilder = mCamera.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-
             Surface previewSurface = new Surface(texture);
             mPreviewRequestBuilder.addTarget(previewSurface);
-
             mCamera.createCaptureSession(Arrays.asList(previewSurface), new CameraCaptureSession.StateCallback() {
 
                 @Override
@@ -1100,8 +1052,9 @@ public class CameraNew implements CameraSupport {
                 public void onConfigureFailed(CameraCaptureSession cameraCaptureSession) {
                     Log.e(TAG, "Preview failed");
                 }
+
             }, mBackgroundHandler);
-        } catch (CameraAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
