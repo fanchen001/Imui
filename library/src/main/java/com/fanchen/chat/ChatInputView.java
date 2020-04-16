@@ -1362,11 +1362,13 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         }
     }
 
-    public boolean onBack(){
+    public boolean onBackPressed(){
         if(isFullScreen()){
+            Log.e("onBackPressed"," isFullScreen() ->  " + isFullScreen());
             recoverScreen();
             return true;
-        }else if (mMenuItemContainer != null && mMenuItemContainer.getVisibility() == VISIBLE){
+        }else if (mMenuContainer != null && mMenuContainer.getVisibility() == VISIBLE){
+            Log.e("onBackPressed"," mMenuItemContainer visibility ->  " + mMenuContainer.getVisibility());
             dismissMenuLayout();
             return true;
         }

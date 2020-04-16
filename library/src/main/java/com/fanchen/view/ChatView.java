@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -351,10 +352,11 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
 
     public boolean onBackPressed() {
         boolean backPress = Jzvd.backPress();
+        Log.e("onBackPressed"," Jzvd.backPress() ->  " + backPress);
         if(backPress){
             return true;
         }
-        return mChatInput != null && mChatInput.onBack();
+        return mChatInput != null && mChatInput.onBackPressed();
     }
 
     public void onPause() {
