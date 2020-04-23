@@ -13,6 +13,7 @@
         android:layout_marginTop="10dp"
         android:gravity="end"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/aurora_ib_msgitem_read_status"
             android:layout_width="wrap_content"
@@ -22,14 +23,15 @@
             android:visibility="gone"
             android:textColor="#777"
             android:textSize="@dimen/textsize_input_im_status"
-            android:layout_toLeftOf="@+id/aurora_ll_msgitem_order" />
+            android:layout_toLeftOf="@+id/aurora_ll_msgitem_news" />
+
         <ImageButton
             android:id="@+id/aurora_ib_msgitem_resend"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/aurora_ll_msgitem_order"
+            android:layout_toLeftOf="@+id/aurora_ll_msgitem_news"
             android:background="@drawable/aurora_send_msg_error"
             android:clickable="true"
             android:scaleType="fitCenter"
@@ -39,11 +41,11 @@
             android:id="@+id/aurora_pb_msgitem_sending"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_alignTop="@+id/aurora_ll_msgitem_order"
-            android:layout_alignBottom="@+id/aurora_ll_msgitem_order"
+            android:layout_alignTop="@+id/aurora_ll_msgitem_news"
+            android:layout_alignBottom="@+id/aurora_ll_msgitem_news"
             android:layout_centerVertical="true"
             android:layout_marginRight="3dp"
-            android:layout_toLeftOf="@id/aurora_ll_msgitem_order"
+            android:layout_toLeftOf="@id/aurora_ll_msgitem_news"
             android:visibility="visible" />
 
         <TextView
@@ -57,7 +59,7 @@
             android:textAlignment="textEnd" />
 
         <android.support.v7.widget.CardView
-            android:id="@+id/aurora_ll_msgitem_order"
+            android:id="@+id/aurora_ll_msgitem_news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/aurora_tv_msgitem_sender_display_name"
@@ -71,13 +73,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="订单信息"
+                    android:text="活动信息"
                     android:textColor="#555"
                     android:textSize="13sp" />
 
@@ -94,55 +95,34 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/aurora_iv_msgitem_order"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:src="@mipmap/documents" />
+                        android:id="@+id/aurora_iv_msgitem_news"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_im_akari" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_marginLeft="8dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/aurora_tv_msgitem_oname"
+                            android:id="@+id/aurora_tv_msgitem_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:text="护手霜 800G"
                             android:textColor="#333"
-                            android:textSize="13sp" />
+                            android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/aurora_tv_msgitem_onumber"
+                            android:id="@+id/aurora_tv_msgitem_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="单号:18627555520"
-                            android:singleLine="true"
                             android:textColor="#666"
-                            android:textSize="10sp" />
-
-                        <TextView
-                            android:id="@+id/aurora_tv_msgitem_otime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="下单时间:2020-10-10"
-                            android:textColor="#666"
-                            android:singleLine="true"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/aurora_tv_msgitem_oprice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$ 100"
-                        android:textColor="@color/google_red"
-                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>

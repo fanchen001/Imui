@@ -70,6 +70,9 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
 
     private final int TYPE_EVENT_NOTIFICATION = 23;
 
+    private final int TYPE_SEND_NEWS = 24;
+    private final int TYPE_RECEIVE_NEWS = 25;
+
     private SparseArray<CustomMsgConfig> mCustomMsgList;
 
     private Context mContext;
@@ -167,6 +170,10 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
                 return getHolder(parent, mHolders.mSendVideoLayout, mHolders.mSendVideoHolder, true);
             case TYPE_RECEIVE_VIDEO:
                 return getHolder(parent, mHolders.mReceiveVideoLayout, mHolders.mReceiveVideoHolder, false);
+            case TYPE_SEND_NEWS:
+                return getHolder(parent, mHolders.mSendNewsLayout, mHolders.mSendNewsHolder, true);
+            case TYPE_RECEIVE_NEWS:
+                return getHolder(parent, mHolders.mReceiveNewsLayout, mHolders.mReceiveNewsHolder, false);
             case TYPE_SEND_IDCARD:
                 return getHolder(parent, mHolders.mSendIdcardLayout, mHolders.mSendIdcardHolder, true);
             case TYPE_RECEIVER_IDCARD:
@@ -258,6 +265,10 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
                 return TYPE_RECEIVER_GOODS;
             } else if (message.getType() == IMessage.MessageType.SEND_GOODS.ordinal()) {
                 return TYPE_SEND_GOODS;
+            } else if (message.getType() == IMessage.MessageType.RECEIVE_NEWS.ordinal()) {
+                return TYPE_RECEIVE_NEWS;
+            } else if (message.getType() == IMessage.MessageType.SEND_NEWS.ordinal()) {
+                return TYPE_SEND_NEWS;
             }else if (message.getType() == IMessage.MessageType.RECEIVE_ORDER.ordinal()) {
                 return TYPE_RECEIVER_ORDER;
             } else if (message.getType() == IMessage.MessageType.SEND_ORDER.ordinal()) {
@@ -783,6 +794,9 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
         private Class<? extends BaseMessageViewHolder<? extends IMessage>> mSendFileHolder;
         private Class<? extends BaseMessageViewHolder<? extends IMessage>> mReceiveFileHolder;
 
+        private Class<? extends BaseMessageViewHolder<? extends IMessage>> mSendNewsHolder;
+        private Class<? extends BaseMessageViewHolder<? extends IMessage>> mReceiveNewsHolder;
+
         private Class<? extends BaseMessageViewHolder<? extends IMessage>> mEventMsgHolder;
 
         private int mSendTxtLayout;
@@ -812,6 +826,9 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
         private int mSendOrderLayout;
         private int mReceiveOrderLayout;
 
+        private int mSendNewsLayout;
+        private int mReceiveNewsLayout;
+
         private int mCustomSendMsgLayout;
         private int mCustomReceiveMsgLayout;
 
@@ -829,6 +846,9 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
 
             mSendVideoHolder = DefaultVideoViewHolder.class;
             mReceiveVideoHolder = DefaultVideoViewHolder.class;
+
+            mSendNewsHolder = DefaultNewsViewHolder.class;
+            mReceiveNewsHolder = DefaultNewsViewHolder.class;
 
             mReceiveLocationHolder = DefaultLocationViewHolder.class;
             mSendLocationHolder = DefaultLocationViewHolder.class;
@@ -863,6 +883,9 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
 
             mSendTxtLayout = R.layout.item_send_msg_text;
             mReceiveTxtLayout = R.layout.item_receive_msg_txt;
+
+            mSendNewsLayout = R.layout.item_send_msg_news;
+            mReceiveNewsLayout = R.layout.item_receive_msg_news;
 
             mSendVoiceLayout = R.layout.item_send_msg_voice;
             mReceiveVoiceLayout = R.layout.item_receive_msg_voice;
@@ -1175,6 +1198,14 @@ public class MsgListAdapter<MESSAGE extends IMessage> extends RecyclerView.Adapt
     private static class DefaultOrderViewHolder extends OrderViewHolder<IMessage> {
 
         public DefaultOrderViewHolder(View itemView, boolean isSender) {
+            super(itemView, isSender);
+        }
+
+    }
+
+    private static class DefaultNewsViewHolder extends NewsViewHolder<IMessage> {
+
+        public DefaultNewsViewHolder(View itemView, boolean isSender) {
             super(itemView, isSender);
         }
 

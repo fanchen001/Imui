@@ -154,6 +154,12 @@ public class MyMessage implements IMessage {
                         msg.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(message.getCreateTime())));
                         msg.setMessageStatus(isSend ? MessageStatus.SEND_SUCCEED :IMessage.MessageStatus.RECEIVE_SUCCEED);
                         break;
+                    case "news":
+                        msg = new MyMessage(isSend ? IMessage.MessageType.SEND_NEWS.ordinal() : MessageType.RECEIVE_NEWS.ordinal());
+                        msg.setUserInfo(new DefaultUser(userInfo.getUserName(), userInfo.getDisplayName(), userInfo.getAvatarFile().getAbsolutePath()));
+                        msg.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date(message.getCreateTime())));
+                        msg.setMessageStatus(isSend ? MessageStatus.SEND_SUCCEED :IMessage.MessageStatus.RECEIVE_SUCCEED);
+                        break;
                 }
                 break;
                 default:

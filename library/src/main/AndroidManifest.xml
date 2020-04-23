@@ -72,16 +72,19 @@
 
         <activity
             android:name="com.fanchen.video.SimpleVideoActivity"
+            android:launchMode="singleTop"
             android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" />
 
         <activity android:name="com.fanchen.filepicker.activity.SelectFileByScanActivity" />
 
         <activity
             android:name="com.fanchen.location.MapSendActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.fanchen.location.MapNavigationActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
@@ -121,6 +124,7 @@
 
         <activity
             android:name="com.fanchen.zxing.CaptureActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/ZScanCaptureTheme" />
     </application>

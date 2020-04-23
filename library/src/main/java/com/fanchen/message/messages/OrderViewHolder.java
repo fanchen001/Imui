@@ -66,7 +66,7 @@ public class OrderViewHolder<Message extends IMessage> extends BaseMessageViewHo
             if (extras.get("path") != null && mImageLoader != null) {
                 mImageLoader.loadImage(mImgIv,extras.get("path"),mLayoutManager);
             } else {
-                mImgIv.setImageResource(R.mipmap.attachment);
+                mImgIv.setImageResource(R.mipmap.documents);
             }
         }
         if(mReadTv != null && message.getMessageStatus() == IMessage.MessageStatus.SEND_SUCCEED){

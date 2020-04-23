@@ -69,6 +69,9 @@ public interface IMessage {
         SEND_RECALL, // 撤回
         RECEIVE_RECALL, // 撤回
 
+        SEND_NEWS, //
+        RECEIVE_NEWS, //
+
         NOTIFICATION;
 
         MessageType() {

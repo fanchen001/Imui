@@ -12,11 +12,12 @@ public class DefaultFeatureAdapter extends BaseAdapter {
 
     int[] ICONS = {R.drawable.aurora_menuitem_order,
             R.drawable.aurora_menuitem_goods,
+            R.drawable.aurora_menuitem_news,
             R.drawable.aurora_menuitem_car,
             R.drawable.aurora_menuitem_file,
             R.drawable.aurora_menuitem_local,
             R.drawable.aurora_menuitem_idcard};
-    String[] TITLES = {"订单咨询","商品咨询","购物车","发送文件","位置信息","发送名片"};
+    String[] TITLES = {"订单咨询","商品咨询","活动咨询","购物车","发送文件","位置信息","发送名片"};
 
     @Override
     public int getCount() {

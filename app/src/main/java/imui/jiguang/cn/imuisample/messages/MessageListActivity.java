@@ -441,6 +441,30 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                     });
 
                     JMessageClient.sendMessage(message);
+                } else if (position == 2) {
+                    UserInfo myInfo1 = JMessageClient.getMyInfo();
+                    final MyMessage message2 = new MyMessage(IMessage.MessageType.RECEIVE_NEWS.ordinal());
+                    message2.setUserInfo(new DefaultUser(myInfo1.getUserName(), myInfo1.getDisplayName(), myInfo1.getAvatarFile().getAbsolutePath()));
+                    message2.setTimeString(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+                    message2.setMessageStatus(IMessage.MessageStatus.SEND_GOING);
+                    mAdapter.addToStart(message2, true);
+
+                    HashMap<String, String> stringStringHashMap = new HashMap<>();
+                    stringStringHashMap.put("type", "news");
+                    Message message = mConv.createSendCustomMessage(stringStringHashMap);
+                    message.setOnSendCompleteCallback(new BasicCallback() {
+                        @Override
+                        public void gotResult(int i, String s) {
+                            if (i == 0) {
+                                message2.setMessageStatus(IMessage.MessageStatus.SEND_SUCCEED);
+                            } else {
+                                message2.setMessageStatus(IMessage.MessageStatus.SEND_FAILED);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                    JMessageClient.sendMessage(message);
                 }
             }
         });

@@ -7,17 +7,17 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.fanchen.message.utils.DateUtil;
-import com.fanchen.ui.BuildConfig;
-import com.fanchen.ui.R;
 import com.fanchen.message.commons.models.IMessage;
+import com.fanchen.message.utils.DateUtil;
 import com.fanchen.message.view.RoundImageView;
 import com.fanchen.message.view.RoundTextView;
+import com.fanchen.ui.BuildConfig;
+import com.fanchen.ui.R;
 
 import java.util.Date;
 import java.util.HashMap;
 
-public class IdCardViewHolder<Message extends IMessage> extends BaseMessageViewHolder<Message>
+public class NewsViewHolder<Message extends IMessage> extends BaseMessageViewHolder<Message>
         implements MsgListAdapter.DefaultMessageViewHolder, View.OnClickListener, View.OnLongClickListener {
 
     private RoundTextView mDateTv;
@@ -35,13 +35,13 @@ public class IdCardViewHolder<Message extends IMessage> extends BaseMessageViewH
 
     private boolean isSender;
 
-    public IdCardViewHolder(View itemView, boolean isSender) {
+    public NewsViewHolder(View itemView, boolean isSender) {
         super(itemView);
         this.isSender = isSender;
-        mL = itemView.findViewById(R.id.aurora_ll_msgitem_idcard);
-        mNameTv = itemView.findViewById(R.id.aurora_tv_msgitem_name);
-        mNumberTv = itemView.findViewById(R.id.aurora_tv_msgitem_number);
-        mNumberIv = itemView.findViewById(R.id.aurora_iv_msgitem_card);
+        mL = itemView.findViewById(R.id.aurora_ll_msgitem_news);
+        mNameTv = itemView.findViewById(R.id.aurora_tv_msgitem_title);
+        mNumberTv = itemView.findViewById(R.id.aurora_tv_msgitem_content);
+        mNumberIv = itemView.findViewById(R.id.aurora_iv_msgitem_news);
 
         mDateTv = itemView.findViewById(R.id.aurora_tv_msgitem_date);
         mAvatarIv = itemView.findViewById(R.id.aurora_iv_msgitem_avatar);
@@ -59,8 +59,8 @@ public class IdCardViewHolder<Message extends IMessage> extends BaseMessageViewH
     public void onBind(final Message message) {
         HashMap<String, String> extras = message.getExtras();
         if (extras != null && !extras.isEmpty()) {
-            mNameTv.setText(extras.get("idCardTitle"));
-            mNumberTv.setText(extras.get("idCardNumber"));
+            mNameTv.setText(extras.get("newsTitle"));
+            mNumberTv.setText(extras.get("newsContent"));
             if(extras.get("path") != null && mImageLoader!= null){
                 mImageLoader.loadImage(mNumberIv,extras.get("path"),mLayoutManager);
             }else{

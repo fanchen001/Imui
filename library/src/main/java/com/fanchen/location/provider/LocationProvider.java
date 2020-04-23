@@ -191,7 +191,7 @@ public class LocationProvider {
                 mOption = new LocationClientOption();
                 mOption.setOpenGps(true); // 打开gps
                 mOption.setCoorType("bd09ll"); // 设置坐标类型
-                mOption.setScanSpan(30 * 1000);
+                mOption.setScanSpan(10 * 60 * 1000);
                 mOption.setIsNeedAddress(true);
             }
             mTracker.setLocationOption(mOption);

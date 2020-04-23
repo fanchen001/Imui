@@ -67,7 +67,7 @@ public class GoodsViewHolder<Message extends IMessage> extends BaseMessageViewHo
             if(extras.get("path") != null && mImageLoader!= null){
                 mImageLoader.loadImage(mImgIv,extras.get("path"),mLayoutManager);
             }else{
-                mImgIv.setImageResource(R.mipmap.attachment);
+                mImgIv.setImageResource(R.mipmap.more);
             }
         }
         if (message.getTime() > 0 && message.showTime()) {
