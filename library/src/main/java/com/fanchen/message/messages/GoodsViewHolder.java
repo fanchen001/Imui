@@ -62,10 +62,10 @@ public class GoodsViewHolder<Message extends IMessage> extends BaseMessageViewHo
         HashMap<String, String> extras = message.getExtras();
         if (extras != null && !extras.isEmpty()) {
             mNameTv.setText(extras.get("goodsTitle"));
-            mNumTv.setText(extras.get("goodsStock"));
-            mPriceTv.setText(extras.get("goodsPrice"));
+            mNumTv.setText("商品库存: " +extras.get("goodsStock"));
+            mPriceTv.setText("¥" + extras.get("goodsPrice"));
             if(extras.get("path") != null && mImageLoader!= null){
-                mImageLoader.loadImage(mImgIv,extras.get("path"),mLayoutManager);
+                mImageLoader.loadImage(mImgIv,extras.get("path"),null);
             }else{
                 mImgIv.setImageResource(R.mipmap.more);
             }

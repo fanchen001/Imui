@@ -28,6 +28,7 @@ public class OrderViewHolder<Message extends IMessage> extends BaseMessageViewHo
 
     private TextView mNameTv;
     private TextView mNumTv;
+    private TextView mPriceTv;
     private TextView mTimeTv;
     private ImageView mImgIv;
 
@@ -49,7 +50,7 @@ public class OrderViewHolder<Message extends IMessage> extends BaseMessageViewHo
         }
         mResendIb = itemView.findViewById(R.id.aurora_ib_msgitem_resend);
         mSendingPb = itemView.findViewById(R.id.aurora_pb_msgitem_sending);
-
+        mPriceTv = itemView.findViewById(R.id.aurora_tv_msgitem_oprice);
         mNameTv = itemView.findViewById(R.id.aurora_tv_msgitem_oname);
         mNumTv = itemView.findViewById(R.id.aurora_tv_msgitem_onumber);
         mTimeTv = itemView.findViewById(R.id.aurora_tv_msgitem_otime);
@@ -61,22 +62,23 @@ public class OrderViewHolder<Message extends IMessage> extends BaseMessageViewHo
         HashMap<String, String> extras = message.getExtras();
         if (extras != null && !extras.isEmpty()) {
             mNameTv.setText(extras.get("orderTitle"));
-            mNumTv.setText(extras.get("orderNumber"));
-            mTimeTv.setText(extras.get("orderTime"));
+            mNumTv.setText("单号 :" + extras.get("orderNumber"));
+            mTimeTv.setText("时间 :" + extras.get("orderTime"));
+            mPriceTv.setText("¥" + extras.get("orderPrice"));
             if (extras.get("path") != null && mImageLoader != null) {
-                mImageLoader.loadImage(mImgIv,extras.get("path"),mLayoutManager);
+                mImageLoader.loadImage(mImgIv, extras.get("path"), null);
             } else {
                 mImgIv.setImageResource(R.mipmap.documents);
             }
         }
-        if(mReadTv != null && message.getMessageStatus() == IMessage.MessageStatus.SEND_SUCCEED){
-            mReadTv.setText(message.haveRead() ? mContext.getString(R.string.im_read):mContext.getString(R.string.im_un_read));
-        }else if(mReadTv != null){
+        if (mReadTv != null && message.getMessageStatus() == IMessage.MessageStatus.SEND_SUCCEED) {
+            mReadTv.setText(message.haveRead() ? mContext.getString(R.string.im_read) : mContext.getString(R.string.im_un_read));
+        } else if (mReadTv != null) {
             mReadTv.setText("");
         }
         if (message.getTime() > 0 && message.showTime()) {
             mDateTv.setVisibility(View.VISIBLE);
-            mDateTv.setText(DateUtil.getTimeStringAutoShort2(new Date(message.getTime()),true));
+            mDateTv.setText(DateUtil.getTimeStringAutoShort2(new Date(message.getTime()), true));
         } else {
             mDateTv.setVisibility(View.GONE);
         }
@@ -131,7 +133,7 @@ public class OrderViewHolder<Message extends IMessage> extends BaseMessageViewHo
 
     @Override
     public void applyStyle(MessageListStyle style) {
-        if(mReadTv != null){
+        if (mReadTv != null) {
             mReadTv.setVisibility(style.isShowReadStatus() ? View.VISIBLE : View.GONE);
         }
         if (isSender) {

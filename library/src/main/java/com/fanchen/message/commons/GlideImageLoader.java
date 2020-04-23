@@ -65,9 +65,13 @@ public class GlideImageLoader implements ImageLoader {
      */
     @Override
     public void loadImage(final ImageView imageView, String string,final RecyclerView.LayoutManager layoutManager) {
-        BitmapTypeRequest<String> stringBitmapTypeRequest = with.load(string).asBitmap();
-        if (image != 0) { stringBitmapTypeRequest.placeholder(image);  }
-        stringBitmapTypeRequest.into(new SimpleTarget2(layoutManager,imageView));
+        if(layoutManager == null){
+            with.load(string).asBitmap().into(imageView);
+        }else{
+            BitmapTypeRequest<String> stringBitmapTypeRequest = with.load(string).asBitmap();
+            if (image != 0) { stringBitmapTypeRequest.placeholder(image);  }
+            stringBitmapTypeRequest.into(new SimpleTarget2(layoutManager,imageView));
+        }
     }
 
     /**

@@ -62,7 +62,7 @@ public class NewsViewHolder<Message extends IMessage> extends BaseMessageViewHol
             mNameTv.setText(extras.get("newsTitle"));
             mNumberTv.setText(extras.get("newsContent"));
             if(extras.get("path") != null && mImageLoader!= null){
-                mImageLoader.loadImage(mNumberIv,extras.get("path"),mLayoutManager);
+                mImageLoader.loadImage(mNumberIv,extras.get("path"),null);
             }else{
                 mNumberIv.setImageResource(R.drawable.ic_im_akari);
             }

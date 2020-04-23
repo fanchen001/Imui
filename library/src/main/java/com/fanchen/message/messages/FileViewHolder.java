@@ -2,7 +2,6 @@ package com.fanchen.message.messages;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,7 +19,6 @@ import com.fanchen.message.view.RoundTextView;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Random;
 
 public class FileViewHolder<Message extends IMessage> extends BaseMessageViewHolder<Message>
         implements MsgListAdapter.DefaultMessageViewHolder, View.OnClickListener, View.OnLongClickListener {
