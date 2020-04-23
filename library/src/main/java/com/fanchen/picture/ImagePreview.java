@@ -7,6 +7,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.fanchen.picture.view.listener.OnPopItemClickListener;
 import com.fanchen.ui.R;
 import com.fanchen.picture.bean.ImageInfo;
 import com.fanchen.picture.view.ImagePreviewActivity;
@@ -59,6 +60,7 @@ public class ImagePreview {
     private OnBigImageClickListener bigImageClickListener;
     private OnBigImageLongClickListener bigImageLongClickListener;
     private OnBigImagePageChangeListener bigImagePageChangeListener;
+    private OnPopItemClickListener popItemClickListener;
 
     public enum LoadStrategy {
         /**
@@ -89,6 +91,14 @@ public class ImagePreview {
     public ImagePreview setContext(@NonNull Context context) {
         this.contextWeakReference = new WeakReference<>(context);
         return this;
+    }
+
+    public OnPopItemClickListener getOnPopItemClickListener() {
+        return popItemClickListener;
+    }
+
+    public void setOnPopItemClickListener(OnPopItemClickListener popListItemClickListener) {
+        this.popItemClickListener = popListItemClickListener;
     }
 
     public List<ImageInfo> getImageInfoList() {

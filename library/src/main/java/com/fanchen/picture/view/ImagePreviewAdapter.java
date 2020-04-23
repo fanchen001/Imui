@@ -5,13 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -21,6 +20,9 @@ import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.Target;
+import com.fanchen.message.messages.QPopWindow;
+import com.fanchen.picture.view.listener.OnBigImageLongClickListener;
+import com.fanchen.picture.view.listener.OnPopItemClickListener;
 import com.fanchen.ui.R;
 import com.fanchen.picture.ImagePreview;
 import com.fanchen.picture.bean.ImageInfo;
@@ -36,6 +38,7 @@ import com.fanchen.picture.view.helper.SubsamplingScaleImageViewDragClose;
 import com.fanchen.picture.view.photoview.PhotoView;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,11 +54,13 @@ public class ImagePreviewAdapter extends PagerAdapter {
     private HashMap<String, SubsamplingScaleImageViewDragClose> imageHashMap = new HashMap<>();
     private HashMap<String, PhotoView> imageGifHashMap = new HashMap<>();
     private String finalLoadUrl = "";
+    private PopupWindowList mPopupWindowList = null;
 
     public ImagePreviewAdapter(Activity activity, @NonNull List<ImageInfo> imageInfo) {
         super();
         this.imageInfo = imageInfo;
         this.activity = activity;
+        mPopupWindowList = new PopupWindowList(activity);
     }
 
     public void closePage() {
@@ -155,7 +160,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
 
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, final int mPosition) {
         if (activity == null) {
             return container;
         }
@@ -165,7 +170,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
         final SubsamplingScaleImageViewDragClose imageView = convertView.findViewById(R.id.photo_view);
         final PhotoView imageGif = convertView.findViewById(R.id.gif_view);
 
-        final ImageInfo info = this.imageInfo.get(position);
+        final ImageInfo info = this.imageInfo.get(mPosition);
         final String originPathUrl = info.getOriginUrl();
         final String thumbPathUrl = info.getThumbnailUrl();
 
@@ -188,7 +193,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
                     activity.finish();
                 }
                 if (ImagePreview.getInstance().getBigImageClickListener() != null) {
-                    ImagePreview.getInstance().getBigImageClickListener().onClick(v, position);
+                    ImagePreview.getInstance().getBigImageClickListener().onClick(v, mPosition);
                 }
             }
         });
@@ -199,20 +204,39 @@ public class ImagePreviewAdapter extends PagerAdapter {
                     activity.finish();
                 }
                 if (ImagePreview.getInstance().getBigImageClickListener() != null) {
-                    ImagePreview.getInstance().getBigImageClickListener().onClick(v, position);
+                    ImagePreview.getInstance().getBigImageClickListener().onClick(v, mPosition);
                 }
             }
         });
 
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                if (ImagePreview.getInstance().getBigImageLongClickListener() != null) {
-                    Bitmap bitmap = null;
-                    if(v instanceof  SubsamplingScaleImageViewDragClose){
-                        bitmap = ((SubsamplingScaleImageViewDragClose) v).getBitmap();
+            public boolean onLongClick(final View mImageViewDragClose) {
+                Bitmap bitmap = null;
+                if (mImageViewDragClose instanceof SubsamplingScaleImageViewDragClose) {
+                    bitmap = ((SubsamplingScaleImageViewDragClose) mImageViewDragClose).getBitmap();
+                }
+                ImagePreview instance = ImagePreview.getInstance();
+                final OnPopItemClickListener itemClickListener = instance.getOnPopItemClickListener();
+                OnBigImageLongClickListener bigImageLongClickListener = instance.getBigImageLongClickListener();
+                if (itemClickListener != null) {
+                    final Bitmap mBitmap = bitmap;
+                    if (!activity.isFinishing() && !activity.isDestroyed() && !mPopupWindowList.isShowing()) {
+                        mPopupWindowList.setAnchorView(mImageViewDragClose);
+                        mPopupWindowList.setItemData(Arrays.asList("转发给朋友", "下载图片", "识别二维码"));
+                        mPopupWindowList.setModal(true);
+                        mPopupWindowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                itemClickListener.onPopItemClick(mImageViewDragClose, mPosition, position, mBitmap);
+                            }
+                        });
+                        mPopupWindowList.show();
+                        return true;
                     }
-                    return ImagePreview.getInstance().getBigImageLongClickListener().onLongClick(v, position, bitmap);
+                }
+                if(bigImageLongClickListener != null){
+                    return bigImageLongClickListener.onLongClick(mImageViewDragClose, mPosition, bitmap);
                 }
                 return false;
             }
@@ -220,16 +244,35 @@ public class ImagePreviewAdapter extends PagerAdapter {
 
         imageGif.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                if (ImagePreview.getInstance().getBigImageLongClickListener() != null) {
-                    Bitmap bitmap = null;
-                    if(v instanceof  ImageView){
-                        Drawable drawable = ((ImageView) v).getDrawable();
-                        if(drawable instanceof BitmapDrawable){
-                            bitmap  = ((BitmapDrawable) drawable).getBitmap();
-                        }
+            public boolean onLongClick(final View mImageView) {
+                Bitmap bitmap = null;
+                if (mImageView instanceof ImageView) {
+                    Drawable drawable = ((ImageView) mImageView).getDrawable();
+                    if (drawable instanceof BitmapDrawable) {
+                        bitmap = ((BitmapDrawable) drawable).getBitmap();
                     }
-                    return ImagePreview.getInstance().getBigImageLongClickListener().onLongClick(v, position, bitmap);
+                }
+                ImagePreview instance = ImagePreview.getInstance();
+                final OnPopItemClickListener itemClickListener = instance.getOnPopItemClickListener();
+                OnBigImageLongClickListener bigImageLongClickListener = instance.getBigImageLongClickListener();
+                if (itemClickListener != null) {
+                    final Bitmap mBitmap = bitmap;
+                    if (!activity.isFinishing() && !activity.isDestroyed() && !mPopupWindowList.isShowing()) {
+                        mPopupWindowList.setAnchorView(mImageView);
+                        mPopupWindowList.setItemData(Arrays.asList("转发给朋友", "下载图片", "识别二维码"));
+                        mPopupWindowList.setModal(true);
+                        mPopupWindowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                itemClickListener.onPopItemClick(mImageView, mPosition, position, mBitmap);
+                            }
+                        });
+                        mPopupWindowList.show();
+                        return true;
+                    }
+                }
+                if (bigImageLongClickListener != null) {
+                    return bigImageLongClickListener.onLongClick(mImageView, mPosition, bitmap);
                 }
                 return false;
             }

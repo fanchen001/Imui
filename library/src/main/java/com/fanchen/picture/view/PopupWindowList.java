@@ -7,11 +7,14 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
@@ -135,7 +138,17 @@ public class PopupWindowList {
                 mPopupWindowHeight = mDeviceHeight / 2;
             }
         }
-        mPopupWindow = new PopupWindow(mPopView, mPopupWindowWidth, mPopupWindowHeight);
+        LinearLayout linearLayout = new LinearLayout(mContext);
+        ViewGroup.MarginLayoutParams marginLayoutParams = new ViewGroup.MarginLayoutParams(mPopupWindowWidth, mPopupWindowHeight);
+        marginLayoutParams.bottomMargin = 20;
+        marginLayoutParams.topMargin = 20;
+        marginLayoutParams.leftMargin = 20;
+        marginLayoutParams.rightMargin = 20;
+        CardView cardView = new CardView(mContext);
+        cardView.setCardElevation(5f);
+        cardView.addView(mPopView);
+        linearLayout.addView(cardView,marginLayoutParams);
+        mPopupWindow = new PopupWindow(linearLayout, ViewGroup.MarginLayoutParams.WRAP_CONTENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
         if (mPopAnimStyle != 0) {
             mPopupWindow.setAnimationStyle(mPopAnimStyle);
         }

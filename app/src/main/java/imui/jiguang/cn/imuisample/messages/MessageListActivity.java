@@ -84,9 +84,9 @@ import com.fanchen.message.messages.ptr.PullToRefreshLayout;
 import com.fanchen.message.messages.ViewHolderController;
 import com.fanchen.message.utils.DateUtil;
 import com.fanchen.picture.ImagePreview;
-import com.fanchen.picture.view.PopupWindowList;
 import com.fanchen.picture.view.listener.OnBigImageLongClickListener;
 import com.fanchen.picture.view.listener.OnBigImagePageChangeListener;
+import com.fanchen.picture.view.listener.OnPopItemClickListener;
 import com.fanchen.video.Jzvd;
 import com.fanchen.video.SimpleVideoActivity;
 import com.fanchen.view.ChatView;
@@ -1096,28 +1096,34 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 
                         }
                     });
-                    instance.setBigImageLongClickListener(new OnBigImageLongClickListener() {
+                    instance.setOnPopItemClickListener(new OnPopItemClickListener() {
                         @Override
-                        public boolean onLongClick(View view, int position, Bitmap bitmap) {
-                            Log.e("onLongClick"," == " + bitmap);
-                            ArrayList<String> strings = new ArrayList<>();
-                            final    PopupWindowList mPopupWindowList = new PopupWindowList(view.getContext());
-                            mPopupWindowList.setAnchorView(view);
-                            mPopupWindowList.setItemData(Arrays.asList("转发给朋友","下载图片","识别二维码"));
-                            mPopupWindowList.setModal(true);
-                            mPopupWindowList.show();
-                            mPopupWindowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Log.e(TAG, "click position="+position);
-                                    mPopupWindowList.hide();
-                                }
-                            });
+                        public void onPopItemClick(View v, int position, int itemPosition, Bitmap bitmap) {
 
-
-                            return false;
                         }
                     });
+//                    instance.setBigImageLongClickListener(new OnBigImageLongClickListener() {
+//                        @Override
+//                        public boolean onLongClick(View view, int position, Bitmap bitmap) {
+//                            Log.e("onLongClick"," == " + bitmap);
+//                            ArrayList<String> strings = new ArrayList<>();
+//                            final    PopupWindowList mPopupWindowList = new PopupWindowList(view.getContext());
+//                            mPopupWindowList.setAnchorView(view);
+//                            mPopupWindowList.setItemData(Arrays.asList("转发给朋友","下载图片","识别二维码"));
+//                            mPopupWindowList.setModal(true);
+//                            mPopupWindowList.show();
+//                            mPopupWindowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                @Override
+//                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                    Log.e(TAG, "click position="+position);
+//                                    mPopupWindowList.hide();
+//                                }
+//                            });
+//
+//
+//                            return false;
+//                        }
+//                    });
                     instance.setShowCloseButton(true);
                     instance.setEnableDragClose(true);
                     instance.setShowDownButton(true);
