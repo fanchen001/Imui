@@ -96,12 +96,14 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:scaleType="centerCrop"
                         android:id="@+id/aurora_iv_msgitem_goods"
                         android:layout_width="55dp"
                         android:layout_height="55dp"
                         android:src="@mipmap/more" />
 
                     <LinearLayout
+                        android:layout_marginLeft="8dp"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

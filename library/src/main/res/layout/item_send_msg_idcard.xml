@@ -95,6 +95,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:scaleType="centerCrop"
                         android:id="@+id/aurora_iv_msgitem_card"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
