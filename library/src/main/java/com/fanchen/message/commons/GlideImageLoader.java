@@ -45,10 +45,10 @@ public class GlideImageLoader implements ImageLoader {
 
     @Override
     public void loadAvatarImage(ImageView avatarImageView, String string) {
-        if (string.contains("R.drawable")) {
+        if (string.contains("R.drawable") && avatarImageView != null) {
             Integer resId = mContext.getResources().getIdentifier(string.replace("R.drawable.", ""), "drawable", mContext.getPackageName());
             avatarImageView.setImageResource(resId);
-        } else {
+        } else if(avatarImageView != null){
             if (avatar != 0) {
                 with.load(string).asBitmap().placeholder(avatar).into(avatarImageView);
             } else {
@@ -65,9 +65,9 @@ public class GlideImageLoader implements ImageLoader {
      */
     @Override
     public void loadImage(final ImageView imageView, String string,final RecyclerView.LayoutManager layoutManager) {
-        if(layoutManager == null){
+        if(layoutManager == null&& imageView != null){
             with.load(string).asBitmap().into(imageView);
-        }else{
+        }else if(imageView != null){
             BitmapTypeRequest<String> stringBitmapTypeRequest = with.load(string).asBitmap();
             if (image != 0) { stringBitmapTypeRequest.placeholder(image);  }
             stringBitmapTypeRequest.into(new SimpleTarget2(layoutManager,imageView));
@@ -82,9 +82,9 @@ public class GlideImageLoader implements ImageLoader {
      */
     @Override
     public void loadVideo(ImageView imageCover, String uri) {
-        if (video != 0) {
+        if (video != 0&&imageCover != null) {
             with.load(uri).asBitmap().placeholder(video).override(200, 400).into(imageCover);
-        } else {
+        } else if(imageCover != null){
             with.load(uri).asBitmap().override(200, 400).into(imageCover);
         }
     }
@@ -155,7 +155,13 @@ public class GlideImageLoader implements ImageLoader {
             matrix.postScale(scaleWidth, scaleHeight);
             imageView.setImageBitmap(Bitmap.createBitmap(resource, 0, 0, imageWidth, imageHeight, matrix, true));
             if(firstVisibleItemPosition == 0){
-                mLinearLayoutManager.scrollToPositionWithOffset(0,0);
+                final LinearLayoutManager finalManager  = mLinearLayoutManager;
+                imageView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finalManager.scrollToPositionWithOffset(0,0);
+                    }
+                },100);
             }
         }
     }

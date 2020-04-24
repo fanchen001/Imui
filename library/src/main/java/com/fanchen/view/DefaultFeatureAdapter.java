@@ -10,14 +10,16 @@ import com.fanchen.ui.R;
 
 public class DefaultFeatureAdapter extends BaseAdapter {
 
-    public int[] ICONS = {R.drawable.aurora_menuitem_order,
-            R.drawable.aurora_menuitem_goods,
-            R.drawable.aurora_menuitem_news,
+    public int[] ICONS = {
             R.drawable.aurora_menuitem_car,
             R.drawable.aurora_menuitem_file,
             R.drawable.aurora_menuitem_local,
-            R.drawable.aurora_menuitem_idcard};
-    public String[] TITLES = {"订单咨询","商品咨询","活动咨询","购物车","发送文件","位置信息","发送名片"};
+            R.drawable.aurora_menuitem_idcard,
+            R.drawable.aurora_menuitem_order,
+            R.drawable.aurora_menuitem_goods,
+            R.drawable.aurora_menuitem_news};
+
+    public String[] TITLES = {"购物车","发送文件","位置信息","发送名片","订单咨询","商品咨询","活动咨询"};
 
     @Override
     public int getCount() {

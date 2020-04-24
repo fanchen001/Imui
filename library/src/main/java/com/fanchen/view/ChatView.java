@@ -185,7 +185,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         RecyclerView.LayoutManager layoutManager = getMessageListView().getLayoutManager();
         if (layoutManager instanceof LinearLayoutManager) {
             int position = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
-            postDelayed(new DelayedRunnable(position), 200);
+            postDelayed(new DelayedRunnable(position), 350);
         }
     }
 
@@ -263,11 +263,11 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     public void registerDefaultListener(){
         defaultOnTouchListener();
         registerDefaultWakeLock();
-        registertDetectReceiver();
+        registerDetectReceiver();
     }
 
     public void unregisterDefaultListener(){
-        unregistertDetectReceiver();
+        unregisterDetectReceiver();
         unregisterDefaultWakeLock();
     }
 
@@ -294,7 +294,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     }
 
     public void scrollToBottom() {
-        scrollToBottom(300);
+        scrollToBottom(500);
     }
 
     @Override
@@ -414,7 +414,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         }
     }
 
-    public void unregistertDetectReceiver() {
+    public void unregisterDetectReceiver() {
         try {
             getContext().unregisterReceiver(mReceiver);
         } catch (Exception e) {
@@ -422,7 +422,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         }
     }
 
-    public void registertDetectReceiver() {
+    public void registerDetectReceiver() {
         try {
             mReceiver = new HeadsetDetectReceiver();
             IntentFilter intentFilter = new IntentFilter();
