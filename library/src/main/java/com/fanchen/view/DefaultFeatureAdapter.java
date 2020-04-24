@@ -10,23 +10,23 @@ import com.fanchen.ui.R;
 
 public class DefaultFeatureAdapter extends BaseAdapter {
 
-    int[] ICONS = {R.drawable.aurora_menuitem_order,
+    public int[] ICONS = {R.drawable.aurora_menuitem_order,
             R.drawable.aurora_menuitem_goods,
             R.drawable.aurora_menuitem_news,
             R.drawable.aurora_menuitem_car,
             R.drawable.aurora_menuitem_file,
             R.drawable.aurora_menuitem_local,
             R.drawable.aurora_menuitem_idcard};
-    String[] TITLES = {"订单咨询","商品咨询","活动咨询","购物车","发送文件","位置信息","发送名片"};
+    public String[] TITLES = {"订单咨询","商品咨询","活动咨询","购物车","发送文件","位置信息","发送名片"};
 
     @Override
     public int getCount() {
-        return ICONS.length;
+        return getIconList().length;
     }
 
     @Override
     public Object getItem(int position) {
-        return ICONS[position];
+        return getIconList()[position];
     }
 
     @Override
@@ -41,9 +41,16 @@ public class DefaultFeatureAdapter extends BaseAdapter {
         }
         TextView textView = convertView.findViewById(R.id.tv_feature);
         ImageView viewById = convertView.findViewById(R.id.iv_feature);
-        viewById.setImageResource(ICONS[position]);
-        textView.setText(TITLES[position]);
+        viewById.setImageResource(getIconList()[position]);
+        textView.setText(getTitleList()[position]);
         return convertView;
     }
 
+    public String[] getTitleList(){
+        return TITLES;
+    }
+
+    public int[] getIconList(){
+        return ICONS;
+    }
 }
