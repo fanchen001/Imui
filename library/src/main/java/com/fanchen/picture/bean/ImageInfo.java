@@ -1,11 +1,10 @@
 package com.fanchen.picture.bean;
 
-import java.io.Serializable;
 
 /**
  * 图片信息
  */
-public class ImageInfo implements Serializable {
+public class ImageInfo implements  IImageInfo{
 
   private String thumbnailUrl;// 缩略图，质量很差
   private String originUrl;// 原图或者高清图

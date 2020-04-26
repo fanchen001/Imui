@@ -7,9 +7,10 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.fanchen.picture.bean.IImageInfo;
+import com.fanchen.picture.bean.ImageInfo;
 import com.fanchen.picture.view.listener.OnPopItemClickListener;
 import com.fanchen.ui.R;
-import com.fanchen.picture.bean.ImageInfo;
 import com.fanchen.picture.view.ImagePreviewActivity;
 import com.fanchen.picture.view.listener.OnBigImageClickListener;
 import com.fanchen.picture.view.listener.OnBigImageLongClickListener;
@@ -33,7 +34,7 @@ public class ImagePreview {
     public static final int MODE_SCALE_TO_MEDIUM_TO_MIN = 1003;// 二级放大，中等与最小
     public static int themId = R.style.Theme_ImagePreview_Pic;
     private WeakReference<Context> contextWeakReference;
-    private List<ImageInfo> imageInfoList;// 图片数据集合
+    private List<IImageInfo> imageInfoList;// 图片数据集合
     private int index = 0;// 默认显示第几个
     private String folderName = "Download";// 下载到的文件夹名（根目录中）
     private float minScale = 1.0f;// 最小缩放倍数
@@ -101,12 +102,13 @@ public class ImagePreview {
         this.popItemClickListener = popListItemClickListener;
     }
 
-    public List<ImageInfo> getImageInfoList() {
+    public List<IImageInfo> getImageInfoList() {
         return imageInfoList;
     }
 
-    public ImagePreview setImageInfoList(@NonNull List<ImageInfo> imageInfoList) {
-        this.imageInfoList = imageInfoList;
+    public ImagePreview setImageInfoList(@NonNull List<? extends IImageInfo> imageInfoList) {
+        this.imageInfoList = new ArrayList<>();
+        this.imageInfoList.addAll(imageInfoList);
         return this;
     }
 
@@ -160,7 +162,7 @@ public class ImagePreview {
     }
 
     public boolean isShowOriginButton(int index) {
-        List<ImageInfo> imageInfoList = getImageInfoList();
+        List<IImageInfo> imageInfoList = getImageInfoList();
         if (null == imageInfoList || imageInfoList.size() == 0) {
             return false;
         }

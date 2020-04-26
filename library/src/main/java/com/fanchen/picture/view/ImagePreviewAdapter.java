@@ -20,12 +20,11 @@ import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.Target;
-import com.fanchen.message.messages.QPopWindow;
+import com.fanchen.picture.bean.IImageInfo;
 import com.fanchen.picture.view.listener.OnBigImageLongClickListener;
 import com.fanchen.picture.view.listener.OnPopItemClickListener;
 import com.fanchen.ui.R;
 import com.fanchen.picture.ImagePreview;
-import com.fanchen.picture.bean.ImageInfo;
 import com.fanchen.picture.glide.ImageLoader;
 import com.fanchen.picture.glide.engine.SimpleFileTarget;
 import com.fanchen.picture.tool.ImageUtil;
@@ -50,13 +49,13 @@ public class ImagePreviewAdapter extends PagerAdapter {
 
     private static final String TAG = "ImagePreview";
     private Activity activity;
-    private List<ImageInfo> imageInfo;
+    private List<IImageInfo> imageInfo;
     private HashMap<String, SubsamplingScaleImageViewDragClose> imageHashMap = new HashMap<>();
     private HashMap<String, PhotoView> imageGifHashMap = new HashMap<>();
     private String finalLoadUrl = "";
     private PopupWindowList mPopupWindowList = null;
 
-    public ImagePreviewAdapter(Activity activity, @NonNull List<ImageInfo> imageInfo) {
+    public ImagePreviewAdapter(Activity activity, @NonNull List<IImageInfo> imageInfo) {
         super();
         this.imageInfo = imageInfo;
         this.activity = activity;
@@ -100,7 +99,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
     /**
      * 加载原图
      */
-    public void loadOrigin(final ImageInfo imageInfo) {
+    public void loadOrigin(final IImageInfo imageInfo) {
         String originalUrl = imageInfo.getOriginUrl();
         if (imageHashMap == null || imageGifHashMap == null) {
             notifyDataSetChanged();
@@ -170,7 +169,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
         final SubsamplingScaleImageViewDragClose imageView = convertView.findViewById(R.id.photo_view);
         final PhotoView imageGif = convertView.findViewById(R.id.gif_view);
 
-        final ImageInfo info = this.imageInfo.get(mPosition);
+        final IImageInfo info = this.imageInfo.get(mPosition);
         final String originPathUrl = info.getOriginUrl();
         final String thumbPathUrl = info.getThumbnailUrl();
 
@@ -193,7 +192,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
                     activity.finish();
                 }
                 if (ImagePreview.getInstance().getBigImageClickListener() != null) {
-                    ImagePreview.getInstance().getBigImageClickListener().onClick(v, mPosition);
+                    ImagePreview.getInstance().getBigImageClickListener().onClick(v, mPosition,info);
                 }
             }
         });
@@ -204,7 +203,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
                     activity.finish();
                 }
                 if (ImagePreview.getInstance().getBigImageClickListener() != null) {
-                    ImagePreview.getInstance().getBigImageClickListener().onClick(v, mPosition);
+                    ImagePreview.getInstance().getBigImageClickListener().onClick(v, mPosition,info);
                 }
             }
         });
@@ -228,7 +227,8 @@ public class ImagePreviewAdapter extends PagerAdapter {
                         mPopupWindowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                itemClickListener.onPopItemClick(mImageViewDragClose, mPosition, position, mBitmap);
+                                itemClickListener.onPopItemClick(mImageViewDragClose, mPosition, position, mBitmap,info);
+                                mPopupWindowList.hide();
                             }
                         });
                         mPopupWindowList.show();
@@ -236,7 +236,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
                     }
                 }
                 if(bigImageLongClickListener != null){
-                    return bigImageLongClickListener.onLongClick(mImageViewDragClose, mPosition, bitmap);
+                    return bigImageLongClickListener.onLongClick(mImageViewDragClose, mPosition, bitmap,info);
                 }
                 return false;
             }
@@ -264,7 +264,8 @@ public class ImagePreviewAdapter extends PagerAdapter {
                         mPopupWindowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                itemClickListener.onPopItemClick(mImageView, mPosition, position, mBitmap);
+                                itemClickListener.onPopItemClick(mImageView, mPosition, position, mBitmap,info);
+                                mPopupWindowList.hide();
                             }
                         });
                         mPopupWindowList.show();
@@ -272,7 +273,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
                     }
                 }
                 if (bigImageLongClickListener != null) {
-                    return bigImageLongClickListener.onLongClick(mImageView, mPosition, bitmap);
+                    return bigImageLongClickListener.onLongClick(mImageView, mPosition, bitmap,info);
                 }
                 return false;
             }

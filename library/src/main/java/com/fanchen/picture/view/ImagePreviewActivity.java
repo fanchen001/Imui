@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,9 +26,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.fanchen.base.BaseIActivity;
+import com.fanchen.picture.bean.IImageInfo;
 import com.fanchen.ui.R;
 import com.fanchen.picture.ImagePreview;
-import com.fanchen.picture.bean.ImageInfo;
 import com.fanchen.picture.glide.ImageLoader;
 import com.fanchen.picture.tool.DownloadPictureUtil;
 import com.fanchen.picture.tool.HandlerUtils;
@@ -47,7 +46,7 @@ public class ImagePreviewActivity extends BaseIActivity
 
     private Context context;
 
-    private List<ImageInfo> imageInfoList;
+    private List<IImageInfo> imageInfoList;
     private int currentItem;// 当前显示的图片索引
     private String downloadFolderName = "";// 保存的文件夹名
     private boolean isShowDownButton;

@@ -1,9 +1,11 @@
 package com.fanchen.message.commons.models;
 
 
+
+import java.io.Serializable;
 import java.util.HashMap;
 
-public interface IMessage {
+public interface IMessage extends Serializable {
 
     /**
      * Message id.

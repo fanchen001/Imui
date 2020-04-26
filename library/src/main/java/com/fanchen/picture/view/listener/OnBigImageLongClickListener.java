@@ -1,8 +1,9 @@
 package com.fanchen.picture.view.listener;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.view.View;
+
+import com.fanchen.picture.bean.IImageInfo;
 
 /**
  * description:
@@ -14,5 +15,5 @@ public interface OnBigImageLongClickListener {
      * @param view
      * @param position
      */
-    boolean onLongClick(View view, int position, Bitmap bitmap);
+    boolean onLongClick(View view, int position, Bitmap bitmap, IImageInfo imageInfo);
 }

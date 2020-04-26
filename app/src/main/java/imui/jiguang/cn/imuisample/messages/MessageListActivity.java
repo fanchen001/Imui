@@ -84,6 +84,7 @@ import com.fanchen.message.messages.ptr.PullToRefreshLayout;
 import com.fanchen.message.messages.ViewHolderController;
 import com.fanchen.message.utils.DateUtil;
 import com.fanchen.picture.ImagePreview;
+import com.fanchen.picture.bean.IImageInfo;
 import com.fanchen.picture.view.listener.OnBigImageLongClickListener;
 import com.fanchen.picture.view.listener.OnBigImagePageChangeListener;
 import com.fanchen.picture.view.listener.OnPopItemClickListener;
@@ -1098,7 +1099,7 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                     });
                     instance.setOnPopItemClickListener(new OnPopItemClickListener() {
                         @Override
-                        public void onPopItemClick(View v, int position, int itemPosition, Bitmap bitmap) {
+                        public void onPopItemClick(View v, int position, int itemPosition, Bitmap bitmap, IImageInfo imageInfo) {
 
                         }
                     });
