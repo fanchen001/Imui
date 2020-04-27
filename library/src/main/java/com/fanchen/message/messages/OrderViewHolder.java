@@ -30,6 +30,7 @@ public class OrderViewHolder<Message extends IMessage> extends BaseMessageViewHo
     private TextView mNumTv;
     private TextView mPriceTv;
     private TextView mTimeTv;
+    private TextView mOrderStatusTv;
     private ImageView mImgIv;
 
     private View mL;
@@ -48,6 +49,7 @@ public class OrderViewHolder<Message extends IMessage> extends BaseMessageViewHo
         } else {
             mDisplayNameTv = (TextView) itemView.findViewById(R.id.aurora_tv_msgitem_receiver_display_name);
         }
+        mOrderStatusTv = itemView.findViewById(R.id.aurora_iv_msgitem_order_status);
         mResendIb = itemView.findViewById(R.id.aurora_ib_msgitem_resend);
         mSendingPb = itemView.findViewById(R.id.aurora_pb_msgitem_sending);
         mPriceTv = itemView.findViewById(R.id.aurora_tv_msgitem_oprice);
@@ -65,6 +67,7 @@ public class OrderViewHolder<Message extends IMessage> extends BaseMessageViewHo
             mNumTv.setText("单号 :" + extras.get("orderNumber"));
             mTimeTv.setText("时间 :" + extras.get("orderTime"));
             mPriceTv.setText("¥" + extras.get("orderPrice"));
+            mOrderStatusTv.setText(extras.get("orderStatus"));
             if (extras.get("path") != null && mImageLoader != null) {
                 mImageLoader.loadImage(mImgIv, extras.get("path"), null);
             } else {

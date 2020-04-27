@@ -67,7 +67,7 @@
             app:receiveTextSize="16sp"
             app:sendTextColor="#7587A8"
             app:sendTextSize="16sp"
-            app:showReadStatus="true"
+            app:showReadStatus="false"
             app:showReceiverDisplayName="true"
             app:showSenderDisplayName="false" />
     </com.fanchen.message.messages.ptr.PullToRefreshLayout>

@@ -34,6 +34,7 @@
             android:layout_toRightOf="@id/aurora_iv_msgitem_avatar"
             android:background="@color/white"
             app:cardCornerRadius="5dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,12 +42,28 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="订单信息"
-                    android:textColor="#555"
-                    android:textSize="13sp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="订单信息"
+                        android:textColor="#555"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/aurora_iv_msgitem_order_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="已完成"
+                        android:textColor="#ff9911"
+                        android:textSize="10sp" />
+                </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -55,7 +72,7 @@
                     android:layout_marginBottom="8dp"
                     android:background="#f1f1f1" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="220dp"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -68,10 +85,10 @@
                         android:src="@mipmap/documents" />
 
                     <LinearLayout
-                        android:layout_marginLeft="8dp"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_toRightOf="@+id/aurora_iv_msgitem_goods"
                         android:orientation="vertical">
 
                         <TextView
@@ -89,8 +106,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="单号:18627555520"
                             android:singleLine="true"
+                            android:text="单号:18627555520"
                             android:textColor="#666"
                             android:textSize="10sp" />
 
@@ -99,9 +116,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
+                            android:singleLine="true"
                             android:text="下单时间:2020-10-10"
                             android:textColor="#666"
-                            android:singleLine="true"
                             android:textSize="10sp" />
                     </LinearLayout>
 
@@ -109,10 +126,11 @@
                         android:id="@+id/aurora_tv_msgitem_oprice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
                         android:text="$ 100"
                         android:textColor="@color/google_red"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                        android:textSize="11sp" />
+                </RelativeLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </RelativeLayout>
