@@ -54,6 +54,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     private RelativeLayout mTitleContainer;
     private MessageListView mMsgList;
     private ChatInputView mChatInput;
+    private View mGroupImageView;
     private PullToRefreshLayout mPtrLayout;
 
     private BroadcastReceiver mReceiver;
@@ -79,6 +80,7 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
     public ChatView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         View.inflate(context, R.layout.view_chat_wrap, this);
+        mGroupImageView = findViewById(R.id.iv_chat_group);
         Activity activity = JZUtils.scanForActivity(context);
         if (activity != null) {
             mActivity = activity;
@@ -104,6 +106,10 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         if (mSensorManager != null) {
             mSensorManager.unregisterListener(this);
         }
+    }
+
+    public View getGroupView() {
+        return mGroupImageView;
     }
 
     public RelativeLayout getTitleContainer() {
