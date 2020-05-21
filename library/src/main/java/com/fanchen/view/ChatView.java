@@ -108,6 +108,11 @@ public class ChatView extends RelativeLayout implements CustomMenuEventListener,
         }
     }
 
+    public void setGroupClickListener(boolean visible,OnClickListener listener){
+        mGroupImageView.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        mGroupImageView.setOnClickListener(listener);
+    }
+
     public View getGroupView() {
         return mGroupImageView;
     }
