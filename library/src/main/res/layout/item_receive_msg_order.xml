@@ -60,7 +60,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="已完成"
                         android:textColor="#ff9911"
                         android:textSize="10sp" />
                 </RelativeLayout>
@@ -85,6 +84,7 @@
                         android:src="@mipmap/documents" />
 
                     <LinearLayout
+                        android:layout_toLeftOf="@+id/aurora_tv_msgitem_oprice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
@@ -97,7 +97,6 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:text="护手霜 800G"
                             android:textColor="#333"
                             android:textSize="13sp" />
 
@@ -107,7 +106,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:singleLine="true"
-                            android:text="单号:18627555520"
                             android:textColor="#666"
                             android:textSize="10sp" />
 
@@ -117,7 +115,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:singleLine="true"
-                            android:text="下单时间:2020-10-10"
                             android:textColor="#666"
                             android:textSize="10sp" />
                     </LinearLayout>
@@ -127,7 +124,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="$ 100"
                         android:textColor="@color/google_red"
                         android:textSize="11sp" />
                 </RelativeLayout>

@@ -21,6 +21,8 @@ import com.fanchen.combine.region.DingRegionManager;
 import com.fanchen.combine.region.IRegionManager;
 import com.fanchen.combine.region.WechatRegionManager;
 
+import java.util.List;
+
 public class Combine {
 
     public static Builder builder(Context context) {
@@ -109,6 +111,15 @@ public class Combine {
         public Builder setUrls(String... urls) {
             this.urls = urls;
             this.count = urls.length;
+            return this;
+        }
+
+        public Builder setUrls(List<String> urls) {
+            this.urls = new String[urls.size() > 6 ? 6 : urls.size()];
+            for (int i = 0 ; i < this.urls.length; i ++){
+                this.urls[i] = urls.get(i);
+            }
+            this.count = urls.size();
             return this;
         }
 

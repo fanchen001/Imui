@@ -81,7 +81,6 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:text="护手霜 800G"
                             android:textColor="#333"
                             android:textSize="13sp" />
 
@@ -90,7 +89,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="库存:100"
                             android:singleLine="true"
                             android:textColor="#666"
                             android:textSize="10sp" />
@@ -101,7 +99,6 @@
                         android:id="@+id/aurora_tv_msgitem_gprice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$ 100"
                         android:textColor="@color/google_red"
                         android:textSize="12sp" />
                 </LinearLayout>
