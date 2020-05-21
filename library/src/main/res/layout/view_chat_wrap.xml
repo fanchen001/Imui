@@ -1,7 +1,8 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/abl_title_container"
@@ -25,19 +26,33 @@
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="@string/bt_back"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_14" />
 
             <TextView
+                android:layout_toLeftOf="@+id/iv_chat_group"
+                android:layout_toRightOf="@+id/iv_chat_back"
                 android:id="@+id/tv_chat_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:gravity="center_vertical"
+                android:gravity="center"
+                android:singleLine="true"
                 android:text="@string/chat_simple"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/iv_chat_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:src="@drawable/ic_icon_chat_group" />
         </RelativeLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -86,4 +101,4 @@
         app:inputPaddingRight="10dp"
         app:inputPaddingTop="5dp"
         app:showSelectAlbum="true" />
-</merge>
+</RelativeLayout>

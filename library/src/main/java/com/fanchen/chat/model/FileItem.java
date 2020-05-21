@@ -68,11 +68,11 @@ public class FileItem implements Comparable<FileItem> {
     }
 
     public String getDate() {
-        return mDate;
+        return mDate == null ? "0" : mDate;
     }
 
     public Type getType() {
-        return mType;
+        return mType == null ? Type.Image : mType;
     }
 
     public void setType(Type type) {
@@ -81,7 +81,7 @@ public class FileItem implements Comparable<FileItem> {
 
     @Override
     public int compareTo(@NonNull FileItem fileItem) {
-        return (int) (Long.valueOf(fileItem.getDate()) - Long.valueOf(mDate));
+        return (int) (Long.valueOf(fileItem.getDate()) - Long.valueOf(mDate == null ? "0" : mDate));
     }
 
     public enum Type {

@@ -3,6 +3,7 @@ package com.fanchen.zxing;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.fanchen.ui.R;
 import com.fanchen.zxing.model.MNScanConfig;
 import com.fanchen.zxing.other.ActResultRequest;
 import com.fanchen.zxing.other.MNScanCallback;
@@ -21,7 +22,7 @@ public class MNScanManager {
     public static final String INTENT_KEY_RESULT_SUCCESS = "INTENT_KEY_RESULT_SUCCESS";
     public static final String INTENT_KEY_RESULT_ERROR = "INTENT_KEY_RESULT_ERROR";
 
-
+    public int DEFAULT = R.layout.layout_scan_capture;
     //跳转传入的数据
     public static final String INTENT_KEY_CONFIG_MODEL = "INTENT_KEY_CONFIG_MODEL";
 
