@@ -45,6 +45,14 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/bt_note"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:background="#1182FA"
+        android:text="@string/im_menu_note"
+        android:textColor="@color/white" />
+
+    <Button
         android:id="@+id/bt_delete"
         android:layout_width="80dp"
         android:layout_height="match_parent"

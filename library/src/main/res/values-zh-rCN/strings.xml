@@ -116,4 +116,6 @@
     <string name="zxing_open_light">打开手电筒</string>
     <string name="zxing_card">我的名片</string>
     <string name="zxing_list">扫码记录</string>
+    <string name="im_menu_delete">删除</string>
+    <string name="im_menu_note">修改备注</string>
 </resources>

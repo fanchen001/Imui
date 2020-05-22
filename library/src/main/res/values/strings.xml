@@ -110,5 +110,6 @@
     <string name="im_group">group</string>
     <string name="im_ver_msg">verification msg</string>
     <string name="im_contacts_search">search</string>
-    <string name="im_menu_delete">删除</string>
+    <string name="im_menu_delete">Delete</string>
+    <string name="im_menu_note">Note</string>
 </resources>

@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeadersAdapter, SectionIndexer, View.OnClickListener,
-        SideBarView.OnTouchingLetterChangedListener {
+        SideBarView.OnTouchingLetterChangedListener, View.OnLongClickListener {
 
     private List<ISticky> mData = new ArrayList<>();
     private boolean mCheck;
@@ -36,6 +36,7 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
     private OnLoadAvatarListener mOnLoadAvatarListener;
     private OnItemClickListener mOnItemClickListener;
     private OnItemCheckListener mOnItemCheckListener;
+    private OnItemLongClickListener mOnItemLongClickListener;
 
     public DefaultStickyAdapter(ContactsView view, List<ISticky> mData, boolean check) {
         if (mData != null) {
@@ -126,6 +127,7 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
         ImageView avatar = convertView.findViewById(R.id.iv_photo);
         TextView displayName = convertView.findViewById(R.id.tv_name);
         View viewById = convertView.findViewById(R.id.bt_delete);
+        View mNote = convertView.findViewById(R.id.bt_note);
         View view = convertView.findViewById(R.id.ll_contacts_content);
         //所有好友列表
         ISticky friend = mData.get(position);
@@ -142,11 +144,14 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
         displayName.setText(friend.getDisplayName());
         checkBox.setChecked(friend.isSelect());
 
+        mNote.setTag(new Object[]{friend, position, checkBox});
+        mNote.setOnClickListener(this);
         viewById.setTag(new Object[]{friend, position, checkBox});
         viewById.setOnClickListener(this);
 
         view.setTag(new Object[]{friend, position, checkBox});
         view.setOnClickListener(this);
+        view.setOnLongClickListener(this);
 
         return convertView;
     }
@@ -293,6 +298,17 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
         return -1;
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        Object[] tag = (Object[]) v.getTag();
+        ISticky friend = (ISticky) tag[0];
+        int position = (int) tag[1];
+        if (mOnItemLongClickListener != null) {
+            return mOnItemLongClickListener.onItemLongClick(position, v, friend);
+        }
+        return false;
+    }
+
     public interface OnLoadAvatarListener {
 
         void onLoadAvatar(ImageView avatarView, ISticky friend);
@@ -302,6 +318,12 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
     public interface OnItemClickListener {
 
         void onItemClick(int position, View convertView, ISticky friend);
+
+    }
+
+    public interface OnItemLongClickListener {
+
+        boolean onItemLongClick(int position, View convertView, ISticky friend);
 
     }
 
