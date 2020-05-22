@@ -89,6 +89,10 @@ public class DefaultStickyAdapter extends BaseAdapter implements StickyListHeade
         notifyDataSetChanged();
     }
 
+    public void setOnItemLongClickListener(OnItemLongClickListener mOnItemLongClickListener) {
+        this.mOnItemLongClickListener = mOnItemLongClickListener;
+    }
+
     public void setDate(List<ISticky> friend) {
         mData.clear();
         if (friend != null) {
