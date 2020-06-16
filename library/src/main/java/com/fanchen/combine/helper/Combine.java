@@ -115,7 +115,7 @@ public class Combine {
         }
 
         public Builder setUrls(List<String> urls) {
-            this.urls = new String[urls.size() > 6 ? 6 : urls.size()];
+            this.urls = new String[urls.size() > 4 ? 4 : urls.size()];
             for (int i = 0 ; i < this.urls.length; i ++){
                 this.urls[i] = urls.get(i);
             }
