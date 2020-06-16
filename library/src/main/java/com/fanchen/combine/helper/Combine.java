@@ -119,7 +119,7 @@ public class Combine {
             for (int i = 0 ; i < this.urls.length; i ++){
                 this.urls[i] = urls.get(i);
             }
-            this.count = urls.size();
+            this.count = this.urls.length;
             return this;
         }
 
