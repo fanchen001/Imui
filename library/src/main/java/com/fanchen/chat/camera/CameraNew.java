@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Camera;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -304,8 +305,13 @@ public class CameraNew implements CameraSupport {
         mCameraId = cameraId + "";
         mCameraQuality = cameraQuality;
         startBackgroundThread();
+
+        Log.e("CameraNew", "width, -> " + width);
+        Log.e("CameraNew", "height, -> " + height);
+
         setUpCameraOutputs(width, height);
         configureTransform(width, height);
+
         try {
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Time out waiting to lock camera opening.");
@@ -654,13 +660,26 @@ public class CameraNew implements CameraSupport {
         if (null == mTextureView || null == mPreviewSize || null == activity) {
             return;
         }
+        Log.e("CameraNew","mTextureView --> " + mTextureView);
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+
+        Log.e("CameraNew","rotation --> " + rotation);
+
         Matrix matrix = new Matrix();
+        Log.e("CameraNew","new matrix --> " + matrix);
         RectF viewRect = new RectF(0, 0, viewWidth, viewHeight);
+
+        Log.e("CameraNew", "View 高 --> " + viewHeight + " View 宽  --> " + viewWidth );
+
         RectF bufferRect = new RectF(0, 0, mPreviewSize.getHeight(), mPreviewSize.getWidth());
+
+        Log.e("CameraNew","预览 高 --> " + mPreviewSize.getHeight() + ",预览 宽 --> " + mPreviewSize.getWidth());
+
         float centerX = viewRect.centerX();
         float centerY = viewRect.centerY();
-        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation) {
+
+        Log.e("CameraNew","centerX --> " + centerX + ",centerY --> " + centerY);
+        if (Surface.ROTATION_90 == rotation || Surface.ROTATION_270 == rotation ) {
             bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
             matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
             float scale = Math.max(
@@ -670,6 +689,9 @@ public class CameraNew implements CameraSupport {
             matrix.postRotate(90 * (rotation - 2), centerX, centerY);
         } else if (Surface.ROTATION_180 == rotation) {
             matrix.postRotate(180, centerX, centerY);
+        }else{
+            bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
+            matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
         }
         mTextureView.setTransform(matrix);
     }

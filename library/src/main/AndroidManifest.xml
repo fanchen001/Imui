@@ -127,5 +127,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/ZScanCaptureTheme" />
+
+        <activity
+            android:name="com.fanchen.permission.PermissionActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/CustomTheme_Dialog" />
     </application>
 </manifest>

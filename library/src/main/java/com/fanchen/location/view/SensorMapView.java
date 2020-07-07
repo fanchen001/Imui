@@ -189,8 +189,7 @@ public class SensorMapView extends FrameLayout implements BaiduMap.OnMapClickLis
     }
 
     @Override
-    public boolean onMapPoiClick(MapPoi mapPoi) {
-        return false;
+    public void onMapPoiClick(MapPoi mapPoi) {
     }
 
     public void drivingSearch(DrivingRoutePlanOption search) {

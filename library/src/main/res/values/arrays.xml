@@ -6,5 +6,9 @@
         <item>@color/google_yellow</item>
         <item>@color/google_green</item>
     </integer-array>
-
+    <array name="permissionNames">
+        <item>@string/permission_storage</item>
+        <item>@string/permission_location</item>
+        <item>@string/permission_camera</item>
+    </array>
 </resources>

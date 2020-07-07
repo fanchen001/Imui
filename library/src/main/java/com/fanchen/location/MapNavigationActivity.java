@@ -1,13 +1,14 @@
 package com.fanchen.location;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -21,11 +22,16 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.TransitRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.fanchen.base.BaseIActivity;
+import com.fanchen.permission.PermissionCallback;
+import com.fanchen.permission.PermissionHelper;
+import com.fanchen.permission.PermissionItem;
 import com.fanchen.ui.R;
 import com.fanchen.location.utils.CommonUtils;
 import com.fanchen.location.view.SensorMapView;
 
-public class MapNavigationActivity extends BaseIActivity {
+import java.util.ArrayList;
+
+public class MapNavigationActivity extends BaseIActivity implements PermissionCallback {
 
     public static final String CITY = "CITY";
     public static final String LATITUDE = "LATITUDE";
@@ -62,7 +68,9 @@ public class MapNavigationActivity extends BaseIActivity {
         latitude = getIntent().getDoubleExtra(LATITUDE, 0);
         longitude = getIntent().getDoubleExtra(LONGITUDE, 0);
         tv_address.setText(getIntent().getStringExtra(ADDRESS));
-        mv_main.startLocation(latitude, longitude);
+        ArrayList<PermissionItem> permissionItems = new ArrayList<>();
+        permissionItems.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION,getString(R.string.permission_location),R.drawable.permission_ic_location));
+        PermissionHelper.create(this).permissions(permissionItems).checkMutiPermission(this);
     }
 
 
@@ -130,4 +138,14 @@ public class MapNavigationActivity extends BaseIActivity {
         }
     }
 
+    @Override
+    public void onClose() {
+        Toast.makeText(this,R.string.permission_error, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onFinish() {
+        mv_main.startLocation(latitude, longitude);
+    }
 }

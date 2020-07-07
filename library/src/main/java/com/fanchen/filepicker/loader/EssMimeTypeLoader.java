@@ -92,7 +92,12 @@ public class EssMimeTypeLoader extends CursorLoader {
 
     @Override
     public Cursor loadInBackground() {
-        Cursor data = super.loadInBackground();
+        Cursor data = null;
+        try{
+            data = super.loadInBackground();
+        }catch (Throwable e){
+            e.printStackTrace();
+        }
         essFileList = new ArrayList<>();
         if (data != null) {
             while (data.moveToNext()){
@@ -103,7 +108,6 @@ public class EssMimeTypeLoader extends CursorLoader {
             }
             data.moveToFirst();
         }
-
         return data;
     }
 

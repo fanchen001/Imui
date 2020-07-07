@@ -1,5 +1,6 @@
 package com.fanchen.location;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import com.baidu.location.BDLocation;
@@ -44,6 +46,9 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.fanchen.permission.PermissionCallback;
+import com.fanchen.permission.PermissionHelper;
+import com.fanchen.permission.PermissionItem;
 import com.fanchen.ui.R;
 import com.fanchen.base.BaseIActivity;
 import com.fanchen.filepicker.util.UiUtils;
@@ -60,7 +65,7 @@ import java.util.List;
 
 public class MapSendActivity extends BaseIActivity implements OnGetGeoCoderResultListener,
         BaseQuickAdapter.OnItemClickListener, BaiduMap.OnMapStatusChangeListener, View.OnClickListener,
-        BaiduMap.OnMapTouchListener, BDLocationListener, BaiduMap.SnapshotReadyCallback {
+        BaiduMap.OnMapTouchListener, BDLocationListener, BaiduMap.SnapshotReadyCallback, PermissionCallback {
 
     private LocationBean lastLocation = null;
 
@@ -120,6 +125,10 @@ public class MapSendActivity extends BaseIActivity implements OnGetGeoCoderResul
         initView();
         initData();
         setListener();
+        List<PermissionItem> list = new ArrayList<>();
+        list.add(new PermissionItem(Manifest.permission.ACCESS_FINE_LOCATION,getString(R.string.permission_location),R.drawable.permission_ic_location));
+        list.add(new PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE,getString(R.string.permission_storage),R.drawable.permission_ic_storage));
+        PermissionHelper.create(this).permissions(list).checkMutiPermission(this);
     }
 
     private void initView() {
@@ -214,7 +223,9 @@ public class MapSendActivity extends BaseIActivity implements OnGetGeoCoderResul
 
     private void startLocation() {
         if (mLocClient != null) {
-            mLocClient.start();
+            if(PermissionHelper.checkPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+                mLocClient.start();
+            }
         }
     }
 
@@ -460,6 +471,17 @@ public class MapSendActivity extends BaseIActivity implements OnGetGeoCoderResul
             mBaiduMap.animateMapStatus(u);
             mSearch.reverseGeoCode((new ReverseGeoCodeOption()).location(latLng));
         }
+    }
+
+    @Override
+    public void onClose() {
+        Toast.makeText(this,R.string.permission_error,Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onFinish() {
+        startLocation();
     }
 
     private static class CencelRunnable implements Runnable {

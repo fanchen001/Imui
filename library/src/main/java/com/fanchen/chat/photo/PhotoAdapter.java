@@ -156,7 +156,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHol
 
     @Override
     public int getItemViewType(int position) {
-        return mMedias.get(position).getType().getCode();
+        FileItem item = mMedias.get(position);
+        if(item != null){
+            FileItem.Type type = item.getType();
+            if(type != null){
+                return type.getCode();
+            }
+        }
+        return FileItem.Type.Image.getCode();
     }
 
     private void addDeselectedAnimation(View... views) {

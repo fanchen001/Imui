@@ -81,4 +81,9 @@
 
     <color name="z_scan_viewfinder_laser">#FFff3535</color>
     <color name="z_scan_viewfinder_mask">#80000000</color>
+
+    <color name="permissionColorGreen">#41c236</color>
+    <color name="permissionColorWhite">#ffffff</color>
+    <color name="permissionBgColorGreenLight">#44A49C</color>
+    <color name="permissionBgColorBlue">#ee447AA4</color>
 </resources>

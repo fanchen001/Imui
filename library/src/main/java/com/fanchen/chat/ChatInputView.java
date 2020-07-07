@@ -8,15 +8,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
+import android.hardware.camera2.CameraManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.Space;
 import android.text.Editable;
@@ -445,7 +448,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         }
     }
 
-    private void triggerSelectView(CharSequence s, int start, int before){
+    private void triggerSelectView(CharSequence s, int start, int before) {
         ImageButton sendButton = mMenuManager.getSendButton();
         if (s.length() >= 1 && start == 0 && before == 0) { // Starting input
             triggerSendButtonAnimation(null, sendButton, true, false);
@@ -461,9 +464,9 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         mInput = s;
-        if(mSelectPhotoView == null && mSelectVideoView == null){
-            triggerSelectView(s,start,before);
-        }else if (mSelectPhotoView != null)
+        if (mSelectPhotoView == null && mSelectVideoView == null) {
+            triggerSelectView(s, start, before);
+        } else if (mSelectPhotoView != null)
             triggerSelectView(mSelectPhotoView, s, start, before);
         else
             triggerSelectView(mSelectVideoView, s, start, before);
@@ -481,6 +484,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         return mRecordVoiceBtn;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View view) {
         if (view == mSelectAlbumIb && mOnSelectButtonListener != null) {
@@ -611,6 +615,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
             }
         } else if (view.getId() == R.id.aurora_ib_camera_switch) {
             if (mFinishRecordingVideo) {
+                Log.e("CameraNew", " mFinishRecordingVideo ==== " + mFinishRecordingVideo);
                 mCameraSupport.cancelRecordingVideo();
                 mSwitchCameraBtn.setBackgroundResource(R.drawable.aurora_preview_switch_camera);
                 mRecordVideoBtn.setBackgroundResource(R.drawable.aurora_preview_camera);
@@ -622,25 +627,45 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
                 mCaptureBtn.setBackgroundResource(R.drawable.aurora_preview_record_video_start);
                 mMediaPlayer.stop();
                 mMediaPlayer.release();
+
                 mCameraSupport.open(mCameraId, mWidth, mHeight, mIsBackCamera, mStyle.getCameraQuality());
             } else {
-                for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
-                    Camera.CameraInfo info = new Camera.CameraInfo();
-                    Camera.getCameraInfo(i, info);
-                    if (mIsBackCamera && info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                        mCameraId = i;
-                        mIsBackCamera = false;
-                        mCameraSupport.release();
-                        mCameraSupport.open(mCameraId, mTextureView.getWidth(), mTextureView.getHeight(), mIsBackCamera, mStyle.getCameraQuality());
-                        break;
-                    } else if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                        mCameraId = i;
-                        mIsBackCamera = true;
-                        mCameraSupport.release();
-                        mCameraSupport.open(mCameraId, mTextureView.getWidth(), mTextureView.getHeight(), mIsBackCamera, mStyle.getCameraQuality());
-                        break;
-                    }
+                if (Camera.getNumberOfCameras() < 2) {
+                    Toast.makeText(getContext(), "Camera size 1 ", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                if (mIsBackCamera) {
+                    mCameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
+                    mIsBackCamera = false;
+                    mCameraSupport.release();
+                    mCameraSupport.open(mCameraId, mTextureView.getWidth(), mTextureView.getHeight(), mIsBackCamera, mStyle.getCameraQuality());
+                } else {
+                    mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
+                    mIsBackCamera = true;
+                    mCameraSupport.release();
+                    mCameraSupport.open(mCameraId, mTextureView.getWidth(), mTextureView.getHeight(), mIsBackCamera, mStyle.getCameraQuality());
+
+                }
+//
+//                for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
+//                    Camera.CameraInfo info = new Camera.CameraInfo();
+//                    Camera.getCameraInfo(i, info);
+//                    if (mIsBackCamera && info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+//                        Log.e("CameraNew"," CAMERA_FACING_FRONT ==== " + Camera.getNumberOfCameras());
+//                        mCameraId = i;
+//                        mIsBackCamera = false;
+//                        mCameraSupport.release();
+//                        mCameraSupport.open(mCameraId, mTextureView.getWidth(), mTextureView.getHeight(), mIsBackCamera, mStyle.getCameraQuality());
+//                        break;
+//                    } else if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+//                        Log.e("CameraNew"," CAMERA_FACING_BACK ==== " + Camera.getNumberOfCameras());
+//                        mCameraId = i;
+//                        mIsBackCamera = true;
+//                        mCameraSupport.release();
+//                        mCameraSupport.open(mCameraId, mTextureView.getWidth(), mTextureView.getHeight(), mIsBackCamera, mStyle.getCameraQuality());
+//                        break;
+//                    }
+//                }
             }
         }
         // bottom menu
@@ -666,7 +691,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
                 mWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             }
         } else {
-            if(mMenuContainer == null){
+            if (mMenuContainer == null) {
                 inflateViewStub();
             }
             mMenuManager.hideCustomMenu();
@@ -840,15 +865,18 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         mTextureView.setLayoutParams(params);
         mCameraSupport.setCameraCallbackListener(mCameraListener);
         mCameraSupport.setCameraEventListener(this);
-        for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
-            Camera.CameraInfo info = new Camera.CameraInfo();
-            Camera.getCameraInfo(i, info);
-            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-                mCameraId = i;
-                mIsBackCamera = true;
-                break;
-            }
+        if (Camera.getNumberOfCameras() == 1) {
+            mSwitchCameraBtn.setVisibility(View.GONE);
         }
+//        for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
+//            Camera.CameraInfo info = new Camera.CameraInfo();
+//            Camera.getCameraInfo(i, info);
+//            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+        mCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
+        mIsBackCamera = true;
+//                break;
+//            }
+//        }
         if (mTextureView.isAvailable()) {
             mCameraSupport.open(mCameraId, mWidth, sMenuHeight, mIsBackCamera, mStyle.getCameraQuality());
         } else {
@@ -870,7 +898,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         mFullScreenBtn.setBackgroundResource(R.drawable.aurora_preview_recover_screen);
         mFullScreenBtn.setVisibility(VISIBLE);
         mChatInputContainer.setVisibility(GONE);
-        Log.e("setVisibility","setVisibility " + mMenuItemContainer.getVisibility());
+        Log.e("setVisibility", "setVisibility " + mMenuItemContainer.getVisibility());
         mMenuItemContainer.setVisibility(GONE);
         int height = mHeight;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -904,9 +932,9 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         mChangePaddingTop = getPaddingTop();
         mChangePaddingRight = getPaddingRight();
         mChangePaddingBottom = getPaddingBottom();
-        setPadding(0,0,0,0);
+        setPadding(0, 0, 0, 0);
         //TODO
-        if(mOnWindowChangeListener != null){
+        if (mOnWindowChangeListener != null) {
             mOnWindowChangeListener.onWindowChange(true);
         }
     }
@@ -1102,8 +1130,6 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         restoreAnimatorSet.playTogether(ObjectAnimator.ofFloat(sendBtn, "scaleX", restoreValues), ObjectAnimator.ofFloat(sendBtn, "scaleY", restoreValues));
         restoreAnimatorSet.setDuration(100);
         restoreAnimatorSet.addListener(new RestoreAnimator(this, sendCountTextView, view));
-
-        Log.e("triggerSendButtonAnimation","hasContent -> " + hasContent);
 
         shrinkAnimatorSet.addListener(new ShrinkAnimator(hasContent, isSelectPhoto, sendCountTextView, sendButton, mStyle, restoreAnimatorSet));
         shrinkAnimatorSet.start();
@@ -1362,13 +1388,13 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         }
     }
 
-    public boolean onBackPressed(){
-        if(isFullScreen()){
-            Log.e("onBackPressed"," isFullScreen() ->  " + isFullScreen());
+    public boolean onBackPressed() {
+        if (isFullScreen()) {
+            Log.e("onBackPressed", " isFullScreen() ->  " + isFullScreen());
             recoverScreen();
             return true;
-        }else if (mMenuContainer != null && mMenuContainer.getVisibility() == VISIBLE){
-            Log.e("onBackPressed"," mMenuItemContainer visibility ->  " + mMenuContainer.getVisibility());
+        } else if (mMenuContainer != null && mMenuContainer.getVisibility() == VISIBLE) {
+            Log.e("onBackPressed", " mMenuItemContainer visibility ->  " + mMenuContainer.getVisibility());
             dismissMenuLayout();
             return true;
         }
@@ -1466,11 +1492,11 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         mFullScreenBtn.setBackgroundResource(R.drawable.aurora_preview_full_screen);
         mFullScreenBtn.setVisibility(VISIBLE);
         mChatInputContainer.setVisibility(VISIBLE);
-        Log.e("setVisibility","" + isShowBottomMenu());
+        Log.e("setVisibility", "" + isShowBottomMenu());
 
 
         mMenuItemContainer.setVisibility(isShowBottomMenu() ? VISIBLE : GONE);
-        Log.e("setVisibility","" + mMenuItemContainer.getVisibility());
+        Log.e("setVisibility", "" + mMenuItemContainer.getVisibility());
         int height = sMenuHeight;
         if (mSoftKeyboardHeight != 0 && useKeyboardHeight) height = mSoftKeyboardHeight;
         setMenuContainerHeight(height);
@@ -1498,22 +1524,22 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
         FrameLayout.LayoutParams params3 = new FrameLayout.LayoutParams(marginParams3);
         params3.gravity = Gravity.BOTTOM | Gravity.END;
         mSwitchCameraBtn.setLayoutParams(params3);
-        setPadding(mChangePaddingLift,mChangePaddingTop,mChangePaddingRight,mChangePaddingBottom);
-        if(mOnWindowChangeListener != null){
+        setPadding(mChangePaddingLift, mChangePaddingTop, mChangePaddingRight, mChangePaddingBottom);
+        if (mOnWindowChangeListener != null) {
             mOnWindowChangeListener.onWindowChange(false);
         }
     }
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && isFullScreen()){
+        if (keyCode == KeyEvent.KEYCODE_BACK && isFullScreen()) {
             recoverScreen();
             return true;
         }
         return super.onKeyUp(keyCode, event);
     }
 
-    public void setOnWindowChangeListener(OnWindowChangeListener mOnWindowChangeListener){
+    public void setOnWindowChangeListener(OnWindowChangeListener mOnWindowChangeListener) {
         this.mOnWindowChangeListener = mOnWindowChangeListener;
     }
 
@@ -1542,7 +1568,7 @@ public class ChatInputView extends LinearLayout implements View.OnClickListener,
 
     };
 
-    public interface OnWindowChangeListener{
+    public interface OnWindowChangeListener {
 
         void onWindowChange(boolean full);
 

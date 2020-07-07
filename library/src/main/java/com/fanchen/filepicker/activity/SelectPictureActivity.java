@@ -1,5 +1,6 @@
 package com.fanchen.filepicker.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
@@ -13,21 +14,23 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.fanchen.permission.PermissionCallback;
+import com.fanchen.permission.PermissionHelper;
+import com.fanchen.permission.PermissionItem;
 import com.fanchen.ui.R;
 import com.fanchen.base.BaseIActivity;
 import com.fanchen.filepicker.SelectOptions;
@@ -58,7 +61,7 @@ import java.util.Locale;
 public class SelectPictureActivity extends BaseIActivity implements
         EssAlbumCollection.EssAlbumCallbacks, AdapterView.OnItemSelectedListener,
         EssMediaCollection.EssMediaCallbacks, BaseQuickAdapter.OnItemChildClickListener,
-        BaseQuickAdapter.OnItemClickListener {
+        BaseQuickAdapter.OnItemClickListener, PermissionCallback {
 
     /*4. 最多可选择个数，默认10*/
     private int mMaxCount = 10;
@@ -85,16 +88,11 @@ public class SelectPictureActivity extends BaseIActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_picture);
         mRecyclerView = findViewById(R.id.rcv_file_picture_list);
-        initUI();
-        // android 7.0系统解决拍照的问题
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-            StrictMode.setVmPolicy(builder.build());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                builder.detectFileUriExposure();
-            }
-        }
-        UiUtils.setViewPadding(findViewById(R.id.abl_title));
+
+        ArrayList<PermissionItem> permissionItems = new ArrayList<>();
+        permissionItems.add(new PermissionItem(Manifest.permission.READ_EXTERNAL_STORAGE,getString(R.string.permission_storage),R.drawable.permission_ic_storage));
+        PermissionHelper.create(this).permissions(permissionItems).checkMutiPermission(this);
+
     }
 
     private void initUI() {
@@ -348,5 +346,25 @@ public class SelectPictureActivity extends BaseIActivity implements
             startActivityForResult(intent, 300);
         }
 
+    }
+
+    @Override
+    public void onClose() {
+        Toast.makeText(this,R.string.permission_error, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onFinish() {
+        initUI();
+        // android 7.0系统解决拍照的问题
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                builder.detectFileUriExposure();
+            }
+        }
+        UiUtils.setViewPadding(findViewById(R.id.abl_title));
     }
 }

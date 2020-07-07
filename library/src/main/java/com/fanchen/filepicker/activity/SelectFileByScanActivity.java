@@ -1,5 +1,6 @@
 package com.fanchen.filepicker.activity;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,8 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fanchen.filepicker.BaseFileFragment;
+import com.fanchen.permission.PermissionCallback;
+import com.fanchen.permission.PermissionHelper;
+import com.fanchen.permission.PermissionItem;
 import com.fanchen.ui.R;
 import com.fanchen.base.BaseIActivity;
 import com.fanchen.filepicker.SelectOptions;
@@ -40,7 +45,7 @@ import java.util.List;
 /**
  * 通过扫描来选择文件
  */
-public class SelectFileByScanActivity extends BaseIActivity implements ViewPager.OnPageChangeListener {
+public class SelectFileByScanActivity extends BaseIActivity implements ViewPager.OnPageChangeListener, PermissionCallback {
 
     /*todo 是否可预览文件，默认可预览*/
     private boolean mCanPreview = true;
@@ -63,8 +68,12 @@ public class SelectFileByScanActivity extends BaseIActivity implements ViewPager
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BaseFileFragment.S_FileScanFragEvent);
         registerReceiver(mReceiver, intentFilter);
-        initUi();
-        UiUtils.setViewPadding(findViewById(R.id.abl_title));
+
+        ArrayList<PermissionItem> permissionItems = new ArrayList<>();
+        permissionItems.add(new PermissionItem(Manifest.permission.READ_EXTERNAL_STORAGE,getString(R.string.permission_storage),R.drawable.permission_ic_storage));
+        PermissionHelper.create(this).permissions(permissionItems).checkMutiPermission(this);
+
+
     }
 
     private void initUi() {
@@ -253,4 +262,16 @@ public class SelectFileByScanActivity extends BaseIActivity implements ViewPager
         }
 
     };
+
+    @Override
+    public void onClose() {
+        Toast.makeText(this,R.string.permission_error, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onFinish() {
+        initUi();
+        UiUtils.setViewPadding(findViewById(R.id.abl_title));
+    }
 }

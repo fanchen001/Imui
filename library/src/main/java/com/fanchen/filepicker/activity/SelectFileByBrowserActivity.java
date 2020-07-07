@@ -1,5 +1,6 @@
 package com.fanchen.filepicker.activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +18,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.fanchen.permission.PermissionCallback;
+import com.fanchen.permission.PermissionHelper;
+import com.fanchen.permission.PermissionItem;
 import com.fanchen.ui.R;
 import com.fanchen.base.BaseIActivity;
 import com.fanchen.filepicker.SelectOptions;
@@ -44,7 +49,7 @@ import java.util.List;
  */
 public class SelectFileByBrowserActivity extends BaseIActivity
         implements BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener,
-        View.OnClickListener, EssFileListCallBack, EssFileCountCallBack, FileListAdapter.onLoadFileCountListener {
+        View.OnClickListener, EssFileListCallBack, EssFileCountCallBack, FileListAdapter.onLoadFileCountListener, PermissionCallback {
 
     /*todo 是否可预览文件，默认可预览*/
     private boolean mCanPreview = true;
@@ -78,13 +83,9 @@ public class SelectFileByBrowserActivity extends BaseIActivity
         setTheme(SelectOptions.getInstance().themeId);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_file);
-        mSdCardList = FileUtils.getAllSdPaths(this);
-        if (!mSdCardList.isEmpty()) {
-            mCurFolder = mSdCardList.get(0) + File.separator;
-        }
-        initUi();
-        initData();
-        UiUtils.setViewPadding(findViewById(R.id.abl_title));
+        ArrayList<PermissionItem> permissionItems = new ArrayList<>();
+        permissionItems.add(new PermissionItem(Manifest.permission.READ_EXTERNAL_STORAGE,getString(R.string.permission_storage),R.drawable.permission_ic_storage));
+        PermissionHelper.create(this).permissions(permissionItems).checkMutiPermission(this);
 }
 
     @Override
@@ -395,5 +396,22 @@ public class SelectFileByBrowserActivity extends BaseIActivity
     public void onLoadFileCount(int position) {
         essFileCountTask = new EssFileCountTask(position, mAdapter.getData().get(position).getAbsolutePath(), SelectOptions.getInstance().getFileTypes(), this);
         essFileCountTask.execute();
+    }
+
+    @Override
+    public void onClose() {
+        Toast.makeText(this,R.string.permission_error, Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onFinish() {
+        mSdCardList = FileUtils.getAllSdPaths(this);
+        if (!mSdCardList.isEmpty()) {
+            mCurFolder = mSdCardList.get(0) + File.separator;
+        }
+        initUi();
+        initData();
+        UiUtils.setViewPadding(findViewById(R.id.abl_title));
     }
 }
