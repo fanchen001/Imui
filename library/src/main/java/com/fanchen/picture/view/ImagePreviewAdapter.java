@@ -23,6 +23,8 @@ import com.bumptech.glide.request.target.Target;
 import com.fanchen.picture.bean.IImageInfo;
 import com.fanchen.picture.view.listener.OnBigImageLongClickListener;
 import com.fanchen.picture.view.listener.OnPopItemClickListener;
+import com.fanchen.popup.Popup;
+import com.fanchen.popup.interfaces.OnSelectListener;
 import com.fanchen.ui.R;
 import com.fanchen.picture.ImagePreview;
 import com.fanchen.picture.glide.ImageLoader;
@@ -53,13 +55,14 @@ public class ImagePreviewAdapter extends PagerAdapter {
     private HashMap<String, SubsamplingScaleImageViewDragClose> imageHashMap = new HashMap<>();
     private HashMap<String, PhotoView> imageGifHashMap = new HashMap<>();
     private String finalLoadUrl = "";
-    private PopupWindowList mPopupWindowList = null;
+
+    private Popup.Builder mPopupWindowList ;
 
     public ImagePreviewAdapter(Activity activity, @NonNull List<IImageInfo> imageInfo) {
         super();
         this.imageInfo = imageInfo;
         this.activity = activity;
-        mPopupWindowList = new PopupWindowList(activity);
+        mPopupWindowList = new Popup.Builder(activity);
     }
 
     public void closePage() {
@@ -163,6 +166,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
         if (activity == null) {
             return container;
         }
+
         View convertView = View.inflate(activity, R.layout.item_picture_photoview, null);
         final ProgressBar progressBar = convertView.findViewById(R.id.progress_view);
         final FingerDragHelper fingerDragHelper = convertView.findViewById(R.id.fingerDragHelper);
@@ -207,7 +211,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
                 }
             }
         });
-
+        mPopupWindowList.watchView(imageView);
         imageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View mImageViewDragClose) {
@@ -220,18 +224,13 @@ public class ImagePreviewAdapter extends PagerAdapter {
                 OnBigImageLongClickListener bigImageLongClickListener = instance.getBigImageLongClickListener();
                 if (itemClickListener != null) {
                     final Bitmap mBitmap = bitmap;
-                    if (!activity.isFinishing() && !activity.isDestroyed() && !mPopupWindowList.isShowing()) {
-                        mPopupWindowList.setAnchorView(mImageViewDragClose);
-                        mPopupWindowList.setItemData(Arrays.asList("转发给朋友", "下载图片", "识别二维码"));
-                        mPopupWindowList.setModal(true);
-                        mPopupWindowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    if (!activity.isFinishing() && !activity.isDestroyed() ) {
+                        mPopupWindowList.asAttachList(new String[]{"转发给朋友", "下载图片", "识别二维码"}, null, new OnSelectListener() {
                             @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            public void onSelect(int position, String text) {
                                 itemClickListener.onPopItemClick(mImageViewDragClose, mPosition, position, mBitmap,info);
-                                mPopupWindowList.hide();
                             }
-                        });
-                        mPopupWindowList.show();
+                        }).show();
                         return true;
                     }
                 }
@@ -241,7 +240,7 @@ public class ImagePreviewAdapter extends PagerAdapter {
                 return false;
             }
         });
-
+        mPopupWindowList.watchView(imageGif);
         imageGif.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View mImageView) {
@@ -257,18 +256,13 @@ public class ImagePreviewAdapter extends PagerAdapter {
                 OnBigImageLongClickListener bigImageLongClickListener = instance.getBigImageLongClickListener();
                 if (itemClickListener != null) {
                     final Bitmap mBitmap = bitmap;
-                    if (!activity.isFinishing() && !activity.isDestroyed() && !mPopupWindowList.isShowing()) {
-                        mPopupWindowList.setAnchorView(mImageView);
-                        mPopupWindowList.setItemData(Arrays.asList("转发给朋友", "下载图片", "识别二维码"));
-                        mPopupWindowList.setModal(true);
-                        mPopupWindowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    if (!activity.isFinishing() && !activity.isDestroyed()) {
+                        mPopupWindowList.asAttachList(new String[]{"转发给朋友", "下载图片", "识别二维码"}, null, new OnSelectListener() {
                             @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            public void onSelect(int position, String text) {
                                 itemClickListener.onPopItemClick(mImageView, mPosition, position, mBitmap,info);
-                                mPopupWindowList.hide();
                             }
-                        });
-                        mPopupWindowList.show();
+                        }).show();
                         return true;
                     }
                 }

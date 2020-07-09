@@ -20,6 +20,11 @@ public final class FilePicker {
     private final WeakReference<Activity> mContext;
     private final WeakReference<Fragment> mFragment;
 
+    public static UCropConfig U1X2 = new UCropConfig(400,800,1,2);
+    public static UCropConfig U1X1 = new UCropConfig(400,400,1,1);
+    public static UCropConfig U3X2 = new UCropConfig(900,600,3,2);
+    public static UCropConfig U2X3 = new UCropConfig(600,900,2,3);
+
     private FilePicker(Activity activity) {
         this(activity, null);
     }

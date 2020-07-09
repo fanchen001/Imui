@@ -132,7 +132,13 @@ public class PermissionActivity extends AppCompatActivity {
 
 
     private void reRequestPermission(final String permission) {
-        String permissionName = getPermissionItem(permission).PermissionName;
+        PermissionItem permissionItem = getPermissionItem(permission);
+        String permissionName = null;
+        if(permissionItem != null && permissionItem .PermissionNameRes > 0){
+            permissionName = getString(permissionItem .PermissionNameRes);
+        }else if(permissionItem != null){
+            permissionName = permissionItem.PermissionName;
+        }
         String alertTitle = String.format(getString(R.string.permission_title), permissionName);
         String msg = String.format(getString(R.string.permission_denied), permissionName, mAppName);
         showAlertDialog(alertTitle, msg, getString(R.string.permission_cancel), getString(R.string.permission_ensure), new DialogInterface.OnClickListener() {
@@ -227,7 +233,13 @@ public class PermissionActivity extends AppCompatActivity {
                     //弹框警告! haha
                     try {
                         //permissions可能返回空数组，所以try-catch
-                        String name = getPermissionItem(permissions[0]).PermissionName;
+                        String name = null;
+                        int permissionNameRes = getPermissionItem(permissions[0]).PermissionNameRes;
+                        if(permissionNameRes > 0){
+                            name = getString( getPermissionItem(permissions[0]).PermissionNameRes);
+                        }else{
+                            name = getPermissionItem(permissions[0]).PermissionName;
+                        }
                         String title = String.format(getString(R.string.permission_title), name);
                         String msg = String.format(getString(R.string.permission_denied_with_naac), mAppName, name, mAppName);
                         showAlertDialog(title, msg, getString(R.string.permission_reject), getString(R.string.permission_go_to_setting), new DialogInterface.OnClickListener() {

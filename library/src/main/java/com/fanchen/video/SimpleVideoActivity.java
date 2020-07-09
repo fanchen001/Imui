@@ -9,13 +9,13 @@ import android.widget.AdapterView;
 
 import com.bumptech.glide.Glide;
 import com.fanchen.message.commons.models.IMessage;
-import com.fanchen.picture.view.PopupWindowList;
+import com.fanchen.popup.Popup;
+import com.fanchen.popup.interfaces.OnSelectListener;
 import com.fanchen.ui.R;
 
 import java.io.File;
-import java.util.Arrays;
 
-public class SimpleVideoActivity extends Activity implements View.OnLongClickListener, AdapterView.OnItemClickListener {
+public class SimpleVideoActivity extends Activity implements View.OnLongClickListener {
 
     public static final String TITLE = "title";
     public static final String PATH = "path";
@@ -23,7 +23,7 @@ public class SimpleVideoActivity extends Activity implements View.OnLongClickLis
     private static IMessage mIMessage = null;
     private static OnVideoLongClickListener mClickListener = null;
 
-    private PopupWindowList mPopupWindowList = null;
+    private Popup.Builder mPopupWindowList ;
 
     public static void start(Activity activity, String path) {
         start(activity, new File(path).getName(), path);
@@ -60,11 +60,12 @@ public class SimpleVideoActivity extends Activity implements View.OnLongClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPopupWindowList = new PopupWindowList(this);
+        mPopupWindowList = new Popup.Builder(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_chat_video);
         JzvdStd std = (JzvdStd) findViewById(R.id.main_video_view);
         findViewById(R.id.surface_container).setOnLongClickListener(this);
+        mPopupWindowList.watchView(findViewById(R.id.surface_container));
         if (mIMessage != null) {
             std.setUp(mIMessage.getMediaFilePath(), new File(mIMessage.getText()).getName(), Jzvd.SCREEN_FULLSCREEN, JZMediaSystem.class);
         } else {
@@ -79,12 +80,15 @@ public class SimpleVideoActivity extends Activity implements View.OnLongClickLis
     @Override
     public boolean onLongClick(View v) {
         if (mClickListener != null) {
-            if (!isFinishing() && !isDestroyed() && !mPopupWindowList.isShowing()) {
-                mPopupWindowList.setAnchorView(v);
-                mPopupWindowList.setItemData(Arrays.asList("转发给朋友", "下载视频"));
-                mPopupWindowList.setModal(true);
-                mPopupWindowList.setOnItemClickListener(this);
-                mPopupWindowList.show();
+            if (!isFinishing() && !isDestroyed()) {
+                mPopupWindowList.asAttachList(new String[]{"转发给朋友", "下载视频"}, null, new OnSelectListener() {
+                    @Override
+                    public void onSelect(int position, String text) {
+                        if (mIMessage !=  null && mClickListener != null) {
+                            mClickListener.onVideoLongClick(position, mIMessage);
+                        }
+                    }
+                }).show();
                 return true;
             }
         }
@@ -93,19 +97,12 @@ public class SimpleVideoActivity extends Activity implements View.OnLongClickLis
 
     @Override
     protected void onDestroy() {
-        if (mPopupWindowList != null) {
-            mPopupWindowList.hide();
-        }
+//        if (mPopupWindowList != null) {
+//            mPopupWindowList.hide();
+//        }
         mClickListener = null;
         mIMessage = null;
         super.onDestroy();
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (mIMessage !=  null && mClickListener != null) {
-            mClickListener.onVideoLongClick(position, mIMessage);
-        }
-        mPopupWindowList.hide();
-    }
 }

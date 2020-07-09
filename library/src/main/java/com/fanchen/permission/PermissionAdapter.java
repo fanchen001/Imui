@@ -56,7 +56,11 @@ public class PermissionAdapter extends BaseAdapter {
         if (mTextColor != 0)
             name.setTextColor(mTextColor);
         icon.setImageResource(item.PermissionIconRes);
-        name.setText(item.PermissionName);
+        if(item.PermissionNameRes > 0){
+            name.setText(item.PermissionNameRes);
+        }else{
+            name.setText(item.PermissionName);
+        }
         return view;
     }
 

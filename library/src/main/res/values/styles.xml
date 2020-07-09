@@ -118,7 +118,8 @@
         <item name="colorAccent">@color/elec_primary_dark</item>
         <item name="colorPrimary">@color/elec_primary_dark</item>
         <item name="colorPrimaryDark">@color/elec_primary_dark</item>
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent
+        </item>
         <item name="android:colorForeground">#55000000</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">false</item>
@@ -158,7 +159,8 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <!--Android 5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色-->
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent
+        </item>
         <item name="android:windowAnimationStyle">@style/SlideRightAnimation</item>
         <item name="colorAccent">@color/ucrop_base_color_widget_active</item>
         <item name="colorPrimary">@color/elec_primary</item>
@@ -168,7 +170,8 @@
         <item name="album.dropdown.title.color">@color/elec_album_dropdown_title_text</item>
         <item name="album.dropdown.count.color">@color/elec_album_dropdown_count_text</item>
         <item name="album.element.color">@android:color/white</item>
-        <item name="album.thumbnail.placeholder">@color/elec_album_dropdown_thumbnail_placeholder</item>
+        <item name="album.thumbnail.placeholder">@color/elec_album_dropdown_thumbnail_placeholder
+        </item>
         <item name="album.emptyView">@drawable/ic_empty_elec</item>
         <item name="album.emptyView.textColor">@color/elec_album_empty_view</item>
         <item name="item.placeholder">@color/elec_item_placeholder</item>
@@ -189,9 +192,9 @@
         <item name="capture.textColor">@color/elec_capture</item>
     </style>
 
-    <style name="Toolbar.elec" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="Toolbar.elec" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="Popup.elec" parent="Widget.AppCompat.Light.ListPopupWindow"/>
+    <style name="Popup.elec" parent="Widget.AppCompat.Light.ListPopupWindow" />
 
     //===================================== Theme Dracula ==========================================
 
@@ -369,7 +372,7 @@
         <item name="PermissionIconFilterColor">@color/permissionColorWhite</item>
     </style>
 
-    <style name="PermissionDefaultNormalStyle" >
+    <style name="PermissionDefaultNormalStyle">
         <item name="PermissionTitleColor">#737373</item>
         <item name="PermissionMsgColor">#737373</item>
         <item name="PermissionItemTextColor">#737373</item>
@@ -402,5 +405,14 @@
     <style name="PermissionAnimModal">
         <item name="android:windowEnterAnimation">@anim/permission_modal_in</item>
         <item name="android:windowExitAnimation">@anim/permission_modal_out</item>
+    </style>
+
+
+    <style name="_XPopup_TransparentDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>

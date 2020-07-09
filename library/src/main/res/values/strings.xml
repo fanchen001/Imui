@@ -127,4 +127,10 @@
     <string name="permission_btn_next">Next</string>
     <string name="permission_go_to_setting">Go to Setting</string>
     <string name="permission_error">permission error</string>
+    <string name="permission_audio">Audio</string>
+    <string name="permission_phone">Phone state</string>
+
+    <string name="xpopup_cancel">cancel</string>
+    <string name="xpopup_ok">ok</string>
+    <string name="xpopup_save">save</string>
 </resources>

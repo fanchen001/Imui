@@ -9,6 +9,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
+import android.graphics.PointF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -19,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -29,6 +31,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.fanchen.message.commons.models.IMessage;
+import com.fanchen.message.utils.DisplayUtil;
+import com.fanchen.video.JZUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
