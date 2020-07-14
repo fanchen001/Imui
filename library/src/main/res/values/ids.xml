@@ -9,4 +9,5 @@
     <item name="z_decode_succeeded" type="id" />
     <item name="z_quit" type="id" />
     <item name="z_restart_preview" type="id" />
+    <item type="id" name="xbanner_pointId"/>
 </resources>
