@@ -23,7 +23,7 @@ public class LocationTracker extends BDAbstractLocationListener {
 
     private Object objLock = new Object();
 
-    private OnLocationListener mListener;
+    private BaseLocationListener mListener;
 
     /***
      *
@@ -62,7 +62,7 @@ public class LocationTracker extends BDAbstractLocationListener {
      * @param listener
      * @return
      */
-    public boolean registerListener(OnLocationListener listener) {
+    public boolean registerListener(BaseLocationListener listener) {
         boolean isSuccess = false;
         if (listener != null) {
             this.mListener = listener;
@@ -124,11 +124,18 @@ public class LocationTracker extends BDAbstractLocationListener {
         Log.d(TAG, "LocationTracker onReceiveLocation");
         if (BaiduUtils.isValidLocation(bdLocation, null)) {
             BaiduUtils.prinftBDLocation(bdLocation);
-            Location location = BaiduUtils.assemblyLocation(bdLocation);
+            final Location location = BaiduUtils.assemblyLocation(bdLocation);
             // 将数据插入数据库
-            LocationDBHelper.getHelper(mContext).locationInsert(location);
-
+            new Thread() {
+                @Override
+                public void run() {
+                    LocationDBHelper.getHelper(mContext).locationInsert(location);
+                }
+            }.start();
             mListener.onReceiveLocation(location);
+
+        } else {
+            mListener.onReceiveLocation(new Location());
         }
         if (!LocationProvider.getInstance().isHasTracker()) {
             // 每次位置更新回调通知界面

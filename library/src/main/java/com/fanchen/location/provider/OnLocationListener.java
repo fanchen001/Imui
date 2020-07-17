@@ -5,9 +5,7 @@ import java.util.List;
 
 /**
  */
-public interface OnLocationListener {
-
-    void onReceiveLocation(Location location);
+public interface OnLocationListener extends BaseLocationListener {
 
     void onReceiveLocation(List<Location> LocationList);
 

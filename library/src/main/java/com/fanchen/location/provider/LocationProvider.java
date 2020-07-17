@@ -85,7 +85,7 @@ public class LocationProvider {
      *
      * @param listener
      */
-    public void getCurrentLocation(OnLocationListener listener) {
+    public void getCurrentLocation(BaseLocationListener listener) {
         this.getCurrentLocation(null, listener);
     }
 
@@ -95,7 +95,7 @@ public class LocationProvider {
      * @param mOption
      * @param listener
      */
-    public void getCurrentLocation(LocationClientOption mOption, OnLocationListener listener) {
+    public void getCurrentLocation(LocationClientOption mOption, BaseLocationListener listener) {
         if (hasTracker) { // 有追踪任务在运行
             // 获取最新位置返回
             Location location = LocationDBHelper.getHelper(mContext).getLatestLocation();
@@ -117,12 +117,12 @@ public class LocationProvider {
      *
      * @param time
      */
-    public void getLocationByTime(long time, OnLocationListener listener) {
+    public void getLocationByTime(long time, BaseLocationListener listener) {
         Location location = LocationDBHelper.getHelper(mContext).locDBLoadByTime(time);
         if (location != null) {
             listener.onReceiveLocation(location);
-        } else {
-            listener.onLocationTrackerNotRun();
+        } else if(listener instanceof OnLocationListener) {
+            ((OnLocationListener)listener).onLocationTrackerNotRun();
         }
     }
 
@@ -132,13 +132,13 @@ public class LocationProvider {
      * @param startTime
      * @param endTime
      */
-    public void getLocationByPeriod(Long startTime, long endTime, OnLocationListener listener) {
+    public void getLocationByPeriod(Long startTime, long endTime, BaseLocationListener listener) {
         List<Location> locationList = new ArrayList<>();
         locationList.addAll(LocationDBHelper.getHelper(mContext).locDBLoadByPeriod(startTime, endTime));
-        if (locationList.size() > 0) {
-            listener.onReceiveLocation(locationList);
-        } else {
-            listener.onLocationTrackerNotRun();
+        if (locationList.size() > 0 &&  listener instanceof OnLocationListener) {
+            ((OnLocationListener)listener).onReceiveLocation(locationList);
+        } else  if(listener instanceof OnLocationListener){
+            ((OnLocationListener)listener).onLocationTrackerNotRun();
         }
     }
 
@@ -174,7 +174,7 @@ public class LocationProvider {
      *
      * @param listener
      */
-    public void startTracker(OnLocationListener listener) {
+    public void startTracker(BaseLocationListener listener) {
         this.startTracker(null, listener);
     }
 
@@ -184,7 +184,7 @@ public class LocationProvider {
      * @param mOption  定位配置
      * @param listener
      */
-    public void startTracker(LocationClientOption mOption, OnLocationListener listener) {
+    public void startTracker(LocationClientOption mOption, BaseLocationListener listener) {
         if (!hasTracker) {
             mTracker = new LocationTracker(mContext);
             if (mOption == null) {
@@ -201,8 +201,8 @@ public class LocationProvider {
         } else { // 已经存在追踪任务
 
             // TODO: 2017/8/28 回调通知调用者
-            if (listener != null) {
-                listener.onLocationTrackerExist();
+            if (listener instanceof OnLocationListener) {
+                ((OnLocationListener)listener).onLocationTrackerExist();
             }
         }
     }

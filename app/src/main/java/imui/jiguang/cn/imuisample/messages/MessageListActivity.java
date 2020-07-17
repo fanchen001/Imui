@@ -794,7 +794,6 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 //                return false;
 //            }
 //        });
-
         mChatView.getChatInputView().setOnSelectButtonListener(new OnSelectButtonListener() {
 
             @Override
@@ -1150,11 +1149,15 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
                 }
             }
         });
+       final QPopWindow.Builder builder = QPopWindow.getInstance(this).builder;
 
 
         mAdapter.setMsgLongClickListener(new MsgListAdapter.OnMsgLongClickListener<MyMessage>() {
             @Override
             public void onMessageLongClick(View view, MyMessage message) {
+
+                builder.bindView(view,message).setPopupItemList(new String[]{"1","2"}).show();
+
 //                int[] aa = new int[2];
 //                view.getLocationOnScreen(aa);
 //                int width = getWindowManager().getDefaultDisplay().getWidth();
@@ -1173,16 +1176,16 @@ public class MessageListActivity extends Activity implements View.OnTouchListene
 //                            public void onPopListItemClick(View anchorView,IMessage iMessage, int anchorViewPosition) {
 //                            }
 //                        }).show();
-                ArrayList<HintPopupWindow.Item> items = new ArrayList<>();
-                items.add(new HintPopupWindow.Item(R.drawable.ic_gif,"11"));
-                items.add(new HintPopupWindow.Item(R.drawable.ic_gif,"22"));
-                items.add(new HintPopupWindow.Item(R.drawable.ic_gif,"33"));
-                new HintPopupWindow(MessageListActivity.this).build(items, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).showPopupWindow(view,true);
+//                ArrayListt<HintPopupWindow.Item> items = new ArrayList<>();
+//                items.add(new HintPopupWindow.Item(R.drawable.ic_gif,"11"));
+//                items.add(new HintPopupWindow.Item(R.drawable.ic_gif,"22"));
+//                items.add(new HintPopupWindow.Item(R.drawable.ic_gif,"33"));
+//                new HintPopupWindow(MessageListActivity.this).build(items, new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                    }
+//                }).showPopupWindow(view,true);
 
 
                 // do something
