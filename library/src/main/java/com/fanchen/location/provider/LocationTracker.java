@@ -21,6 +21,8 @@ public class LocationTracker extends BDAbstractLocationListener {
 
     private LocationClient client = null;
 
+    private  Location mLocation;
+
     private Object objLock = new Object();
 
     private BaseLocationListener mListener;
@@ -90,6 +92,11 @@ public class LocationTracker extends BDAbstractLocationListener {
     }
 
     public void start() {
+        if(mListener != null && mLocation != null){
+            mListener.onReceiveLocation(mLocation);
+            mLocation = null;
+            return;
+        }
         synchronized (objLock) {
             if (client != null && !client.isStarted()) {
                 client.start();
@@ -132,9 +139,13 @@ public class LocationTracker extends BDAbstractLocationListener {
                     LocationDBHelper.getHelper(mContext).locationInsert(location);
                 }
             }.start();
-            mListener.onReceiveLocation(location);
-
-        } else {
+            if(mListener != null){
+                mLocation = null;
+                mListener.onReceiveLocation(location);
+            }else{
+                this.mLocation = location;
+            }
+        } else if(mListener != null){
             mListener.onReceiveLocation(new Location());
         }
         if (!LocationProvider.getInstance().isHasTracker()) {

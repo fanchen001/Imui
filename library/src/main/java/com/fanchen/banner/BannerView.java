@@ -175,7 +175,7 @@ public class BannerView extends RelativeLayout implements BannerViewPager.AutoPl
     private Drawable mNumberIndicatorBackground;
 
     /*只有一张图片时是否显示指示点*/
-    private boolean mIsShowIndicatorOnlyOne = false;
+    private boolean mIsShowIndicatorOnlyOne = true;
 
     /*默认图片切换速度为1s*/
     private int mPageChangeDuration = 1000;
@@ -217,7 +217,7 @@ public class BannerView extends RelativeLayout implements BannerViewPager.AutoPl
      * @param mAdapter
      */
     @Deprecated
-    public void setmAdapter(XBannerAdapter mAdapter) {
+    public void setAdapter(XBannerAdapter mAdapter) {
         this.mAdapter = mAdapter;
     }
 
@@ -248,7 +248,7 @@ public class BannerView extends RelativeLayout implements BannerViewPager.AutoPl
         mClipChildrenLeftRightMargin = BannerUtils.dp2px(context, 30);
         mClipChildrenTopBottomMargin = BannerUtils.dp2px(context, 10);
         mViewPagerMargin = BannerUtils.dp2px(context, 10);
-        mTipTextSize = BannerUtils.sp2px(context, 10);
+        mTipTextSize = BannerUtils.sp2px(context, 12);
         mTransformer = Transformer.Default;
         /*设置默认提示语字体颜色*/
         mTipTextColor = Color.WHITE;
@@ -276,7 +276,7 @@ public class BannerView extends RelativeLayout implements BannerViewPager.AutoPl
             mTipTextColor = typedArray.getColor(R.styleable.BannerView_tipTextColor, mTipTextColor);
             mTipTextSize = typedArray.getDimensionPixelSize(R.styleable.BannerView_tipTextSize, mTipTextSize);
             mIsNumberIndicator = typedArray.getBoolean(R.styleable.BannerView_isShowNumberIndicator, mIsNumberIndicator);
-            mNumberIndicatorBackground = typedArray.getDrawable(R.styleable.BannerView_numberIndicatorBacgroud);
+            mNumberIndicatorBackground = typedArray.getDrawable(R.styleable.BannerView_numberIndicatorBackground);
             mIsShowIndicatorOnlyOne = typedArray.getBoolean(R.styleable.BannerView_isShowIndicatorOnlyOne, mIsShowIndicatorOnlyOne);
             mPageChangeDuration = typedArray.getInt(R.styleable.BannerView_pageChangeDuration, mPageChangeDuration);
             mPlaceholderDrawableResId = typedArray.getResourceId(R.styleable.BannerView_placeholderDrawable, mPlaceholderDrawableResId);
@@ -331,6 +331,8 @@ public class BannerView extends RelativeLayout implements BannerViewPager.AutoPl
                 } else {
                     mNumberIndicatorTv.setBackgroundDrawable(mNumberIndicatorBackground);
                 }
+            }else{
+                mNumberIndicatorTv.setBackgroundResource(R.drawable.shape_number_indicator_background);
             }
             pointContainerRl.addView(mNumberIndicatorTv, mPointRealContainerLp);
         } else {
