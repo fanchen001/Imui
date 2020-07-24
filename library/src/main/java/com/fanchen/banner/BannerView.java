@@ -248,7 +248,7 @@ public class BannerView extends RelativeLayout implements BannerViewPager.AutoPl
         mClipChildrenLeftRightMargin = BannerUtils.dp2px(context, 30);
         mClipChildrenTopBottomMargin = BannerUtils.dp2px(context, 10);
         mViewPagerMargin = BannerUtils.dp2px(context, 10);
-        mTipTextSize = BannerUtils.sp2px(context, 12);
+        mTipTextSize = BannerUtils.sp2px(context, 11);
         mTransformer = Transformer.Default;
         /*设置默认提示语字体颜色*/
         mTipTextColor = Color.WHITE;
