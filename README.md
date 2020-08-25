@@ -5,14 +5,4 @@
 
 # 截图
 
-![Screenshot_1.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_1.png "Screenshot_1")
-
-![Screenshot_2.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_2.png "Screenshot_2")
-
-![Screenshot_3.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_3.png "Screenshot_3")
-
-![Screenshot_4.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_4.png "Screenshot_4")
-
-![Screenshot_5.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_5.png "Screenshot_5")
-
-![Screenshot_6.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_6.png "Screenshot_6")
+![Screenshot_1.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_1.png "Screenshot_1")![Screenshot_2.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_2.png "Screenshot_2")![Screenshot_3.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_3.png "Screenshot_3")![Screenshot_4.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_4.png "Screenshot_4")![Screenshot_5.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_5.png "Screenshot_5")![Screenshot_6.png](https://github.com/fanchen001/Imui/blob/master/Screenshot_6.png "Screenshot_6")
